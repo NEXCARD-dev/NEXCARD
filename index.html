@@ -208,14 +208,8 @@
         radial-gradient(circle at 45% 70%, rgba(56,189,248,.22), transparent 50%);
       filter: blur(18px);
     }
-    .mock-inner{
-      position:relative;
-      padding: 1.35rem;
-    }
-    .mock-top{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom: 1.1rem;
-    }
+    .mock-inner{ position:relative; padding: 1.35rem; }
+    .mock-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.1rem; }
     .chip{
       width:54px; height:40px; border-radius:12px;
       background: linear-gradient(135deg, rgba(255,255,255,.65), rgba(255,255,255,.25));
@@ -239,11 +233,7 @@
         rgba(255,255,255,.6);
       box-shadow: 0 10px 22px rgba(2,6,23,.06);
     }
-    .mock-title{
-      font-weight:900; letter-spacing:.4px;
-      font-size: 1.25rem;
-      margin: .2rem 0 .25rem;
-    }
+    .mock-title{ font-weight:900; letter-spacing:.4px; font-size: 1.25rem; margin: .2rem 0 .25rem; }
     .mock-sub{ color: var(--muted); margin:0 0 .9rem; }
     .mock-pills{ display:flex; gap:.55rem; flex-wrap:wrap; }
     .pill{
@@ -263,17 +253,8 @@
 
     /* Sections */
     section{ padding: 3.2rem 0; }
-    .section-title{
-      font-size: 1.6rem;
-      margin:0 0 .4rem;
-      letter-spacing: -.4px;
-    }
-    .section-lead{
-      margin:0 0 1.5rem;
-      color: var(--muted);
-      line-height:1.6;
-      max-width: 72ch;
-    }
+    .section-title{ font-size: 1.6rem; margin:0 0 .4rem; letter-spacing: -.4px; }
+    .section-lead{ margin:0 0 1.5rem; color: var(--muted); line-height:1.6; max-width: 72ch; }
 
     .grid-3{
       display:grid;
@@ -360,10 +341,7 @@
       transform: rotate(-45deg);
     }
 
-    .cta{
-      text-align:center;
-      padding: 3.2rem 0 4rem;
-    }
+    .cta{ text-align:center; padding: 3.2rem 0 3.2rem; }
     .cta-box{
       background: linear-gradient(135deg, rgba(29,78,216,.12), rgba(56,189,248,.18));
       border:1px solid rgba(15,23,42,.10);
@@ -382,10 +360,7 @@
       background: rgba(247,251,255,.55);
       backdrop-filter: blur(12px);
     }
-    .foot{
-      display:flex; justify-content:space-between; align-items:center;
-      gap: 1rem; flex-wrap:wrap;
-    }
+    .foot{ display:flex; justify-content:space-between; align-items:center; gap: 1rem; flex-wrap:wrap; }
     .foot small{ opacity:.9; }
     .foot a{ color: var(--muted); font-weight:700; }
     .foot a:hover{ color: var(--text); }
@@ -401,6 +376,111 @@
       transform: translateY(0);
     }
 
+    /* Menu fade transition (solo menú) */
+    .page-fade {
+      position: fixed;
+      inset: 0;
+      background: #f7fbff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+      z-index: 9999;
+    }
+    .page-fade.on {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Demo overlay */
+    .demo-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(247,251,255,.55);
+      backdrop-filter: blur(12px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 10000;
+      padding: 1rem;
+    }
+    .demo-overlay.show{ display:flex; }
+
+    .demo-modal{
+      width: min(680px, 100%);
+      border-radius: calc(var(--radius) + 10px);
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .demo-head{
+      padding: 1.15rem 1.15rem .9rem;
+      border-bottom: 1px solid rgba(15,23,42,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+    }
+    .demo-title{
+      font-weight: 900;
+      letter-spacing: -.3px;
+    }
+    .demo-close{
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.65);
+      border-radius: 999px;
+      padding: .45rem .75rem;
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .demo-body{ padding: 1.15rem; text-align:left; }
+    .demo-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      padding: .75rem .75rem;
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 14px;
+      background: rgba(255,255,255,.60);
+      margin-bottom: .75rem;
+    }
+    .demo-left{ display:flex; align-items:center; gap:.75rem; }
+    .dot{
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.15);
+    }
+    .dot.on{ background: linear-gradient(135deg, var(--primary), var(--primary2)); box-shadow: 0 10px 20px rgba(29,78,216,.18); }
+    .demo-label{ font-weight: 800; }
+    .demo-state{ color: var(--muted); font-weight: 750; }
+    .progress{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.08);
+      overflow:hidden;
+      border: 1px solid rgba(15,23,42,.08);
+      margin: .3rem 0 1rem;
+    }
+    .bar{
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      transition: width 1.6s ease;
+    }
+    .demo-foot{
+      padding: 1rem 1.15rem 1.15rem;
+      border-top: 1px solid rgba(15,23,42,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      flex-wrap:wrap;
+    }
+    .demo-note{ color: var(--muted); line-height:1.5; }
+
     /* Responsive */
     @media (max-width: 920px){
       .hero-grid{ grid-template-columns: 1fr; }
@@ -415,6 +495,73 @@
 </head>
 
 <body>
+  <!-- Menu fade overlay (solo menú) -->
+  <div class="page-fade" id="pageFade" aria-hidden="true"></div>
+
+  <!-- Demo overlay -->
+  <div class="demo-overlay" id="demoOverlay" aria-hidden="true">
+    <div class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+      <div class="demo-head">
+        <div>
+          <div class="demo-title" id="demoTitle">Demo NEXCARD — prueba visual</div>
+          <div style="color:var(--muted); font-weight:750; margin-top:.2rem;">Simulación de flujo: NFC/QR → Formulario → Sheets</div>
+        </div>
+        <button class="demo-close" id="demoCloseBtn" type="button">Cerrar</button>
+      </div>
+
+      <div class="demo-body">
+        <div class="demo-row">
+          <div class="demo-left">
+            <span class="dot" id="dot1"></span>
+            <div>
+              <div class="demo-label">1) Escaneo NFC / QR</div>
+              <div class="demo-state" id="st1">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t1">—</div>
+        </div>
+
+        <div class="demo-row">
+          <div class="demo-left">
+            <span class="dot" id="dot2"></span>
+            <div>
+              <div class="demo-label">2) Guardando lead en base</div>
+              <div class="demo-state" id="st2">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t2">—</div>
+        </div>
+
+        <div class="demo-row" style="margin-bottom:.9rem;">
+          <div class="demo-left">
+            <span class="dot" id="dot3"></span>
+            <div>
+              <div class="demo-label">3) Lead listo para seguimiento</div>
+              <div class="demo-state" id="st3">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t3">—</div>
+        </div>
+
+        <div class="progress" aria-label="Progreso">
+          <div class="bar" id="demoBar"></div>
+        </div>
+
+        <div class="demo-note" id="demoNote">
+          En la demo, al final te abrimos el formulario real para que hagas un envío de prueba.
+        </div>
+      </div>
+
+      <div class="demo-foot">
+        <div class="demo-note" id="demoResult" style="font-weight:800;"></div>
+        <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+          <a class="btn btn-ghost" href="#como" id="demoHowBtn">Ver cómo funciona</a>
+          <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" id="demoOpenFormBtn">Abrir formulario demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <header class="nav">
     <div class="container nav-inner">
       <div class="brand">
@@ -429,12 +576,12 @@
         <a href="#como">Cómo funciona</a>
         <a href="#beneficios">Beneficios</a>
         <a href="#planes">Planes</a>
+        <a href="#contacto-directo">Contacto</a>
       </nav>
 
       <div class="nav-cta">
         <a class="btn btn-ghost" href="#planes">Ver planes</a>
-        <!-- Ajusta este link a tu formulario real -->
-        <a class="btn btn-primary" id="demoBtn" href="form/?empresa=demo&vendedor=DEMO">Abrir demo</a>
+        <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">Probar demo</a>
       </div>
     </div>
   </header>
@@ -456,7 +603,7 @@
           </p>
 
           <div class="hero-actions">
-            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">
+            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">
               Probar demo
               <span aria-hidden="true">→</span>
             </a>
@@ -499,7 +646,7 @@
           <article class="card reveal">
             <div class="badge"><span class="b"></span> Paso 1</div>
             <h3>Toca o escanea</h3>
-            <p>El cliente usa NFC o QR. Se abre la página de tu empresa con el Rogers de tu marca.</p>
+            <p>El cliente usa NFC o QR. Se abre la página de tu empresa con tu marca.</p>
           </article>
 
           <article class="card reveal">
@@ -565,8 +712,8 @@
                 <li><span class="check" aria-hidden="true"></span> QR de respaldo en cada tarjeta</li>
               </ul>
               <div style="margin-top:1.2rem; display:flex; gap:.7rem; flex-wrap:wrap;">
-                <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">Probar demo</a>
-                <a class="btn btn-ghost" href="#contacto" onclick="alert('Puedes agregar un WhatsApp o un correo aquí.'); return false;">Contactar</a>
+                <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">Probar demo</a>
+                <a class="btn btn-ghost" href="#contacto-directo">Contactar</a>
               </div>
             </div>
           </div>
@@ -587,22 +734,43 @@
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
-    <section class="cta" id="contacto">
+    <!-- Contacto directo -->
+    <section class="cta" id="contacto-directo">
       <div class="container">
         <div class="cta-box reveal">
-          <h2>¿Listo para capturar más clientes?</h2>
-          <p>Empieza con la demo, y luego personalizamos tu página con tu marca, tus servicios y tus vendedores.</p>
-          <div style="display:flex; justify-content:center; gap:.85rem; flex-wrap:wrap;">
-            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">Abrir demo</a>
-            <a class="btn btn-ghost" href="#planes">Ver planes</a>
+          <h2>Contacto directo</h2>
+          <p>Puedes comunicarte directamente para recibir información personalizada sobre NEXCARD.</p>
+
+          <div style="display:flex; flex-direction:column; gap:.8rem; margin-top:1rem; font-weight:600; color:var(--text); text-align:left; max-width: 640px; margin-inline:auto;">
+            <div>
+              📧 Correo:
+              <a href="mailto:Santiagialm@gmail.com" style="color:var(--primary); font-weight:800;">
+                Santiagialm@gmail.com
+              </a>
+            </div>
+
+            <div>
+              📱 Teléfono:
+              <a href="tel:64699159" style="color:var(--primary); font-weight:800;">
+                6469-9159
+              </a>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            <a class="btn btn-primary"
+               href="https://wa.me/50764699159?text=Buenas%20tardes%20estoy%20interesado%20en%20el%20sistema%20de%20Tarjetas%20NFC"
+               target="_blank" rel="noopener">
+              💬 Escribir por WhatsApp
+            </a>
           </div>
         </div>
       </div>
     </section>
+
   </main>
 
   <footer>
@@ -624,7 +792,7 @@
     // Año footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Reveal on scroll (animaciones suaves)
+    // Reveal on scroll
     const reveals = document.querySelectorAll('.reveal');
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
@@ -633,8 +801,98 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => io.observe(el));
 
-    // Si quieres forzar demo a tu ruta exacta, cambia aquí:
-    // document.getElementById('demoBtn').href = "form/?empresa=demo&vendedor=DEMO";
+    // Fade SOLO para menú
+    const fade = document.getElementById("pageFade");
+    function fadeToSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      fade.classList.add("on");
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => fade.classList.remove("on"), 200);
+      }, 220);
+    }
+    document.querySelectorAll(".nav-links a").forEach(a => {
+      a.addEventListener("click", (e) => {
+        const href = a.getAttribute("href") || "";
+        if (!href.startsWith("#")) return;
+        e.preventDefault();
+        fadeToSection(href.slice(1));
+      });
+    });
+    window.addEventListener("pageshow", () => fade.classList.remove("on"));
+
+    // Demo animation overlay
+    const demoOverlay = document.getElementById("demoOverlay");
+    const demoCloseBtn = document.getElementById("demoCloseBtn");
+    const demoOpenFormBtn = document.getElementById("demoOpenFormBtn");
+    const demoHowBtn = document.getElementById("demoHowBtn");
+    const demoBar = document.getElementById("demoBar");
+    const demoResult = document.getElementById("demoResult");
+
+    const dot1 = document.getElementById("dot1");
+    const dot2 = document.getElementById("dot2");
+    const dot3 = document.getElementById("dot3");
+    const st1 = document.getElementById("st1");
+    const st2 = document.getElementById("st2");
+    const st3 = document.getElementById("st3");
+    const t1 = document.getElementById("t1");
+    const t2 = document.getElementById("t2");
+    const t3 = document.getElementById("t3");
+
+    function resetDemoUI(){
+      demoBar.style.width = "0%";
+      demoResult.textContent = "";
+      dot1.classList.remove("on"); dot2.classList.remove("on"); dot3.classList.remove("on");
+      st1.textContent = "Esperando…"; st2.textContent = "Esperando…"; st3.textContent = "Esperando…";
+      t1.textContent = "—"; t2.textContent = "—"; t3.textContent = "—";
+    }
+
+    function openDemoOverlay(){
+      demoOverlay.classList.add("show");
+      demoOverlay.setAttribute("aria-hidden", "false");
+    }
+    function closeDemoOverlay(){
+      demoOverlay.classList.remove("show");
+      demoOverlay.setAttribute("aria-hidden", "true");
+      resetDemoUI();
+    }
+
+    demoCloseBtn.addEventListener("click", closeDemoOverlay);
+    demoOverlay.addEventListener("click", (e) => {
+      if (e.target === demoOverlay) closeDemoOverlay();
+    });
+
+    function runDemoFlow(finalHref){
+      resetDemoUI();
+      openDemoOverlay();
+
+      // Animación: 3 pasos + progreso
+      setTimeout(() => { demoBar.style.width = "35%"; dot1.classList.add("on"); st1.textContent="Escaneando…"; t1.textContent="OK"; }, 150);
+      setTimeout(() => { demoBar.style.width = "70%"; dot2.classList.add("on"); st2.textContent="Guardando en Sheets…"; t2.textContent="OK"; }, 900);
+      setTimeout(() => { demoBar.style.width = "100%"; dot3.classList.add("on"); st3.textContent="Listo para seguimiento"; t3.textContent="OK";
+                        demoResult.textContent="✅ Demostración completada. Ahora puedes abrir el formulario demo real.";
+                      }, 1650);
+
+      // Botón para abrir el formulario real (no forzamos navegación automática)
+      demoOpenFormBtn.href = finalHref;
+    }
+
+    // Interceptar SOLO los botones demo (data-demo="1")
+    document.querySelectorAll('a[data-demo="1"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = a.getAttribute("href") || "form/?empresa=demo&vendedor=DEMO";
+        runDemoFlow(href);
+      });
+    });
+
+    // En el overlay, "Ver cómo funciona" hace scroll y cierra overlay
+    demoHowBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeDemoOverlay();
+      setTimeout(() => fadeToSection("como"), 50);
+    });
   </script>
 </body>
 </html>
