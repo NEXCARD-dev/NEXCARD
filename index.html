@@ -1,660 +1,640 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrampaClean - Regístrate</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEXCARD — NFC + QR para captar clientes</title>
+  <meta name="description" content="NEXCARD: tarjetas NFC/QR que abren una página de tu empresa y captan leads con vendedor en tu base de datos (Google Sheets)." />
 
-        html, body {
-            width: 100%;
-            height: 100%;
-        }
+  <style>
+    :root{
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#5a6a85;
+      --primary:#1d4ed8;   /* azul */
+      --primary2:#38bdf8;  /* celeste */
+      --stroke:rgba(15, 23, 42, .10);
+      --shadow: 0 18px 50px rgba(2, 6, 23, .10);
+      --shadow2: 0 10px 25px rgba(2, 6, 23, .10);
+      --radius:18px;
+    }
 
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            color: #1a1a1a;
-            line-height: 1.6;
-        }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 15% -10%, rgba(56,189,248,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(29,78,216,.22), transparent 55%),
+        radial-gradient(900px 500px at 50% 105%, rgba(56,189,248,.18), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+    }
 
-        .container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(1120px, 92%); margin-inline:auto; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:.6rem;
+      border:1px solid rgba(255,255,255,.25);
+      padding:.95rem 1.15rem;
+      border-radius:999px;
+      font-weight:700;
+      letter-spacing:.2px;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+      cursor:pointer;
+      will-change: transform;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn-primary{
+      background: linear-gradient(135deg, var(--primary), #2563eb 55%, var(--primary2));
+      color:white;
+      box-shadow: 0 14px 30px rgba(29,78,216,.22);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn-primary:hover{ box-shadow: 0 18px 45px rgba(29,78,216,.28); transform: translateY(-1px); }
+    .btn-ghost{
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      border-color: var(--stroke);
+      color: var(--text);
+      box-shadow: 0 10px 25px rgba(2,6,23,.06);
+    }
+    .btn-ghost:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(2,6,23,.08); }
 
-        /* Background accent pattern */
-        .bg-accent {
-            position: fixed;
-            inset: 0;
-            opacity: 0.03;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 0;
-        }
+    /* Navbar */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      background: rgba(247,251,255,.65);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(15,23,42,.06);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: .9rem 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:.7rem;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 25px rgba(29,78,216,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute; inset:-60%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), transparent 40%);
+      transform: rotate(25deg);
+      animation: shimmer 5.5s ease-in-out infinite;
+      opacity:.7;
+    }
+    @keyframes shimmer{
+      0%,100%{ transform: translate(-15%, -10%) rotate(25deg); }
+      50%{ transform: translate(15%, 10%) rotate(25deg); }
+    }
 
-        .bg-accent::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 24rem;
-            height: 24rem;
-            background: #0F3A6B;
-            border-radius: 50%;
-            filter: blur(3rem);
-        }
+    .nav-links{
+      display:flex; gap:1rem; align-items:center;
+      color: var(--muted);
+      font-weight:650;
+    }
+    .nav-links a{
+      padding:.55rem .7rem;
+      border-radius:999px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav-links a:hover{ background: rgba(29,78,216,.08); color: var(--text); }
 
-        .bg-accent::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 24rem;
-            height: 24rem;
-            background: #FF8C42;
-            border-radius: 50%;
-            filter: blur(3rem);
-            opacity: 0.2;
-        }
+    .nav-cta{ display:flex; gap:.7rem; align-items:center; }
 
-        .card {
-            width: 100%;
-            max-width: 28rem;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            position: relative;
-            z-index: 10;
-            animation: slideUp 0.5s ease-out;
-            overflow: hidden;
-        }
+    /* Hero */
+    .hero{
+      padding: 4.2rem 0 2.8rem;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 2rem;
+      align-items:center;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:.55rem;
+      align-items:center;
+      padding:.4rem .75rem;
+      border-radius:999px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(15,23,42,.08);
+      color: var(--muted);
+      font-weight:700;
+      box-shadow: 0 10px 25px rgba(2,6,23,.05);
+    }
+    .k-dot{
+      width:.55rem; height:.55rem; border-radius:999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 6px 16px rgba(29,78,216,.25);
+    }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(1rem);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    h1{
+      font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+      line-height:1.08;
+      margin: .85rem 0 .75rem;
+      letter-spacing: -.8px;
+    }
+    .lead{
+      font-size: clamp(1.05rem, 1.35vw, 1.18rem);
+      color: var(--muted);
+      line-height:1.55;
+      margin:0 0 1.3rem;
+      max-width: 58ch;
+    }
+    .hero-actions{ display:flex; flex-wrap:wrap; gap:.85rem; align-items:center; }
+    .meta{
+      display:flex; gap:1rem; flex-wrap:wrap;
+      margin-top: 1.2rem;
+      color: var(--muted);
+      font-weight:650;
+      font-size:.98rem;
+    }
+    .meta span{
+      display:inline-flex; gap:.5rem; align-items:center;
+      background: rgba(255,255,255,.45);
+      border:1px solid rgba(15,23,42,.08);
+      padding:.5rem .75rem;
+      border-radius:999px;
+      backdrop-filter: blur(10px);
+    }
+    .meta .icon{
+      width:18px; height:18px; display:inline-block;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      -webkit-mask: var(--mask) no-repeat center/contain;
+              mask: var(--mask) no-repeat center/contain;
+    }
+    .icon-nfc{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 7h2v10H7V7Zm4 0h2v10h-2V7Zm4 0h2v10h-2V7Z"/></svg>'); }
+    .icon-qr{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3Zm2 2v4h4V5H5Zm8-2h8v8h-8V3Zm2 2v4h4V5h-4ZM3 13h8v8H3v-8Zm2 2v4h4v-4H5Zm10 0h2v2h-2v-2Zm-2-2h2v2h-2v-2Zm4 0h4v4h-2v-2h-2v-2Zm0 6h2v2h-2v-2Zm2-2h2v4h-4v-2h2v-2Z"/></svg>'); }
+    .icon-sheets{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM7 10h10v2H7v-2Zm0 4h10v2H7v-2Zm0 4h7v2H7v-2Z"/></svg>'); }
 
-        .header {
-            background: linear-gradient(to bottom right, #0F3A6B, #0a2847);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    /* Mock card */
+    .mock{
+      position:relative;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      transform: translateY(0);
+      animation: float 5.5s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-10px); }
+    }
+    .mock::before{
+      content:"";
+      position:absolute; inset:-30%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(56,189,248,.35), transparent 40%),
+        radial-gradient(circle at 70% 30%, rgba(29,78,216,.22), transparent 45%),
+        radial-gradient(circle at 45% 70%, rgba(56,189,248,.22), transparent 50%);
+      filter: blur(18px);
+    }
+    .mock-inner{
+      position:relative;
+      padding: 1.35rem;
+    }
+    .mock-top{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom: 1.1rem;
+    }
+    .chip{
+      width:54px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.65), rgba(255,255,255,.25));
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+      position:relative;
+    }
+    .chip::after{
+      content:"";
+      position:absolute; inset:9px;
+      border-radius:9px;
+      border:1px solid rgba(15,23,42,.12);
+      background: linear-gradient(135deg, rgba(29,78,216,.16), rgba(56,189,248,.10));
+    }
+    .qr{
+      width:54px; height:54px; border-radius:14px;
+      border:1px solid rgba(15,23,42,.10);
+      background:
+        linear-gradient(90deg, rgba(15,23,42,.08) 1px, transparent 1px) 0 0/10px 10px,
+        linear-gradient(rgba(15,23,42,.08) 1px, transparent 1px) 0 0/10px 10px,
+        rgba(255,255,255,.6);
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+    }
+    .mock-title{
+      font-weight:900; letter-spacing:.4px;
+      font-size: 1.25rem;
+      margin: .2rem 0 .25rem;
+    }
+    .mock-sub{ color: var(--muted); margin:0 0 .9rem; }
+    .mock-pills{ display:flex; gap:.55rem; flex-wrap:wrap; }
+    .pill{
+      font-weight:700;
+      font-size:.92rem;
+      padding:.5rem .75rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.62);
+    }
+    .pill strong{
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            width: 6rem;
-            height: 6rem;
-            opacity: 0.1;
-            pointer-events: none;
-        }
+    /* Sections */
+    section{ padding: 3.2rem 0; }
+    .section-title{
+      font-size: 1.6rem;
+      margin:0 0 .4rem;
+      letter-spacing: -.4px;
+    }
+    .section-lead{
+      margin:0 0 1.5rem;
+      color: var(--muted);
+      line-height:1.6;
+      max-width: 72ch;
+    }
 
-        .logo {
-            width: 5rem;
-            height: 5rem;
-            margin: 0 auto 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            position: relative;
-            z-index: 10;
-        }
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+    .card{
+      background: rgba(255,255,255,.62);
+      border:1px solid rgba(15,23,42,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 1.15rem;
+      backdrop-filter: blur(10px);
+      transform: translateY(0);
+      transition: transform .16s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(2,6,23,.10); }
+    .card h3{ margin:.2rem 0 .3rem; }
+    .card p{ margin:0; color:var(--muted); line-height:1.6; }
+    .badge{
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-weight:800;
+      padding:.45rem .7rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.72);
+      color: var(--text);
+    }
+    .badge .b{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 8px 18px rgba(29,78,216,.25);
+    }
 
-        .logo svg {
-            width: 2.5rem;
-            height: 2.5rem;
-            color: white;
-        }
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1.1rem;
+      align-items:stretch;
+    }
+    .price{
+      padding: 1.35rem;
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(15,23,42,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .price::before{
+      content:"";
+      position:absolute; inset:-60% -40% auto -40%;
+      height: 220px;
+      background: radial-gradient(circle at 30% 30%, rgba(56,189,248,.35), transparent 60%);
+      filter: blur(10px);
+      transform: rotate(10deg);
+      opacity:.9;
+    }
+    .price .inner{ position:relative; }
+    .price h3{ margin:0 0 .25rem; }
+    .price p{ margin:0 0 1rem; color: var(--muted); }
+    .list{ margin:0; padding:0; list-style:none; display:grid; gap:.55rem; }
+    .list li{
+      display:flex; gap:.6rem; align-items:flex-start;
+      color: var(--muted);
+      line-height:1.5;
+    }
+    .check{
+      width:18px; height:18px; flex:0 0 18px;
+      border-radius:6px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 20px rgba(29,78,216,.18);
+      position:relative;
+      margin-top:2px;
+    }
+    .check::after{
+      content:"";
+      position:absolute;
+      left:5px; top:4px;
+      width:7px; height:4px;
+      border-left:2px solid #fff;
+      border-bottom:2px solid #fff;
+      transform: rotate(-45deg);
+    }
 
-        .company-name {
-            color: white;
-            font-size: 0.875rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 10;
-        }
+    .cta{
+      text-align:center;
+      padding: 3.2rem 0 4rem;
+    }
+    .cta-box{
+      background: linear-gradient(135deg, rgba(29,78,216,.12), rgba(56,189,248,.18));
+      border:1px solid rgba(15,23,42,.10);
+      border-radius: calc(var(--radius) + 8px);
+      padding: 1.8rem 1.2rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .cta h2{ margin:.2rem 0 .4rem; letter-spacing:-.5px; }
+    .cta p{ margin:0 0 1.2rem; color: var(--muted); line-height:1.6; }
 
-        .header h1 {
-            color: white;
-            font-size: 1.875rem;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-            margin-bottom: 0.5rem;
-            position: relative;
-            z-index: 10;
-        }
+    footer{
+      padding: 1.5rem 0 2.2rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(15,23,42,.08);
+      background: rgba(247,251,255,.55);
+      backdrop-filter: blur(12px);
+    }
+    .foot{
+      display:flex; justify-content:space-between; align-items:center;
+      gap: 1rem; flex-wrap:wrap;
+    }
+    .foot small{ opacity:.9; }
+    .foot a{ color: var(--muted); font-weight:700; }
+    .foot a:hover{ color: var(--text); }
 
-        .header p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 0.875rem;
-            font-weight: 500;
-            position: relative;
-            z-index: 10;
-        }
+    /* Reveal animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
 
-        .form-section {
-            padding: 2rem 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group input[type="tel"],
-        .form-group select {
-            width: 100%;
-            height: 3rem;
-            padding: 0 1rem;
-            border: 1px solid #e0e8f0;
-            border-radius: 0.5rem;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 1rem;
-            color: #1a1a1a;
-            background: #f5f9fa;
-            transition: all 0.2s ease;
-        }
-
-        .form-group input::placeholder,
-        .form-group select {
-            color: #6b6b6b;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            ring: 2px;
-            ring-color: #FF8C42;
-            border-color: transparent;
-            box-shadow: 0 0 0 2px #FF8C42;
-        }
-
-        .form-group select {
-            appearance: none;
-            cursor: pointer;
-            padding-right: 2.5rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            padding-right: 2.5rem;
-        }
-
-        .form-group select option {
-            color: #1a1a1a;
-            background: white;
-        }
-
-        /* Smooth animation for select dropdown */
-        .form-group select {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .form-group select:hover {
-            border-color: #FF8C42;
-            box-shadow: 0 0 0 1px #FF8C42;
-        }
-
-        .form-group select:focus {
-            animation: selectFocus 0.4s ease-out;
-        }
-
-        @keyframes selectFocus {
-            from {
-                transform: scale(0.98);
-                opacity: 0.8;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .error-message {
-            background: rgba(220, 38, 38, 0.1);
-            border: 1px solid rgba(220, 38, 38, 0.2);
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            font-size: 0.875rem;
-            color: #dc2626;
-            margin-bottom: 1.5rem;
-            animation: fadeIn 0.2s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .submit-btn {
-            width: 100%;
-            height: 3rem;
-            background: #FF8C42;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-weight: 700;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            background: #ff7a2a;
-            box-shadow: 0 10px 15px -3px rgba(255, 140, 66, 0.3);
-            transform: scale(1.05);
-        }
-
-        .submit-btn:active:not(:disabled) {
-            transform: scale(0.95);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .spinner {
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid white;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .footer {
-            padding: 1.5rem;
-            border-top: 1px solid #e0e8f0;
-            background: rgba(15, 58, 107, 0.02);
-        }
-
-        .footer p {
-            font-size: 0.75rem;
-            color: #6b6b6b;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        /* Success state */
-        .success-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-        }
-
-        .success-card {
-            width: 100%;
-            max-width: 28rem;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            text-align: center;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .success-icon {
-            width: 5rem;
-            height: 5rem;
-            margin: 0 auto 1.5rem;
-            background: rgba(255, 140, 66, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: scaleIn 0.5s ease-out;
-        }
-
-        @keyframes scaleIn {
-            from {
-                transform: scale(0);
-            }
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .success-icon svg {
-            width: 3rem;
-            height: 3rem;
-            color: #FF8C42;
-        }
-
-        .success-card h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 0.75rem;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .success-card p {
-            color: #6b6b6b;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .success-data {
-            background: rgba(255, 140, 66, 0.05);
-            border: 1px solid rgba(255, 140, 66, 0.2);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-
-        .success-data p {
-            font-size: 0.875rem;
-            margin: 0.5rem 0;
-            color: #6b6b6b;
-        }
-
-        .success-data p:first-child {
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-info {
-            margin-top: 2rem;
-            text-align: center;
-        }
-
-        .footer-info p {
-            font-size: 0.75rem;
-            color: #4a4a4a;
-            margin: 0.25rem 0;
-        }
-
-        .footer-info .company {
-            font-weight: 600;
-            color: #0F3A6B;
-            margin-bottom: 0.5rem;
-        }
-
-        @media (max-width: 640px) {
-            .card {
-                margin: 0;
-                border-radius: 0;
-            }
-
-            .header {
-                padding: 1.5rem 1rem;
-            }
-
-            .form-section {
-                padding: 1.5rem 1rem;
-            }
-
-            .header h1 {
-                font-size: 1.5rem;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .pricing{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .nav-links{ display:none; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .hero{ padding-top: 3rem; }
+    }
+  </style>
 </head>
+
 <body>
-    <div id="app">
-        <div class="container">
-            <div class="bg-accent"></div>
-            
-            <div class="card">
-                <div class="header">
-                    <div class="logo">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.32 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="company-name">TRAMPA CLEAN</div>
-                    <h1>Regístrate</h1>
-                    <p>Soluciones profesionales de limpieza</p>
-                </div>
-
-                <form id="registrationForm" class="form-section">
-                    <div id="errorContainer"></div>
-
-                    <!-- Campo oculto para vendedor -->
-                    <input type="hidden" name="vendedor" id="vendedor">
-
-                    <div class="form-group">
-                        <label for="nombre">Nombre completo *</label>
-                        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="empresa_cliente">Empresa / Negocio</label>
-                        <input type="text" id="empresa_cliente" name="empresa_cliente" placeholder="Tu empresa">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="telefono">Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" placeholder="+507 XXXX-XXXX">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="intereses">Servicios de Interés</label>
-                        <select id="intereses" name="intereses">
-                            <option value="">Selecciona un servicio</option>
-                            <option value="Limpieza de Trampas de Grasas">Limpieza de Trampas de Grasas</option>
-                            <option value="Limpieza de Campanas de Cocina">Limpieza de Campanas de Cocina</option>
-                            <option value="Destape de Tuberías Obstruidas">Destape de Tuberías Obstruidas</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="submit-btn" id="submitBtn">
-                        Registrarme
-                    </button>
-                </form>
-
-                <div class="footer">
-                    <p>Tus datos están protegidos y no serán compartidos. Solo los usaremos para contactarte sobre nuestras soluciones de limpieza.</p>
-                </div>
-            </div>
-
-            <div class="footer-info">
-                <p class="company">TRAMPA CLEAN SERVICES</p>
-                <p>Soluciones Profesionales de Limpieza</p>
-            </div>
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:1.02rem; line-height:1;">NEXCARD</div>
+          <div style="font-size:.86rem; color:var(--muted); font-weight:750; margin-top:.2rem;">NFC + QR • Leads a Sheets</div>
         </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Secciones">
+        <a href="#como">Cómo funciona</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#planes">Planes</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="#planes">Ver planes</a>
+        <!-- Ajusta este link a tu formulario real -->
+        <a class="btn btn-primary" id="demoBtn" href="form/?empresa=demo&vendedor=DEMO">Abrir demo</a>
+      </div>
     </div>
+  </header>
 
-    <script>
-        // Función para obtener parámetros de la URL
-        function getParam(param) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param) || '';
-        }
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="kicker">
+            <span class="k-dot" aria-hidden="true"></span>
+            Captura contactos en segundos • con vendedor incluido
+          </div>
 
-        // Obtener parámetros de la URL
-        const EMPRESA = getParam('empresa') || 'Trampa Clean';
-        const VENDEDOR_PARAM = getParam('vendedor') || 'Desconocido';
+          <h1>Tarjetas NFC/QR que convierten <span style="background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;background-clip:text;color:transparent;">interacciones</span> en clientes.</h1>
 
-        // Insertar vendedor en el campo oculto cuando la página carga
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('vendedor').value = VENDEDOR_PARAM;
-        });
+          <p class="lead">
+            Con NEXCARD, cada vendedor comparte una tarjeta. El cliente escanea, ve la presentación y deja sus datos.
+            Todo queda guardado automáticamente en tu base (Google Sheets), sin apps complicadas.
+          </p>
 
-        const form = document.getElementById('registrationForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const errorContainer = document.getElementById('errorContainer');
-        const appContainer = document.getElementById('app');
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">
+              Probar demo
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn-ghost" href="#como">Ver cómo funciona</a>
+          </div>
 
-        // URL de Google Apps Script
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxwOmZUzp_RrDcDMNoIixfpKXuEYldUnm0C0NOAOdrcG3iQe9yQ0T3lgBqy0qtGk4D/exec';
+          <div class="meta">
+            <span><i class="icon icon-nfc" aria-hidden="true"></i> NFC + QR</span>
+            <span><i class="icon icon-sheets" aria-hidden="true"></i> Google Sheets</span>
+            <span><i class="icon icon-qr" aria-hidden="true"></i> Vendedor por URL</span>
+          </div>
+        </div>
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            errorContainer.innerHTML = '';
-            submitBtn.disabled = true;
+        <div class="mock reveal" aria-label="Vista previa de tarjeta NEXCARD">
+          <div class="mock-inner">
+            <div class="mock-top">
+              <div class="chip" title="NFC" aria-hidden="true"></div>
+              <div class="qr" title="QR de respaldo" aria-hidden="true"></div>
+            </div>
+            <div class="mock-title">NEXCARD</div>
+            <p class="mock-sub">Escanea • Conoce • Registra</p>
+            <div class="mock-pills">
+              <div class="pill"><strong>empresa</strong>=demo</div>
+              <div class="pill"><strong>vendedor</strong>=DEMO</div>
+              <div class="pill">Base: Sheets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            // Obtener datos del formulario para validación
-            const nombre = document.getElementById('nombre').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const empresa_cliente = document.getElementById('empresa_cliente').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
+    <section id="como">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Cómo funciona</h2>
+          <p class="section-lead">Un flujo simple, rápido y profesional. Ideal para equipos comerciales, recepción y atención al cliente.</p>
+        </div>
 
-            // Validar campos requeridos
-            if (!nombre || !email) {
-                showError('Por favor completa los campos requeridos (Nombre y Email).');
-                submitBtn.disabled = false;
-                return;
-            }
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 1</div>
+            <h3>Toca o escanea</h3>
+            <p>El cliente usa NFC o QR. Se abre la página de tu empresa con el Rogers de tu marca.</p>
+          </article>
 
-            // Validar email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showError('Por favor ingresa un email válido.');
-                submitBtn.disabled = false;
-                return;
-            }
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 2</div>
+            <h3>Conoce tu oferta</h3>
+            <p>Presentación clara: servicios, beneficios y confianza. Sin depender de apps externas.</p>
+          </article>
 
-            // Obtener servicio seleccionado
-            const intereses = document.getElementById('intereses').value;
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 3</div>
+            <h3>Lead a tu base</h3>
+            <p>El formulario guarda automáticamente en Sheets con empresa y vendedor. Listo para seguimiento.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            if (!intereses) {
-                showError('Por favor selecciona un servicio de interés.');
-                submitBtn.disabled = false;
-                return;
-            }
+    <section id="beneficios">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Beneficios</h2>
+          <p class="section-lead">Diseñado para capturar leads de forma ordenada y rastreable (por vendedor), sin gastar en infraestructura.</p>
+        </div>
 
-            // Mostrar estado de carga
-            submitBtn.innerHTML = '<div class="spinner"></div> Enviando...';
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Seguimiento</div>
+            <h3>Leads por vendedor</h3>
+            <p>Cada tarjeta lleva un parámetro. Sabes quién hizo el contacto sin que el cliente elija nada.</p>
+          </article>
 
-            try {
-                // Crear FormData directamente del formulario HTML
-                // Esto incluye automáticamente: nombre, empresa_cliente, email, telefono, vendedor
-                const formData = new FormData(form);
-                
-                // Agregar campos adicionales que no están en el formulario HTML
-                formData.append('fecha', new Date().toLocaleString('es-PA'));
-                formData.append('empresa', EMPRESA);
-                
-                // Los checkboxes con name="intereses" se envían automáticamente en FormData
-                // FormData captura todos los valores de checkboxes seleccionados con el mismo name
-                
-                // Enviar a Google Apps Script usando FormData
-                // FormData se envía como multipart/form-data automáticamente
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: formData
-                });
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Profesional</div>
+            <h3>Tu marca primero</h3>
+            <p>Página clara, moderna y rápida. Mejor impresión = más confianza = más conversiones.</p>
+          </article>
 
-                // Esperar un poco para la animación
-                await new Promise(resolve => setTimeout(resolve, 1500));
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Soporte</div>
+            <h3>Reposición fácil</h3>
+            <p>Si se pierde una tarjeta, se reemplaza y se reconfigura en minutos. Servicio adicional vendible.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-                // Mostrar pantalla de éxito
-                showSuccess(nombre, email, empresa_cliente, intereses);
+    <section id="planes">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Planes</h2>
+          <p class="section-lead">Puedes empezar con pago único e ir agregando extras (tarjetas adicionales, soporte, dashboard).</p>
+        </div>
 
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Error al procesar tu solicitud. Por favor intenta de nuevo.');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Registrarme';
-            }
-        });
+        <div class="pricing">
+          <div class="price reveal">
+            <div class="inner">
+              <h3>Pago único</h3>
+              <p>Instalación + configuración base. Ideal para comenzar rápido.</p>
+              <ul class="list">
+                <li><span class="check" aria-hidden="true"></span> Landing/formulario personalizado</li>
+                <li><span class="check" aria-hidden="true"></span> Base en Google Sheets</li>
+                <li><span class="check" aria-hidden="true"></span> Vendedor por URL (tarjetas por vendedor)</li>
+                <li><span class="check" aria-hidden="true"></span> QR de respaldo en cada tarjeta</li>
+              </ul>
+              <div style="margin-top:1.2rem; display:flex; gap:.7rem; flex-wrap:wrap;">
+                <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">Probar demo</a>
+                <a class="btn btn-ghost" href="#contacto" onclick="alert('Puedes agregar un WhatsApp o un correo aquí.'); return false;">Contactar</a>
+              </div>
+            </div>
+          </div>
 
-        function showError(message) {
-            errorContainer.innerHTML = `<div class="error-message">${message}</div>`;
-        }
+          <div class="price reveal">
+            <div class="inner">
+              <h3>Extras</h3>
+              <p>Opcionales para subir de nivel cuando ya estés captando leads.</p>
+              <ul class="list">
+                <li><span class="check" aria-hidden="true"></span> Tarjetas extra (reposiciones)</li>
+                <li><span class="check" aria-hidden="true"></span> Dashboard (Looker Studio)</li>
+                <li><span class="check" aria-hidden="true"></span> Automatización: email/WhatsApp</li>
+                <li><span class="check" aria-hidden="true"></span> Multiempresa (mapeo empresa → sheet)</li>
+              </ul>
+              <div style="margin-top:1.2rem;">
+                <a class="btn btn-ghost" href="#como">Ver el flujo</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        function showSuccess(nombre, email, empresa_cliente, intereses) {
-            const successHTML = `
-                <div class="success-container">
-                    <div class="success-card">
-                        <div class="success-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                            </svg>
-                        </div>
-                        <h2>¡Gracias por registrarte!</h2>
-                        <p>Hemos recibido tu información. Nos pondremos en contacto pronto para brindarte las mejores soluciones de limpieza.</p>
-                        
-                        <div class="success-data">
-                            <p>Datos registrados:</p>
-                            <p><strong>Nombre:</strong> ${nombre}</p>
-                            <p><strong>Email:</strong> ${email}</p>
-                            ${empresa_cliente ? `<p><strong>Empresa:</strong> ${empresa_cliente}</p>` : ''}
-                            <p><strong>Servicios:</strong> ${intereses}</p>
-                        </div>
+      </div>
+    </section>
 
-                        <p style="font-size: 0.875rem; color: #6b6b6b;">Puedes cerrar esta ventana o escanear otro código QR.</p>
-                    </div>
-                </div>
-            `;
+    <section class="cta" id="contacto">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>¿Listo para capturar más clientes?</h2>
+          <p>Empieza con la demo, y luego personalizamos tu página con tu marca, tus servicios y tus vendedores.</p>
+          <div style="display:flex; justify-content:center; gap:.85rem; flex-wrap:wrap;">
+            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO">Abrir demo</a>
+            <a class="btn btn-ghost" href="#planes">Ver planes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-            appContainer.innerHTML = successHTML;
+  <footer>
+    <div class="container foot">
+      <div class="brand" style="gap:.6rem;">
+        <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:12px;"></div>
+        <div style="font-weight:900;">NEXCARD</div>
+      </div>
+      <small>© <span id="year"></span> NEXCARD. Hecho para NFC/QR + captación de leads.</small>
+      <div style="display:flex; gap:.9rem;">
+        <a href="#como">Cómo</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#planes">Planes</a>
+      </div>
+    </div>
+  </footer>
 
-            // Auto-reload después de 4 segundos
-            setTimeout(() => {
-                location.reload();
-            }, 4000);
-        }
-    </script>
+  <script>
+    // Año footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll (animaciones suaves)
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.classList.add('show');
+      }
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+
+    // Si quieres forzar demo a tu ruta exacta, cambia aquí:
+    // document.getElementById('demoBtn').href = "form/?empresa=demo&vendedor=DEMO";
+  </script>
 </body>
 </html>
