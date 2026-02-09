@@ -1,12 +1,27 @@
-<!-- Begin HTML Form -->
-<form action="your_iframe_url_here" method="POST" target="your_iframe_name">
-    <!-- Your input fields go here -->
-    <input type="text" name="exampleField" placeholder="Example Field" />
-    <input type="submit" value="Submit" />
-</form>
-<!-- End HTML Form -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXCARD</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="myForm" method="POST" target="hidden_iframe">
+        <input type="hidden" name="fecha" id="fecha">
+        <input type="hidden" name="empresa" id="empresa">
+        <button type="submit">Submit</button>
+    </form>
+    <iframe name="hidden_iframe" class="hidden"></iframe>
 
-<!-- Keep existing CSS styles -->
-<style>
-    /* Add your existing CSS styles here */
-</style>
+    <script>
+        document.getElementById('fecha').value = new Date().toISOString();
+        document.getElementById('empresa').value = 'YourCompany'; // Set this value accordingly
+        document.getElementById('myForm').submit();
+    </script>
+</body>
+</html>
