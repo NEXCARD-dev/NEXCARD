@@ -406,7 +406,7 @@
     .demo-overlay.show{ display:flex; }
 
     .demo-modal{
-      width: min(680px, 100%);
+      width: min(780px, 100%);
       border-radius: calc(var(--radius) + 10px);
       background: rgba(255,255,255,.80);
       border: 1px solid rgba(15,23,42,.10);
@@ -470,6 +470,98 @@
       background: linear-gradient(135deg, var(--primary), var(--primary2));
       transition: width 1.6s ease;
     }
+    .demo-note{ color: var(--muted); line-height:1.5; font-weight:750; }
+
+    .demo-tabs{
+      display:flex; gap:.6rem; flex-wrap:wrap; margin: .9rem 0 0;
+    }
+    .demo-tab{
+      padding:.55rem .8rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.65);
+      font-weight:800;
+      color: var(--muted);
+      cursor:pointer;
+    }
+    .demo-tab.active{
+      color: var(--text);
+      background: rgba(56,189,248,.18);
+      border-color: rgba(29,78,216,.20);
+    }
+
+    .demo-panel{ display:none; margin-top: .9rem; }
+    .demo-panel.show{ display:block; }
+
+    .demo-form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .85rem;
+    }
+    .demo-field{
+      display:flex;
+      flex-direction:column;
+      gap:.35rem;
+    }
+    .demo-field label{
+      font-weight:800;
+      color: var(--muted);
+      font-size:.95rem;
+    }
+    .demo-field input, .demo-field select{
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.75);
+      padding: .85rem .9rem;
+      font-weight:700;
+      outline: none;
+    }
+    .demo-field input:focus, .demo-field select:focus{
+      border-color: rgba(29,78,216,.35);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+    .demo-form .full{ grid-column: 1 / -1; }
+
+    .demo-db{
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.70);
+    }
+    .demo-db-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 1rem;
+      padding: .85rem .95rem;
+      border-bottom: 1px solid rgba(15,23,42,.08);
+      font-weight:900;
+    }
+    .demo-db-head small{ color: var(--muted); font-weight:800; }
+    .demo-table{
+      width:100%;
+      border-collapse: collapse;
+      font-size: .93rem;
+    }
+    .demo-table th, .demo-table td{
+      padding: .75rem .85rem;
+      border-bottom: 1px solid rgba(15,23,42,.06);
+      text-align:left;
+      white-space:nowrap;
+    }
+    .demo-table th{
+      background: rgba(56,189,248,.12);
+      color: var(--muted);
+      font-weight:900;
+    }
+    .demo-table tr.new-row{
+      animation: popIn .55s ease both;
+    }
+    @keyframes popIn{
+      from{ transform: translateY(10px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
     .demo-foot{
       padding: 1rem 1.15rem 1.15rem;
       border-top: 1px solid rgba(15,23,42,.06);
@@ -479,9 +571,7 @@
       gap: 1rem;
       flex-wrap:wrap;
     }
-    .demo-note{ color: var(--muted); line-height:1.5; }
 
-    /* Responsive */
     @media (max-width: 920px){
       .hero-grid{ grid-template-columns: 1fr; }
       .pricing{ grid-template-columns: 1fr; }
@@ -490,6 +580,9 @@
       .nav-links{ display:none; }
       .grid-3{ grid-template-columns: 1fr; }
       .hero{ padding-top: 3rem; }
+    }
+    @media (max-width: 640px){
+      .demo-form{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -504,12 +597,13 @@
       <div class="demo-head">
         <div>
           <div class="demo-title" id="demoTitle">Demo NEXCARD — prueba visual</div>
-          <div style="color:var(--muted); font-weight:750; margin-top:.2rem;">Simulación de flujo: NFC/QR → Formulario → Sheets</div>
+          <div style="color:var(--muted); font-weight:750; margin-top:.2rem;">Simulación: NFC/QR → Formulario → Base de datos</div>
         </div>
         <button class="demo-close" id="demoCloseBtn" type="button">Cerrar</button>
       </div>
 
       <div class="demo-body">
+        <!-- FLOW (siempre visible arriba) -->
         <div class="demo-row">
           <div class="demo-left">
             <span class="dot" id="dot1"></span>
@@ -548,15 +642,103 @@
         </div>
 
         <div class="demo-note" id="demoNote">
-          En la demo, al final te abrimos el formulario real para que hagas un envío de prueba.
+          Esto es una demo visual para explicar el funcionamiento. Puedes simular un lead y ver cómo aparece en la “base de datos”.
+        </div>
+
+        <div class="demo-tabs">
+          <button class="demo-tab active" id="tabFlow" type="button">Flujo</button>
+          <button class="demo-tab" id="tabForm" type="button">Formulario</button>
+          <button class="demo-tab" id="tabDB" type="button">Base de datos</button>
+        </div>
+
+        <!-- Panel: Formulario visual -->
+        <div class="demo-panel" id="panelForm">
+          <div style="font-weight:900; margin-bottom:.4rem;">Formulario DEMO (visual)</div>
+          <div style="color:var(--muted); font-weight:750; margin-bottom:.9rem;">
+            Autorrellena y luego envía para ver el lead entrar a la base (DEMO).
+          </div>
+
+          <form class="demo-form" id="fakeLeadForm">
+            <div class="demo-field">
+              <label>Empresa</label>
+              <input id="fEmpresa" type="text" value="demo" readonly>
+            </div>
+            <div class="demo-field">
+              <label>Vendedor</label>
+              <input id="fVendedor" type="text" value="DEMO" readonly>
+            </div>
+
+            <div class="demo-field full">
+              <label>Nombre</label>
+              <input id="fNombre" type="text" placeholder="Ej: Carlos Pérez" required>
+            </div>
+
+            <div class="demo-field">
+              <label>Teléfono</label>
+              <input id="fTelefono" type="text" placeholder="Ej: 6469-9159" required>
+            </div>
+
+            <div class="demo-field">
+              <label>Correo</label>
+              <input id="fEmail" type="email" placeholder="Ej: cliente@email.com" required>
+            </div>
+
+            <div class="demo-field full">
+              <label>Interés</label>
+              <select id="fInteres" required>
+                <option value="">Selecciona…</option>
+                <option>Instalación</option>
+                <option>Mantenimiento</option>
+                <option>Inspección</option>
+                <option>Paquete completo</option>
+              </select>
+            </div>
+
+            <div class="full" style="display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.25rem;">
+              <button class="btn btn-primary" type="submit" id="fakeSubmitBtn">Enviar (DEMO)</button>
+              <button class="btn btn-ghost" type="button" id="autoFillBtn">Autorrellenar</button>
+              <a class="btn btn-ghost" href="form/?empresa=demo&vendedor=DEMO" id="openRealDemo" title="Abre tu formulario real en otra pestaña" target="_blank" rel="noopener">Abrir formulario real</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Panel: Base de datos animada -->
+        <div class="demo-panel" id="panelDB">
+          <div class="demo-db">
+            <div class="demo-db-head">
+              <div>Base de datos (DEMO)</div>
+              <small id="dbCount">Leads: 0</small>
+            </div>
+
+            <div style="overflow:auto;">
+              <table class="demo-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Empresa</th>
+                    <th>Vendedor</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Interés</th>
+                  </tr>
+                </thead>
+                <tbody id="dbBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-top:.9rem; color:var(--muted); font-weight:750;">
+            Cada envío (DEMO) agrega una fila animada para ilustrar el sistema.
+          </div>
         </div>
       </div>
 
       <div class="demo-foot">
-        <div class="demo-note" id="demoResult" style="font-weight:800;"></div>
+        <div class="demo-note" id="demoResult" style="font-weight:900;"></div>
         <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
           <a class="btn btn-ghost" href="#como" id="demoHowBtn">Ver cómo funciona</a>
-          <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" id="demoOpenFormBtn">Abrir formulario demo</a>
+          <button class="btn btn-primary" type="button" id="demoGoFormBtn">Ir al formulario DEMO</button>
         </div>
       </div>
     </div>
@@ -822,11 +1004,13 @@
     });
     window.addEventListener("pageshow", () => fade.classList.remove("on"));
 
-    // Demo animation overlay
+    // --------------------
+    // DEMO: overlay + flow + fake form + animated DB
+    // --------------------
     const demoOverlay = document.getElementById("demoOverlay");
     const demoCloseBtn = document.getElementById("demoCloseBtn");
-    const demoOpenFormBtn = document.getElementById("demoOpenFormBtn");
     const demoHowBtn = document.getElementById("demoHowBtn");
+    const demoGoFormBtn = document.getElementById("demoGoFormBtn");
     const demoBar = document.getElementById("demoBar");
     const demoResult = document.getElementById("demoResult");
 
@@ -840,13 +1024,24 @@
     const t2 = document.getElementById("t2");
     const t3 = document.getElementById("t3");
 
-    function resetDemoUI(){
-      demoBar.style.width = "0%";
-      demoResult.textContent = "";
-      dot1.classList.remove("on"); dot2.classList.remove("on"); dot3.classList.remove("on");
-      st1.textContent = "Esperando…"; st2.textContent = "Esperando…"; st3.textContent = "Esperando…";
-      t1.textContent = "—"; t2.textContent = "—"; t3.textContent = "—";
-    }
+    const tabFlow = document.getElementById("tabFlow");
+    const tabForm = document.getElementById("tabForm");
+    const tabDB = document.getElementById("tabDB");
+    const panelForm = document.getElementById("panelForm");
+    const panelDB = document.getElementById("panelDB");
+
+    const fakeLeadForm = document.getElementById("fakeLeadForm");
+    const autoFillBtn = document.getElementById("autoFillBtn");
+
+    const fNombre = document.getElementById("fNombre");
+    const fTelefono = document.getElementById("fTelefono");
+    const fEmail = document.getElementById("fEmail");
+    const fInteres = document.getElementById("fInteres");
+
+    const dbBody = document.getElementById("dbBody");
+    const dbCount = document.getElementById("dbCount");
+
+    let demoLeads = 0;
 
     function openDemoOverlay(){
       demoOverlay.classList.add("show");
@@ -857,41 +1052,158 @@
       demoOverlay.setAttribute("aria-hidden", "true");
       resetDemoUI();
     }
-
     demoCloseBtn.addEventListener("click", closeDemoOverlay);
     demoOverlay.addEventListener("click", (e) => {
       if (e.target === demoOverlay) closeDemoOverlay();
     });
 
-    function runDemoFlow(finalHref){
+    function setActiveTab(which){
+      [tabFlow, tabForm, tabDB].forEach(t => t.classList.remove("active"));
+      panelForm.classList.remove("show");
+      panelDB.classList.remove("show");
+
+      if (which === "flow") {
+        tabFlow.classList.add("active");
+      } else if (which === "form") {
+        tabForm.classList.add("active");
+        panelForm.classList.add("show");
+      } else if (which === "db") {
+        tabDB.classList.add("active");
+        panelDB.classList.add("show");
+      }
+    }
+
+    tabFlow.addEventListener("click", () => setActiveTab("flow"));
+    tabForm.addEventListener("click", () => setActiveTab("form"));
+    tabDB.addEventListener("click", () => setActiveTab("db"));
+
+    function resetDemoUI(){
+      demoBar.style.width = "0%";
+      demoResult.textContent = "";
+
+      dot1.classList.remove("on"); dot2.classList.remove("on"); dot3.classList.remove("on");
+      st1.textContent = "Esperando…"; st2.textContent = "Esperando…"; st3.textContent = "Esperando…";
+      t1.textContent = "—"; t2.textContent = "—"; t3.textContent = "—";
+
+      // reset fake form (sin borrar readonly)
+      fakeLeadForm.reset();
+      fInteres.value = "";
+
+      setActiveTab("flow");
+    }
+
+    function runDemoFlow(){
       resetDemoUI();
       openDemoOverlay();
 
-      // Animación: 3 pasos + progreso
+      // flow animation
       setTimeout(() => { demoBar.style.width = "35%"; dot1.classList.add("on"); st1.textContent="Escaneando…"; t1.textContent="OK"; }, 150);
-      setTimeout(() => { demoBar.style.width = "70%"; dot2.classList.add("on"); st2.textContent="Guardando en Sheets…"; t2.textContent="OK"; }, 900);
-      setTimeout(() => { demoBar.style.width = "100%"; dot3.classList.add("on"); st3.textContent="Listo para seguimiento"; t3.textContent="OK";
-                        demoResult.textContent="✅ Demostración completada. Ahora puedes abrir el formulario demo real.";
-                      }, 1650);
-
-      // Botón para abrir el formulario real (no forzamos navegación automática)
-      demoOpenFormBtn.href = finalHref;
+      setTimeout(() => { demoBar.style.width = "70%"; dot2.classList.add("on"); st2.textContent="Guardando…"; t2.textContent="OK"; }, 900);
+      setTimeout(() => {
+        demoBar.style.width = "100%";
+        dot3.classList.add("on");
+        st3.textContent="Listo para seguimiento";
+        t3.textContent="OK";
+        demoResult.textContent="✅ Demo lista. Ahora entra al formulario y envía un lead (DEMO).";
+      }, 1650);
     }
 
-    // Interceptar SOLO los botones demo (data-demo="1")
+    // Interceptar SOLO botones demo (data-demo="1")
     document.querySelectorAll('a[data-demo="1"]').forEach(a => {
       a.addEventListener("click", (e) => {
         e.preventDefault();
-        const href = a.getAttribute("href") || "form/?empresa=demo&vendedor=DEMO";
-        runDemoFlow(href);
+        runDemoFlow();
       });
     });
 
-    // En el overlay, "Ver cómo funciona" hace scroll y cierra overlay
+    demoGoFormBtn.addEventListener("click", () => {
+      setActiveTab("form");
+      // opcional: autollenar al entrar
+      autoFill();
+    });
+
     demoHowBtn.addEventListener("click", (e) => {
       e.preventDefault();
       closeDemoOverlay();
-      setTimeout(() => fadeToSection("como"), 50);
+      setTimeout(() => fadeToSection("como"), 80);
+    });
+
+    function formatNow(){
+      return new Date().toLocaleString("es-PA");
+    }
+
+    function typeInto(el, text, delay=18){
+      el.value = "";
+      el.focus();
+      let i = 0;
+      return new Promise(resolve => {
+        const tick = () => {
+          el.value += text[i];
+          i++;
+          if (i < text.length) setTimeout(tick, delay);
+          else resolve();
+        };
+        setTimeout(tick, 120);
+      });
+    }
+
+    async function autoFill(){
+      await typeInto(fNombre, "Cliente Demo");
+      await typeInto(fTelefono, "6469-9159");
+      await typeInto(fEmail, "cliente.demo@email.com");
+      fInteres.value = "Paquete completo";
+    }
+
+    autoFillBtn.addEventListener("click", autoFill);
+
+    function addLeadToDB({empresa, vendedor, nombre, telefono, email, interes}){
+      demoLeads++;
+      dbCount.textContent = `Leads: ${demoLeads}`;
+
+      const tr = document.createElement("tr");
+      tr.className = "new-row";
+      tr.innerHTML = `
+        <td>${formatNow()}</td>
+        <td>${empresa}</td>
+        <td>${vendedor}</td>
+        <td>${nombre}</td>
+        <td>${telefono}</td>
+        <td>${email}</td>
+        <td>${interes}</td>
+      `;
+      dbBody.prepend(tr);
+    }
+
+    fakeLeadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nombre = fNombre.value.trim();
+      const telefono = fTelefono.value.trim();
+      const email = fEmail.value.trim();
+      const interes = fInteres.value;
+
+      if (!nombre || !telefono || !email || !interes) return;
+
+      demoResult.textContent = "Guardando lead en la base (DEMO)…";
+      // micro pausa visual
+      await new Promise(r => setTimeout(r, 500));
+
+      addLeadToDB({
+        empresa: "demo",
+        vendedor: "DEMO",
+        nombre,
+        telefono,
+        email,
+        interes
+      });
+
+      demoResult.textContent = "✅ Lead guardado. Mira cómo aparece en la base (DEMO).";
+      setActiveTab("db");
+    });
+
+    // Cerrar con ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && demoOverlay.classList.contains("show")) closeDemoOverlay();
     });
   </script>
 </body>
