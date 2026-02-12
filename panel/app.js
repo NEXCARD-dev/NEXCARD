@@ -92,11 +92,43 @@
           const t = await res.text();
           msg = t || msg;
         }
+
+  async function httpForm(url, dataObj){
+    const body = new URLSearchParams();
+    Object.entries(dataObj || {}).forEach(([k,v])=>{
+      if (v === undefined || v === null) return;
+      body.set(k, String(v));
+    });
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type":"application/x-www-form-urlencoded;charset=UTF-8" },
+      body
+    });
+    const txt = await res.text();
+    let j;
+    try{ j = JSON.parse(txt); }catch{ j = { ok:false, message: txt || ("HTTP "+res.status) }; }
+    if (!res.ok || j.ok === false){
+      const msg = j.message || j.error || ("HTTP "+res.status);
+      throw new Error(msg);
+    }
+    return j;
+  }
+
       }catch{}
       throw new Error(msg);
     }
     if (ct.includes("application/json")) return await res.json();
     return await res.text();
+  function withTokenUrl(url){
+    const t = getToken();
+    if (!t) return url;
+    const u = new URL(url, location.origin);
+    // Keep existing querystring; add token
+    u.searchParams.set("token", t);
+    return u.toString();
+  }
+
+
   }
 
   function getToken(){ return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY) || ""; }
@@ -160,9 +192,7 @@
       }
       const token = getToken();
       const url = `${API_BASE}?action=me`;
-      return await httpJson(url, {
-        headers: { "Authorization": "Bearer " + token }
-      });
+      return await httpJson(withTokenUrl(url), {});
     },
     async vendedores(){
       if (isDemo()){
@@ -171,7 +201,7 @@
       }
       const token = getToken();
       const url = `${API_BASE}?action=vendedores`;
-      const j = await httpJson(url, { headers: { "Authorization": "Bearer " + token } });
+      const j = await httpJson(withTokenUrl(url), {});
       return j.vendedores || j.list || [];
     },
     async stats(){
@@ -185,7 +215,7 @@
       }
       const token = getToken();
       const url = `${API_BASE}?action=stats`;
-      return await httpJson(url, { headers: { "Authorization": "Bearer " + token } });
+      return await httpJson(withTokenUrl(url), {});
     },
     async contacts(filters){
       const f = filters || {};
@@ -235,7 +265,7 @@
       qs.set("pageSize", String(f.pageSize || 25));
 
       const url = `${API_BASE}?${qs.toString()}`;
-      return await httpJson(url, { headers: { "Authorization": "Bearer " + token } });
+      return await httpJson(withTokenUrl(url), {});
     },
     
     async createContact(payload){
@@ -257,12 +287,8 @@
         return { ok:true, id };
       }
       const token = getToken();
-      const url = `${API_BASE}?action=createContact`;
-      return await httpJson(url, {
-        method: "POST",
-        headers: { "content-type":"application/json", "Authorization":"Bearer "+token },
-        body: JSON.stringify(p)
-      });
+      const url = `${API_BASE}`;
+      return await httpForm(url, { action:"createContact", token: getToken(), payload: JSON.stringify(p) });
     },
     async updateContact(payload){
       const p = payload || {};
@@ -275,12 +301,8 @@
         return { ok:true };
       }
       const token = getToken();
-      const url = `${API_BASE}?action=updateContact`;
-      return await httpJson(url, {
-        method: "POST",
-        headers: { "content-type":"application/json", "Authorization":"Bearer "+token },
-        body: JSON.stringify(p)
-      });
+      const url = `${API_BASE}`;
+      return await httpForm(url, { action:"updateContact", token: getToken(), payload: JSON.stringify(p) });
     },
     async deleteContact(payload){
       const p = payload || {};
@@ -292,12 +314,8 @@
         return { ok:true };
       }
       const token = getToken();
-      const url = `${API_BASE}?action=deleteContact`;
-      return await httpJson(url, {
-        method: "POST",
-        headers: { "content-type":"application/json", "Authorization":"Bearer "+token },
-        body: JSON.stringify(p)
-      });
+      const url = `${API_BASE}`;
+      return await httpForm(url, { action:"deleteContact", token: getToken(), payload: JSON.stringify(p) });
     },
 
     async exportCSV(filters){
@@ -327,7 +345,7 @@
 
       const url = `${API_BASE}?${qs.toString()}`;
       // could return text/csv
-      return await httpJson(url, { headers: { "Authorization": "Bearer " + token } });
+      return await httpJson(withTokenUrl(url), {});
     }
   };
 
