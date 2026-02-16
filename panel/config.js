@@ -1,10 +1,6 @@
 // NEXCARD Panel Config
-// 1) Pega aquí la URL de tu Apps Script Web App (termina en /exec)
-//    Ejemplo: https://script.google.com/macros/s/AKfycb.../exec
-//
-// 2) Si API_BASE queda vacío, el panel corre en modo DEMO.
+// Pega aquí la URL del Apps Script (debe terminar en /exec)
 window.NEXCARD_CONFIG = {
-  API_BASE: "https://script.google.com/macros/s/AKfycbxH8RgVVIAqqfglA2mhq1v8eMeGHp_pqLuzKbirGtzcjGNlu77uSOurlfe1VLPDc35a6Q/exec",
-  APP_NAME: "NEXCARD",
+  API_BASE: "PEGA_AQUI_TU_URL_EXEC",
   TOKEN_KEY: "nexcard_token_v1"
 };
