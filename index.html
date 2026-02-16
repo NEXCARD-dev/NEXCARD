@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEXCARD — NFC + QR para captar clientes</title>
+  <meta name="description" content="NEXCARD: tarjetas NFC/QR que abren una página de tu empresa y captan leads con vendedor en tu base de datos (Google Sheets)." />
+
+  <style>
+    :root{
+      --bg:#f7fbff;
+      --card:#ffffff;
+      --text:#0b1220;
+      --muted:#5a6a85;
+      --primary:#1d4ed8;   /* azul */
+      --primary2:#38bdf8;  /* celeste */
+      --stroke:rgba(15, 23, 42, .10);
+      --shadow: 0 18px 50px rgba(2, 6, 23, .10);
+      --shadow2: 0 10px 25px rgba(2, 6, 23, .10);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 15% -10%, rgba(56,189,248,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(29,78,216,.22), transparent 55%),
+        radial-gradient(900px 500px at 50% 105%, rgba(56,189,248,.18), transparent 55%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    .container{ width:min(1120px, 92%); margin-inline:auto; }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:.6rem;
+      border:1px solid rgba(255,255,255,.25);
+      padding:.95rem 1.15rem;
+      border-radius:999px;
+      font-weight:700;
+      letter-spacing:.2px;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+      cursor:pointer;
+      will-change: transform;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn-primary{
+      background: linear-gradient(135deg, var(--primary), #2563eb 55%, var(--primary2));
+      color:white;
+      box-shadow: 0 14px 30px rgba(29,78,216,.22);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn-primary:hover{ box-shadow: 0 18px 45px rgba(29,78,216,.28); transform: translateY(-1px); }
+    .btn-ghost{
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      border-color: var(--stroke);
+      color: var(--text);
+      box-shadow: 0 10px 25px rgba(2,6,23,.06);
+    }
+    .btn-ghost:hover{ transform: translateY(-1px); box-shadow: 0 14px 30px rgba(2,6,23,.08); }
+
+    /* Navbar */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      background: rgba(247,251,255,.65);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(15,23,42,.06);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: .9rem 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:.7rem;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 25px rgba(29,78,216,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo::after{
+      content:"";
+      position:absolute; inset:-60%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.85), transparent 40%);
+      transform: rotate(25deg);
+      animation: shimmer 5.5s ease-in-out infinite;
+      opacity:.7;
+    }
+    @keyframes shimmer{
+      0%,100%{ transform: translate(-15%, -10%) rotate(25deg); }
+      50%{ transform: translate(15%, 10%) rotate(25deg); }
+    }
+
+    .nav-links{
+      display:flex; gap:1rem; align-items:center;
+      color: var(--muted);
+      font-weight:650;
+    }
+    .nav-links a{
+      padding:.55rem .7rem;
+      border-radius:999px;
+      transition: background .2s ease, color .2s ease;
+    }
+    .nav-links a:hover{ background: rgba(29,78,216,.08); color: var(--text); }
+
+    .nav-cta{ display:flex; gap:.7rem; align-items:center; }
+
+    /* Hero */
+    .hero{
+      padding: 4.2rem 0 2.8rem;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 2rem;
+      align-items:center;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:.55rem;
+      align-items:center;
+      padding:.4rem .75rem;
+      border-radius:999px;
+      background: rgba(255,255,255,.65);
+      border:1px solid rgba(15,23,42,.08);
+      color: var(--muted);
+      font-weight:700;
+      box-shadow: 0 10px 25px rgba(2,6,23,.05);
+    }
+    .k-dot{
+      width:.55rem; height:.55rem; border-radius:999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 6px 16px rgba(29,78,216,.25);
+    }
+
+    h1{
+      font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+      line-height:1.08;
+      margin: .85rem 0 .75rem;
+      letter-spacing: -.8px;
+    }
+    .lead{
+      font-size: clamp(1.05rem, 1.35vw, 1.18rem);
+      color: var(--muted);
+      line-height:1.55;
+      margin:0 0 1.3rem;
+      max-width: 58ch;
+    }
+    .hero-actions{ display:flex; flex-wrap:wrap; gap:.85rem; align-items:center; }
+    .meta{
+      display:flex; gap:1rem; flex-wrap:wrap;
+      margin-top: 1.2rem;
+      color: var(--muted);
+      font-weight:650;
+      font-size:.98rem;
+    }
+    .meta span{
+      display:inline-flex; gap:.5rem; align-items:center;
+      background: rgba(255,255,255,.45);
+      border:1px solid rgba(15,23,42,.08);
+      padding:.5rem .75rem;
+      border-radius:999px;
+      backdrop-filter: blur(10px);
+    }
+    .meta .icon{
+      width:18px; height:18px; display:inline-block;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      -webkit-mask: var(--mask) no-repeat center/contain;
+              mask: var(--mask) no-repeat center/contain;
+    }
+    .icon-nfc{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 7h2v10H7V7Zm4 0h2v10h-2V7Zm4 0h2v10h-2V7Z"/></svg>'); }
+    .icon-qr{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3Zm2 2v4h4V5H5Zm8-2h8v8h-8V3Zm2 2v4h4V5h-4ZM3 13h8v8H3v-8Zm2 2v4h4v-4H5Zm10 0h2v2h-2v-2Zm-2-2h2v2h-2v-2Zm4 0h4v4h-2v-2h-2v-2Zm0 6h2v2h-2v-2Zm2-2h2v4h-4v-2h2v-2Z"/></svg>'); }
+    .icon-sheets{ --mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM7 10h10v2H7v-2Zm0 4h10v2H7v-2Zm0 4h7v2H7v-2Z"/></svg>'); }
+
+    /* Mock card */
+    .mock{
+      position:relative;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.62);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      transform: translateY(0);
+      animation: float 5.5s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{ transform: translateY(0); }
+      50%{ transform: translateY(-10px); }
+    }
+    .mock::before{
+      content:"";
+      position:absolute; inset:-30%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(56,189,248,.35), transparent 40%),
+        radial-gradient(circle at 70% 30%, rgba(29,78,216,.22), transparent 45%),
+        radial-gradient(circle at 45% 70%, rgba(56,189,248,.22), transparent 50%);
+      filter: blur(18px);
+    }
+    .mock-inner{ position:relative; padding: 1.35rem; }
+    .mock-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 1.1rem; }
+    .chip{
+      width:54px; height:40px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,.65), rgba(255,255,255,.25));
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+      position:relative;
+    }
+    .chip::after{
+      content:"";
+      position:absolute; inset:9px;
+      border-radius:9px;
+      border:1px solid rgba(15,23,42,.12);
+      background: linear-gradient(135deg, rgba(29,78,216,.16), rgba(56,189,248,.10));
+    }
+    .qr{
+      width:54px; height:54px; border-radius:14px;
+      border:1px solid rgba(15,23,42,.10);
+      background:
+        linear-gradient(90deg, rgba(15,23,42,.08) 1px, transparent 1px) 0 0/10px 10px,
+        linear-gradient(rgba(15,23,42,.08) 1px, transparent 1px) 0 0/10px 10px,
+        rgba(255,255,255,.6);
+      box-shadow: 0 10px 22px rgba(2,6,23,.06);
+    }
+    .mock-title{ font-weight:900; letter-spacing:.4px; font-size: 1.25rem; margin: .2rem 0 .25rem; }
+    .mock-sub{ color: var(--muted); margin:0 0 .9rem; }
+    .mock-pills{ display:flex; gap:.55rem; flex-wrap:wrap; }
+    .pill{
+      font-weight:700;
+      font-size:.92rem;
+      padding:.5rem .75rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.62);
+    }
+    .pill strong{
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+
+    /* Sections */
+    section{ padding: 3.2rem 0; }
+    .section-title{ font-size: 1.6rem; margin:0 0 .4rem; letter-spacing: -.4px; }
+    .section-lead{ margin:0 0 1.5rem; color: var(--muted); line-height:1.6; max-width: 72ch; }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+    .card{
+      background: rgba(255,255,255,.62);
+      border:1px solid rgba(15,23,42,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 1.15rem;
+      backdrop-filter: blur(10px);
+      transform: translateY(0);
+      transition: transform .16s ease, box-shadow .2s ease;
+    }
+    .card:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(2,6,23,.10); }
+    .card h3{ margin:.2rem 0 .3rem; }
+    .card p{ margin:0; color:var(--muted); line-height:1.6; }
+    .badge{
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-weight:800;
+      padding:.45rem .7rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.72);
+      color: var(--text);
+    }
+    .badge .b{
+      width:10px; height:10px; border-radius:999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 8px 18px rgba(29,78,216,.25);
+    }
+
+    /* Pricing */
+    .pricing{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1.1rem;
+      align-items:stretch;
+    }
+    .price{
+      padding: 1.35rem;
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(15,23,42,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .price::before{
+      content:"";
+      position:absolute; inset:-60% -40% auto -40%;
+      height: 220px;
+      background: radial-gradient(circle at 30% 30%, rgba(56,189,248,.35), transparent 60%);
+      filter: blur(10px);
+      transform: rotate(10deg);
+      opacity:.9;
+    }
+    .price .inner{ position:relative; }
+    .price h3{ margin:0 0 .25rem; }
+    .price p{ margin:0 0 1rem; color: var(--muted); }
+    .list{ margin:0; padding:0; list-style:none; display:grid; gap:.55rem; }
+    .list li{
+      display:flex; gap:.6rem; align-items:flex-start;
+      color: var(--muted);
+      line-height:1.5;
+    }
+    .check{
+      width:18px; height:18px; flex:0 0 18px;
+      border-radius:6px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      box-shadow: 0 10px 20px rgba(29,78,216,.18);
+      position:relative;
+      margin-top:2px;
+    }
+    .check::after{
+      content:"";
+      position:absolute;
+      left:5px; top:4px;
+      width:7px; height:4px;
+      border-left:2px solid #fff;
+      border-bottom:2px solid #fff;
+      transform: rotate(-45deg);
+    }
+
+    .cta{ text-align:center; padding: 3.2rem 0 3.2rem; }
+    .cta-box{
+      background: linear-gradient(135deg, rgba(29,78,216,.12), rgba(56,189,248,.18));
+      border:1px solid rgba(15,23,42,.10);
+      border-radius: calc(var(--radius) + 8px);
+      padding: 1.8rem 1.2rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .cta h2{ margin:.2rem 0 .4rem; letter-spacing:-.5px; }
+    .cta p{ margin:0 0 1.2rem; color: var(--muted); line-height:1.6; }
+
+    footer{
+      padding: 1.5rem 0 2.2rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(15,23,42,.08);
+      background: rgba(247,251,255,.55);
+      backdrop-filter: blur(12px);
+    }
+    .foot{ display:flex; justify-content:space-between; align-items:center; gap: 1rem; flex-wrap:wrap; }
+    .foot small{ opacity:.9; }
+    .foot a{ color: var(--muted); font-weight:700; }
+    .foot a:hover{ color: var(--text); }
+
+    /* Reveal animations */
+    .reveal{
+      opacity:0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* Menu fade transition (solo menú) */
+    .page-fade {
+      position: fixed;
+      inset: 0;
+      background: #f7fbff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+      z-index: 9999;
+    }
+    .page-fade.on {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Demo overlay */
+    .demo-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(247,251,255,.55);
+      backdrop-filter: blur(12px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 10000;
+      padding: 1rem;
+    }
+    .demo-overlay.show{ display:flex; }
+
+    .demo-modal{
+      width: min(780px, 100%);
+      border-radius: calc(var(--radius) + 10px);
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(15,23,42,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .demo-head{
+      padding: 1.15rem 1.15rem .9rem;
+      border-bottom: 1px solid rgba(15,23,42,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+    }
+    .demo-title{
+      font-weight: 900;
+      letter-spacing: -.3px;
+    }
+    .demo-close{
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.65);
+      border-radius: 999px;
+      padding: .45rem .75rem;
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--muted);
+    }
+    .demo-body{ padding: 1.15rem; text-align:left; }
+    .demo-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      padding: .75rem .75rem;
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 14px;
+      background: rgba(255,255,255,.60);
+      margin-bottom: .75rem;
+    }
+    .demo-left{ display:flex; align-items:center; gap:.75rem; }
+    .dot{
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.15);
+    }
+    .dot.on{ background: linear-gradient(135deg, var(--primary), var(--primary2)); box-shadow: 0 10px 20px rgba(29,78,216,.18); }
+    .demo-label{ font-weight: 800; }
+    .demo-state{ color: var(--muted); font-weight: 750; }
+    .progress{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,.08);
+      overflow:hidden;
+      border: 1px solid rgba(15,23,42,.08);
+      margin: .3rem 0 1rem;
+    }
+    .bar{
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      transition: width 1.6s ease;
+    }
+    .demo-note{ color: var(--muted); line-height:1.5; font-weight:750; }
+
+    .demo-tabs{
+      display:flex; gap:.6rem; flex-wrap:wrap; margin: .9rem 0 0;
+    }
+    .demo-tab{
+      padding:.55rem .8rem;
+      border-radius:999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.65);
+      font-weight:800;
+      color: var(--muted);
+      cursor:pointer;
+    }
+    .demo-tab.active{
+      color: var(--text);
+      background: rgba(56,189,248,.18);
+      border-color: rgba(29,78,216,.20);
+    }
+
+    .demo-panel{ display:none; margin-top: .9rem; }
+    .demo-panel.show{ display:block; }
+
+    .demo-form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .85rem;
+    }
+    .demo-field{
+      display:flex;
+      flex-direction:column;
+      gap:.35rem;
+    }
+    .demo-field label{
+      font-weight:800;
+      color: var(--muted);
+      font-size:.95rem;
+    }
+    .demo-field input, .demo-field select{
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.75);
+      padding: .85rem .9rem;
+      font-weight:700;
+      outline: none;
+    }
+    .demo-field input:focus, .demo-field select:focus{
+      border-color: rgba(29,78,216,.35);
+      box-shadow: 0 0 0 4px rgba(56,189,248,.18);
+    }
+    .demo-form .full{ grid-column: 1 / -1; }
+
+    .demo-db{
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.70);
+    }
+    .demo-db-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 1rem;
+      padding: .85rem .95rem;
+      border-bottom: 1px solid rgba(15,23,42,.08);
+      font-weight:900;
+    }
+    .demo-db-head small{ color: var(--muted); font-weight:800; }
+    .demo-table{
+      width:100%;
+      border-collapse: collapse;
+      font-size: .93rem;
+    }
+    .demo-table th, .demo-table td{
+      padding: .75rem .85rem;
+      border-bottom: 1px solid rgba(15,23,42,.06);
+      text-align:left;
+      white-space:nowrap;
+    }
+    .demo-table th{
+      background: rgba(56,189,248,.12);
+      color: var(--muted);
+      font-weight:900;
+    }
+    .demo-table tr.new-row{
+      animation: popIn .55s ease both;
+    }
+    @keyframes popIn{
+      from{ transform: translateY(10px); opacity:0; }
+      to{ transform: translateY(0); opacity:1; }
+    }
+
+    .demo-foot{
+      padding: 1rem 1.15rem 1.15rem;
+      border-top: 1px solid rgba(15,23,42,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      flex-wrap:wrap;
+    }
+
+    @media (max-width: 920px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .pricing{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .nav-links{ display:none; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .hero{ padding-top: 3rem; }
+    }
+    @media (max-width: 640px){
+      .demo-form{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Menu fade overlay (solo menú) -->
+  <div class="page-fade" id="pageFade" aria-hidden="true"></div>
+
+  <!-- Demo overlay -->
+  <div class="demo-overlay" id="demoOverlay" aria-hidden="true">
+    <div class="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+      <div class="demo-head">
+        <div>
+          <div class="demo-title" id="demoTitle">Demo NEXCARD — prueba visual</div>
+          <div style="color:var(--muted); font-weight:750; margin-top:.2rem;">Simulación: NFC/QR → Formulario → Base de datos</div>
+        </div>
+        <button class="demo-close" id="demoCloseBtn" type="button">Cerrar</button>
+      </div>
+
+      <div class="demo-body">
+        <!-- FLOW (siempre visible arriba) -->
+        <div class="demo-row">
+          <div class="demo-left">
+            <span class="dot" id="dot1"></span>
+            <div>
+              <div class="demo-label">1) Escaneo NFC / QR</div>
+              <div class="demo-state" id="st1">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t1">—</div>
+        </div>
+
+        <div class="demo-row">
+          <div class="demo-left">
+            <span class="dot" id="dot2"></span>
+            <div>
+              <div class="demo-label">2) Guardando lead en base</div>
+              <div class="demo-state" id="st2">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t2">—</div>
+        </div>
+
+        <div class="demo-row" style="margin-bottom:.9rem;">
+          <div class="demo-left">
+            <span class="dot" id="dot3"></span>
+            <div>
+              <div class="demo-label">3) Lead listo para seguimiento</div>
+              <div class="demo-state" id="st3">Esperando…</div>
+            </div>
+          </div>
+          <div class="demo-state" id="t3">—</div>
+        </div>
+
+        <div class="progress" aria-label="Progreso">
+          <div class="bar" id="demoBar"></div>
+        </div>
+
+        <div class="demo-note" id="demoNote">
+          Esto es una demo visual para explicar el funcionamiento. Puedes simular un lead y ver cómo aparece en la “base de datos”.
+        </div>
+
+        <div class="demo-tabs">
+          <button class="demo-tab active" id="tabFlow" type="button">Flujo</button>
+          <button class="demo-tab" id="tabForm" type="button">Formulario</button>
+          <button class="demo-tab" id="tabDB" type="button">Base de datos</button>
+        </div>
+
+        <!-- Panel: Formulario visual -->
+        <div class="demo-panel" id="panelForm">
+          <div style="font-weight:900; margin-bottom:.4rem;">Formulario DEMO (visual)</div>
+          <div style="color:var(--muted); font-weight:750; margin-bottom:.9rem;">
+            Autorrellena y luego envía para ver el lead entrar a la base (DEMO).
+          </div>
+
+          <form class="demo-form" id="fakeLeadForm">
+            <div class="demo-field">
+              <label>Empresa</label>
+              <input id="fEmpresa" type="text" value="demo" readonly>
+            </div>
+            <div class="demo-field">
+              <label>Vendedor</label>
+              <input id="fVendedor" type="text" value="DEMO" readonly>
+            </div>
+
+            <div class="demo-field full">
+              <label>Nombre</label>
+              <input id="fNombre" type="text" placeholder="Ej: Carlos Pérez" required>
+            </div>
+
+            <div class="demo-field">
+              <label>Teléfono</label>
+              <input id="fTelefono" type="text" placeholder="Ej: 6469-9159" required>
+            </div>
+
+            <div class="demo-field">
+              <label>Correo</label>
+              <input id="fEmail" type="email" placeholder="Ej: cliente@email.com" required>
+            </div>
+
+            <div class="demo-field full">
+              <label>Interés</label>
+              <select id="fInteres" required>
+                <option value="">Selecciona…</option>
+                <option>Instalación</option>
+                <option>Mantenimiento</option>
+                <option>Inspección</option>
+                <option>Paquete completo</option>
+              </select>
+            </div>
+
+            <div class="full" style="display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.25rem;">
+              <button class="btn btn-primary" type="submit" id="fakeSubmitBtn">Enviar (DEMO)</button>
+              <button class="btn btn-ghost" type="button" id="autoFillBtn">Autorrellenar</button>
+              <a class="btn btn-ghost" href="form/?empresa=demo&vendedor=DEMO" id="openRealDemo" title="Abre tu formulario real en otra pestaña" target="_blank" rel="noopener">Abrir formulario real</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Panel: Base de datos animada -->
+        <div class="demo-panel" id="panelDB">
+          <div class="demo-db">
+            <div class="demo-db-head">
+              <div>Base de datos (DEMO)</div>
+              <small id="dbCount">Leads: 0</small>
+            </div>
+
+            <div style="overflow:auto;">
+              <table class="demo-table">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Empresa</th>
+                    <th>Vendedor</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Interés</th>
+                  </tr>
+                </thead>
+                <tbody id="dbBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-top:.9rem; color:var(--muted); font-weight:750;">
+            Cada envío (DEMO) agrega una fila animada para ilustrar el sistema.
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-foot">
+        <div class="demo-note" id="demoResult" style="font-weight:900;"></div>
+        <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+          <a class="btn btn-ghost" href="#como" id="demoHowBtn">Ver cómo funciona</a>
+          <button class="btn btn-primary" type="button" id="demoGoFormBtn">Ir al formulario DEMO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:1.02rem; line-height:1;">NEXCARD</div>
+          <div style="font-size:.86rem; color:var(--muted); font-weight:750; margin-top:.2rem;">NFC + QR • Leads a Sheets</div>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Secciones">
+        <a href="#como">Cómo funciona</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#planes">Planes</a>
+        <a href="#contacto-directo">Contacto</a>
+      </nav>
+
+      <div class="nav-cta">
+                <a class="btn btn-ghost" href="panel/login.html">Acceso empresas</a>
+<a class="btn btn-ghost" href="#planes">Ver planes</a>
+        <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">Probar demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="kicker">
+            <span class="k-dot" aria-hidden="true"></span>
+            Captura contactos en segundos • con vendedor incluido
+          </div>
+
+          <h1>Tarjetas NFC/QR que convierten <span style="background:linear-gradient(135deg,var(--primary),var(--primary2));-webkit-background-clip:text;background-clip:text;color:transparent;">interacciones</span> en clientes.</h1>
+
+          <p class="lead">
+            Con NEXCARD, cada vendedor comparte una tarjeta. El cliente escanea, ve la presentación y deja sus datos.
+            Todo queda guardado automáticamente en tu base (Google Sheets), sin apps complicadas.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">
+              Probar demo
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn btn-ghost" href="#como">Ver cómo funciona</a>
+          </div>
+
+          <div class="meta">
+            <span><i class="icon icon-nfc" aria-hidden="true"></i> NFC + QR</span>
+            <span><i class="icon icon-sheets" aria-hidden="true"></i> Google Sheets</span>
+            <span><i class="icon icon-qr" aria-hidden="true"></i> Vendedor por URL</span>
+          </div>
+        </div>
+
+        <div class="mock reveal" aria-label="Vista previa de tarjeta NEXCARD">
+          <div class="mock-inner">
+            <div class="mock-top">
+              <div class="chip" title="NFC" aria-hidden="true"></div>
+              <div class="qr" title="QR de respaldo" aria-hidden="true"></div>
+            </div>
+            <div class="mock-title">NEXCARD</div>
+            <p class="mock-sub">Escanea • Conoce • Registra</p>
+            <div class="mock-pills">
+              <div class="pill"><strong>empresa</strong>=demo</div>
+              <div class="pill"><strong>vendedor</strong>=DEMO</div>
+              <div class="pill">Base: Sheets</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="como">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Cómo funciona</h2>
+          <p class="section-lead">Un flujo simple, rápido y profesional. Ideal para equipos comerciales, recepción y atención al cliente.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 1</div>
+            <h3>Toca o escanea</h3>
+            <p>El cliente usa NFC o QR. Se abre la página de tu empresa con tu marca.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 2</div>
+            <h3>Conoce tu oferta</h3>
+            <p>Presentación clara: servicios, beneficios y confianza. Sin depender de apps externas.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Paso 3</div>
+            <h3>Lead a tu base</h3>
+            <p>El formulario guarda automáticamente en Sheets con empresa y vendedor. Listo para seguimiento.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="beneficios">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Beneficios</h2>
+          <p class="section-lead">Diseñado para capturar leads de forma ordenada y rastreable (por vendedor), sin gastar en infraestructura.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Seguimiento</div>
+            <h3>Leads por vendedor</h3>
+            <p>Cada tarjeta lleva un parámetro. Sabes quién hizo el contacto sin que el cliente elija nada.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Profesional</div>
+            <h3>Tu marca primero</h3>
+            <p>Página clara, moderna y rápida. Mejor impresión = más confianza = más conversiones.</p>
+          </article>
+
+          <article class="card reveal">
+            <div class="badge"><span class="b"></span> Soporte</div>
+            <h3>Reposición fácil</h3>
+            <p>Si se pierde una tarjeta, se reemplaza y se reconfigura en minutos. Servicio adicional vendible.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="planes">
+      <div class="container">
+        <div class="reveal">
+          <h2 class="section-title">Planes</h2>
+          <p class="section-lead">Puedes empezar con pago único e ir agregando extras (tarjetas adicionales, soporte, dashboard).</p>
+        </div>
+
+        <div class="pricing">
+          <div class="price reveal">
+            <div class="inner">
+              <h3>Pago único</h3>
+              <p>Instalación + configuración base. Ideal para comenzar rápido.</p>
+              <ul class="list">
+                <li><span class="check" aria-hidden="true"></span> Landing/formulario personalizado</li>
+                <li><span class="check" aria-hidden="true"></span> Base en Google Sheets</li>
+                <li><span class="check" aria-hidden="true"></span> Vendedor por URL (tarjetas por vendedor)</li>
+                <li><span class="check" aria-hidden="true"></span> QR de respaldo en cada tarjeta</li>
+              </ul>
+              <div style="margin-top:1.2rem; display:flex; gap:.7rem; flex-wrap:wrap;">
+                <a class="btn btn-primary" href="form/?empresa=demo&vendedor=DEMO" data-demo="1">Probar demo</a>
+                <a class="btn btn-ghost" href="#contacto-directo">Contactar</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="price reveal">
+            <div class="inner">
+              <h3>Extras</h3>
+              <p>Opcionales para subir de nivel cuando ya estés captando leads.</p>
+              <ul class="list">
+                <li><span class="check" aria-hidden="true"></span> Tarjetas extra (reposiciones)</li>
+                <li><span class="check" aria-hidden="true"></span> Dashboard (Looker Studio)</li>
+                <li><span class="check" aria-hidden="true"></span> Automatización: email/WhatsApp</li>
+                <li><span class="check" aria-hidden="true"></span> Multiempresa (mapeo empresa → sheet)</li>
+              </ul>
+              <div style="margin-top:1.2rem;">
+                <a class="btn btn-ghost" href="#como">Ver el flujo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto directo -->
+    <section class="cta" id="contacto-directo">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>Contacto directo</h2>
+          <p>Puedes comunicarte directamente para recibir información personalizada sobre NEXCARD.</p>
+
+          <div style="display:flex; flex-direction:column; gap:.8rem; margin-top:1rem; font-weight:600; color:var(--text); text-align:left; max-width: 640px; margin-inline:auto;">
+            <div>
+              📧 Correo:
+              <a href="mailto:Santiagialm@gmail.com" style="color:var(--primary); font-weight:800;">
+                Santiagialm@gmail.com
+              </a>
+            </div>
+
+            <div>
+              📱 Teléfono:
+              <a href="tel:64699159" style="color:var(--primary); font-weight:800;">
+                6469-9159
+              </a>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            <a class="btn btn-primary"
+               href="https://wa.me/50764699159?text=Buenas%20tardes%20estoy%20interesado%20en%20el%20sistema%20de%20Tarjetas%20NFC"
+               target="_blank" rel="noopener">
+              💬 Escribir por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div class="brand" style="gap:.6rem;">
+        <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:12px;"></div>
+        <div style="font-weight:900;">NEXCARD</div>
+      </div>
+      <small>© <span id="year"></span> NEXCARD. Hecho para NFC/QR + captación de leads.</small>
+      <div style="display:flex; gap:.9rem;">
+        <a href="#como">Cómo</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#planes">Planes</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Año footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) e.target.classList.add('show');
+      }
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+
+    // Fade SOLO para menú
+    const fade = document.getElementById("pageFade");
+    function fadeToSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      fade.classList.add("on");
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => fade.classList.remove("on"), 200);
+      }, 220);
+    }
+    document.querySelectorAll(".nav-links a").forEach(a => {
+      a.addEventListener("click", (e) => {
+        const href = a.getAttribute("href") || "";
+        if (!href.startsWith("#")) return;
+        e.preventDefault();
+        fadeToSection(href.slice(1));
+      });
+    });
+    window.addEventListener("pageshow", () => fade.classList.remove("on"));
+
+    // --------------------
+    // DEMO: overlay + flow + fake form + animated DB
+    // --------------------
+    const demoOverlay = document.getElementById("demoOverlay");
+    const demoCloseBtn = document.getElementById("demoCloseBtn");
+    const demoHowBtn = document.getElementById("demoHowBtn");
+    const demoGoFormBtn = document.getElementById("demoGoFormBtn");
+    const demoBar = document.getElementById("demoBar");
+    const demoResult = document.getElementById("demoResult");
+
+    const dot1 = document.getElementById("dot1");
+    const dot2 = document.getElementById("dot2");
+    const dot3 = document.getElementById("dot3");
+    const st1 = document.getElementById("st1");
+    const st2 = document.getElementById("st2");
+    const st3 = document.getElementById("st3");
+    const t1 = document.getElementById("t1");
+    const t2 = document.getElementById("t2");
+    const t3 = document.getElementById("t3");
+
+    const tabFlow = document.getElementById("tabFlow");
+    const tabForm = document.getElementById("tabForm");
+    const tabDB = document.getElementById("tabDB");
+    const panelForm = document.getElementById("panelForm");
+    const panelDB = document.getElementById("panelDB");
+
+    const fakeLeadForm = document.getElementById("fakeLeadForm");
+    const autoFillBtn = document.getElementById("autoFillBtn");
+
+    const fNombre = document.getElementById("fNombre");
+    const fTelefono = document.getElementById("fTelefono");
+    const fEmail = document.getElementById("fEmail");
+    const fInteres = document.getElementById("fInteres");
+
+    const dbBody = document.getElementById("dbBody");
+    const dbCount = document.getElementById("dbCount");
+
+    let demoLeads = 0;
+
+    function openDemoOverlay(){
+      demoOverlay.classList.add("show");
+      demoOverlay.setAttribute("aria-hidden", "false");
+    }
+    function closeDemoOverlay(){
+      demoOverlay.classList.remove("show");
+      demoOverlay.setAttribute("aria-hidden", "true");
+      resetDemoUI();
+    }
+    demoCloseBtn.addEventListener("click", closeDemoOverlay);
+    demoOverlay.addEventListener("click", (e) => {
+      if (e.target === demoOverlay) closeDemoOverlay();
+    });
+
+    function setActiveTab(which){
+      [tabFlow, tabForm, tabDB].forEach(t => t.classList.remove("active"));
+      panelForm.classList.remove("show");
+      panelDB.classList.remove("show");
+
+      if (which === "flow") {
+        tabFlow.classList.add("active");
+      } else if (which === "form") {
+        tabForm.classList.add("active");
+        panelForm.classList.add("show");
+      } else if (which === "db") {
+        tabDB.classList.add("active");
+        panelDB.classList.add("show");
+      }
+    }
+
+    tabFlow.addEventListener("click", () => setActiveTab("flow"));
+    tabForm.addEventListener("click", () => setActiveTab("form"));
+    tabDB.addEventListener("click", () => setActiveTab("db"));
+
+    function resetDemoUI(){
+      demoBar.style.width = "0%";
+      demoResult.textContent = "";
+
+      dot1.classList.remove("on"); dot2.classList.remove("on"); dot3.classList.remove("on");
+      st1.textContent = "Esperando…"; st2.textContent = "Esperando…"; st3.textContent = "Esperando…";
+      t1.textContent = "—"; t2.textContent = "—"; t3.textContent = "—";
+
+      // reset fake form (sin borrar readonly)
+      fakeLeadForm.reset();
+      fInteres.value = "";
+
+      setActiveTab("flow");
+    }
+
+    function runDemoFlow(){
+      resetDemoUI();
+      openDemoOverlay();
+
+      // flow animation
+      setTimeout(() => { demoBar.style.width = "35%"; dot1.classList.add("on"); st1.textContent="Escaneando…"; t1.textContent="OK"; }, 150);
+      setTimeout(() => { demoBar.style.width = "70%"; dot2.classList.add("on"); st2.textContent="Guardando…"; t2.textContent="OK"; }, 900);
+      setTimeout(() => {
+        demoBar.style.width = "100%";
+        dot3.classList.add("on");
+        st3.textContent="Listo para seguimiento";
+        t3.textContent="OK";
+        demoResult.textContent="✅ Demo lista. Ahora entra al formulario y envía un lead (DEMO).";
+      }, 1650);
+    }
+
+    // Interceptar SOLO botones demo (data-demo="1")
+    document.querySelectorAll('a[data-demo="1"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        runDemoFlow();
+      });
+    });
+
+    demoGoFormBtn.addEventListener("click", () => {
+      setActiveTab("form");
+      // opcional: autollenar al entrar
+      autoFill();
+    });
+
+    demoHowBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeDemoOverlay();
+      setTimeout(() => fadeToSection("como"), 80);
+    });
+
+    function formatNow(){
+      return new Date().toLocaleString("es-PA");
+    }
+
+    function typeInto(el, text, delay=18){
+      el.value = "";
+      el.focus();
+      let i = 0;
+      return new Promise(resolve => {
+        const tick = () => {
+          el.value += text[i];
+          i++;
+          if (i < text.length) setTimeout(tick, delay);
+          else resolve();
+        };
+        setTimeout(tick, 120);
+      });
+    }
+
+    async function autoFill(){
+      await typeInto(fNombre, "Cliente Demo");
+      await typeInto(fTelefono, "6469-9159");
+      await typeInto(fEmail, "cliente.demo@email.com");
+      fInteres.value = "Paquete completo";
+    }
+
+    autoFillBtn.addEventListener("click", autoFill);
+
+    function addLeadToDB({empresa, vendedor, nombre, telefono, email, interes}){
+      demoLeads++;
+      dbCount.textContent = `Leads: ${demoLeads}`;
+
+      const tr = document.createElement("tr");
+      tr.className = "new-row";
+      tr.innerHTML = `
+        <td>${formatNow()}</td>
+        <td>${empresa}</td>
+        <td>${vendedor}</td>
+        <td>${nombre}</td>
+        <td>${telefono}</td>
+        <td>${email}</td>
+        <td>${interes}</td>
+      `;
+      dbBody.prepend(tr);
+    }
+
+    fakeLeadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nombre = fNombre.value.trim();
+      const telefono = fTelefono.value.trim();
+      const email = fEmail.value.trim();
+      const interes = fInteres.value;
+
+      if (!nombre || !telefono || !email || !interes) return;
+
+      demoResult.textContent = "Guardando lead en la base (DEMO)…";
+      // micro pausa visual
+      await new Promise(r => setTimeout(r, 500));
+
+      addLeadToDB({
+        empresa: "demo",
+        vendedor: "DEMO",
+        nombre,
+        telefono,
+        email,
+        interes
+      });
+
+      demoResult.textContent = "✅ Lead guardado. Mira cómo aparece en la base (DEMO).";
+      setActiveTab("db");
+    });
+
+    // Cerrar con ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && demoOverlay.classList.contains("show")) closeDemoOverlay();
+    });
+  </script>
+</body>
+</html>
