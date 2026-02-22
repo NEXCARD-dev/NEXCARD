@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NEXCARD • Acceso empresas</title>
+  <title>NEXCARD • Acceso</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,7 @@
       --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
 
       --r-lg: 22px;
-      --r-md: 14px;
       --ease: cubic-bezier(.22,1,.36,1);
-      --maxw: 30rem;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -138,7 +136,8 @@
       position:relative;
       z-index:2;
       display:flex; align-items:center; gap:12px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+      color:white;
     }
     .mark{
       width:46px; height:46px;
@@ -161,7 +160,6 @@
     .brand h1{
       font-family:'Montserrat',system-ui,sans-serif;
       font-size: 20px;
-      color:white;
       letter-spacing:-.02em;
     }
     .brand p{
@@ -171,31 +169,15 @@
       margin-top:4px;
     }
 
-    .steps{
+    .left .note{
       position:relative;
       z-index:2;
-      margin-top: 12px;
-      display:grid;
-      gap: 12px;
+      margin-top: 18px;
+      color: rgba(255,255,255,.82);
+      font-weight:650;
+      font-size: 13px;
+      line-height:1.45;
     }
-    .step{
-      display:flex; gap: 12px;
-      padding: 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-    }
-    .bubble{
-      width:34px; height:34px;
-      border-radius: 14px;
-      background: rgba(33,161,255,.18);
-      border: 1px solid rgba(255,255,255,.16);
-      display:flex; align-items:center; justify-content:center;
-      color: rgba(255,255,255,.9);
-      font-weight:900;
-    }
-    .step b{color:white; font-family:'Montserrat',system-ui,sans-serif}
-    .step small{display:block; color: rgba(255,255,255,.80); font-weight:650; margin-top:3px}
 
     .right{
       padding: 22px;
@@ -215,7 +197,7 @@
 
     .panel h2{
       font-family:'Montserrat',system-ui,sans-serif;
-      font-size: 20px;
+      font-size: 22px;
       letter-spacing:-.02em;
       margin-bottom: 6px;
     }
@@ -308,19 +290,10 @@
     }
     @keyframes pop{ from{opacity:0; transform: translateY(-6px) scale(.98)} to{opacity:1; transform: translateY(0) scale(1)} }
 
-    .fine{
-      margin-top: 12px;
-      font-size: 12px;
-      color: rgba(91,102,114,.92);
-      font-weight: 650;
-      line-height: 1.45;
-    }
-
     @media (max-width: 920px){
       .window{grid-template-columns: 1fr;}
       .left{border-right:none; border-bottom: 1px solid rgba(255,255,255,.12)}
     }
-
     @media (prefers-reduced-motion: reduce){
       *{animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important;}
       .bg-accent{display:none;}
@@ -342,33 +315,9 @@
           </div>
         </div>
 
-        <div class="steps" aria-hidden="true">
-          <div class="step">
-            <div class="bubble">1</div>
-            <div>
-              <b>Inicia sesión</b>
-              <small>Accede a tu panel privado</small>
-            </div>
-          </div>
-          <div class="step">
-            <div class="bubble">2</div>
-            <div>
-              <b>Ver leads</b>
-              <small>Registros reales desde tu Google Sheet</small>
-            </div>
-          </div>
-          <div class="step">
-            <div class="bubble">3</div>
-            <div>
-              <b>Seguimiento</b>
-              <small>Filtra, edita y borra contactos</small>
-            </div>
-          </div>
+        <div class="note">
+          Acceso privado para empresas autorizadas.
         </div>
-
-        <p class="fine" style="position:relative; z-index:2; margin-top:14px; color:rgba(255,255,255,.82)">
-          Tip: Si eres TRAMPA CLEAN, usa <b>empresa_id = trampaclean</b>.
-        </p>
       </section>
 
       <section class="right">
@@ -383,11 +332,11 @@
             <label for="password">Contraseña</label>
             <input class="in" id="password" type="password" autocomplete="current-password" required>
 
-            <label for="empresa_id">empresa_id</label>
-            <input class="in" id="empresa_id" type="text" value="trampaclean" required>
+            <label for="empresa_id">Empresa ID</label>
+            <input class="in" id="empresa_id" type="text" placeholder="empresa_id" required>
 
-            <label for="empresa_alias">Nombre visible</label>
-            <input class="in" id="empresa_alias" type="text" value="TRAMPA CLEAN">
+            <label for="empresa_alias">Nombre visible (opcional)</label>
+            <input class="in" id="empresa_alias" type="text" placeholder="Nombre visible">
 
             <div class="row">
               <button class="btn btn-primary" id="btnLogin" type="submit">Entrar</button>
@@ -395,10 +344,6 @@
             </div>
 
             <div class="err" id="errBox"></div>
-
-            <p class="fine">
-              Tu sesión se guarda en este dispositivo. Si cambias de cuenta, usa “Cerrar sesión” en el dashboard.
-            </p>
           </form>
         </div>
       </section>
@@ -436,7 +381,17 @@
     document.getElementById("btnClear").addEventListener("click", ()=>{
       document.getElementById("email").value = "";
       document.getElementById("password").value = "";
+      document.getElementById("empresa_id").value = "";
+      document.getElementById("empresa_alias").value = "";
       clearErr();
+    });
+
+    // (Opcional PRO) recordar última empresa sin mostrar tips
+    document.addEventListener("DOMContentLoaded", () => {
+      const lastEmp = localStorage.getItem(EMPRESA_KEY) || "";
+      const lastAlias = localStorage.getItem(ALIAS_KEY) || "";
+      if (lastEmp) document.getElementById("empresa_id").value = lastEmp;
+      if (lastAlias) document.getElementById("empresa_alias").value = lastAlias;
     });
 
     document.getElementById("loginForm").addEventListener("submit", async (e)=>{
@@ -449,7 +404,7 @@
       const empresa_alias = document.getElementById("empresa_alias").value.trim() || empresa_id;
 
       if(!email || !password || !empresa_id){
-        showErr("Completa email, contraseña y empresa_id.");
+        showErr("Completa email, contraseña y Empresa ID.");
         return;
       }
 
