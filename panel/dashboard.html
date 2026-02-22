@@ -11,21 +11,14 @@
 
   <style>
     :root{
-      --bg0:#f7fbff;
-      --bg1:#eef4ff;
+      --bg0:#f7fbff; --bg1:#eef4ff;
       --card:rgba(255,255,255,.72);
       --border:rgba(6,26,45,.12);
-      --text:#0b1b2a;
-      --muted:#5b6672;
-
-      --navy:#061A2D;
-      --navy2:#0A2A4A;
-      --navy3:#0F3B6A;
-
+      --text:#0b1b2a; --muted:#5b6672;
+      --navy:#061A2D; --navy2:#0A2A4A; --navy3:#0F3B6A;
       --accent:#21A1FF;
       --shadow: 0 24px 70px rgba(0,0,0,.16);
       --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
-
       --ease: cubic-bezier(.22,1,.36,1);
       --maxw: 74rem;
     }
@@ -41,7 +34,6 @@
         linear-gradient(135deg,var(--bg0) 0%, var(--bg1) 100%);
       overflow-x:hidden;
     }
-
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -156,7 +148,6 @@
       border: 1px solid rgba(255,59,59,.28);
       color:#b42318;
     }
-
     .tag{
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
@@ -170,8 +161,10 @@
     .dot{width:8px;height:8px;border-radius:99px;background:var(--accent); box-shadow: 0 0 0 4px rgba(33,161,255,.15)}
 
     .content{padding: 18px; display:grid; gap: 14px;}
-    .kpis{display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px;}
-    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
+
+    .kpis{display:grid; grid-template-columns: repeat(6, 1fr); gap: 12px;}
+    @media (max-width: 1120px){ .kpis{grid-template-columns: repeat(3, 1fr);} }
+    @media (max-width: 680px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
 
     .kpi{
       background: var(--card);
@@ -180,8 +173,8 @@
       box-shadow: var(--shadow-soft);
       padding: 14px;
     }
-    .kpi b{display:block; font-family:'Montserrat',system-ui,sans-serif; font-size: 22px; letter-spacing:-.02em;}
-    .kpi span{color: var(--muted); font-weight: 700; font-size: 12.5px;}
+    .kpi b{display:block; font-family:'Montserrat',system-ui,sans-serif; font-size: 20px; letter-spacing:-.02em;}
+    .kpi span{color: var(--muted); font-weight: 800; font-size: 12px;}
 
     .grid{display:grid; gap: 14px; grid-template-columns: 1.25fr .75fr;}
     @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
@@ -196,7 +189,7 @@
 
     .row{display:flex; gap: 10px; align-items:center; flex-wrap:wrap; justify-content:space-between;}
     .title{font-family:'Montserrat',system-ui,sans-serif; font-weight: 800; font-size: 16px;}
-    .muted{color: var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
+    .muted{color: var(--muted); font-weight:800; font-size:12.5px; line-height:1.5}
 
     .in, .sel{
       height: 46px;
@@ -218,6 +211,32 @@
       background: #fff;
     }
 
+    .seg{
+      display:flex; gap:8px;
+      background: rgba(255,255,255,.58);
+      border: 1px solid rgba(6,26,45,.12);
+      border-radius: 16px;
+      padding: 6px;
+      box-shadow: var(--shadow-soft);
+    }
+    .seg button{
+      height: 36px;
+      border: none;
+      border-radius: 12px;
+      padding: 0 12px;
+      cursor:pointer;
+      font-weight: 900;
+      background: transparent;
+      color: var(--navy2);
+    }
+    .seg button.active{
+      background:
+        radial-gradient(160px 120px at 20% 10%, rgba(99,211,255,.35), transparent 55%),
+        linear-gradient(135deg, rgba(6,26,45,.92) 0%, rgba(10,42,74,.92) 55%, rgba(15,59,106,.92) 100%);
+      color: white;
+      box-shadow: 0 12px 28px rgba(6,26,45,.18);
+    }
+
     .tablewrap{
       overflow:auto;
       border-radius: 18px;
@@ -228,7 +247,7 @@
       width:100%;
       border-collapse: separate;
       border-spacing:0;
-      min-width: 940px;
+      min-width: 980px;
       font-size: 13.5px;
     }
     th, td{
@@ -256,8 +275,68 @@
       font-weight: 900;
       cursor:pointer;
       margin-right: 6px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
     .mini-danger{border-color: rgba(255,59,59,.25); color:#b42318;}
+    .mini-primary{
+      border-color: rgba(33,161,255,.25);
+      color: var(--navy3);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(6,26,45,.12);
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .badge .b-dot{width:8px;height:8px;border-radius:99px}
+    .b-nuevo{background: rgba(33,161,255,.10);}
+    .b-nuevo .b-dot{background:#21A1FF}
+    .b-contactado{background: rgba(16,185,129,.12);}
+    .b-contactado .b-dot{background:#10b981}
+    .b-cerrado{background: rgba(245,158,11,.12);}
+    .b-cerrado .b-dot{background:#f59e0b}
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1120px){ .cards{grid-template-columns: repeat(2,1fr);} }
+    @media (max-width: 720px){ .cards{grid-template-columns: 1fr;} }
+
+    .lead{
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(6,26,45,.12);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      padding: 14px;
+    }
+    .lead h3{
+      font-family:'Montserrat',system-ui,sans-serif;
+      font-size: 15px;
+      letter-spacing:-.01em;
+      margin-bottom: 6px;
+    }
+    .lead .meta{
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 12.5px;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+    .lead .actions{
+      margin-top: 10px;
+      display:flex;
+      gap: 8px;
+      flex-wrap:wrap;
+    }
 
     .pager{
       display:flex; align-items:center; justify-content:space-between;
@@ -282,7 +361,7 @@
       padding: 10px 14px;
       font-weight: 900;
       display:none;
-      z-index: 99;
+      z-index: 999;
     }
 
     /* Modal */
@@ -294,7 +373,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index: 120;
+      z-index: 1200;
       padding: 18px;
     }
     .modal{
@@ -323,23 +402,15 @@
     }
     .modal-header b{font-family:'Montserrat',system-ui,sans-serif;}
     .modal-body{padding: 14px 16px;}
-    .form-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .form-grid{display:grid; grid-template-columns: 1fr 1fr; gap: 12px;}
     @media (max-width: 760px){ .form-grid{grid-template-columns: 1fr;} }
-
     .fg label{
-      display:block;
-      font-size:12px;
-      font-weight:900;
+      display:block; font-size:12px; font-weight:900;
       color: rgba(11,27,42,.78);
-      letter-spacing:.06em;
-      text-transform:uppercase;
+      letter-spacing:.06em; text-transform:uppercase;
       margin-bottom:6px;
     }
-    .fg input, .fg textarea{
+    .fg input,.fg textarea{
       width:100%;
       border:1px solid rgba(6,26,45,.12);
       border-radius: 14px;
@@ -397,6 +468,12 @@
 
         <div class="actions">
           <span class="tag"><span class="dot"></span> Empresa: <span id="empresaId">—</span></span>
+
+          <div class="seg" role="tablist" aria-label="Vista">
+            <button id="viewTableBtn" class="active" type="button">Tabla</button>
+            <button id="viewCardsBtn" type="button">Tarjetas</button>
+          </div>
+
           <button class="btn btn-ghost" id="openEmpresaBtn" type="button">Cambiar empresa</button>
           <button class="btn btn-ghost" id="refreshBtn" type="button">Refrescar</button>
           <button class="btn btn-danger" id="logoutBtn" type="button">Cerrar sesión</button>
@@ -405,10 +482,12 @@
 
       <div class="content">
         <div class="kpis">
-          <div class="kpi"><b id="kpiTotal">—</b><span>Contactos</span></div>
+          <div class="kpi"><b id="kpiTotal">—</b><span>Total</span></div>
           <div class="kpi"><b id="kpiHoy">—</b><span>Hoy</span></div>
           <div class="kpi"><b id="kpiSemana">—</b><span>7 días</span></div>
           <div class="kpi"><b id="kpiMes">—</b><span>30 días</span></div>
+          <div class="kpi"><b id="kpiNuevos">—</b><span>Nuevos</span></div>
+          <div class="kpi"><b id="kpiContactados">—</b><span>Contactados</span></div>
         </div>
 
         <div class="grid">
@@ -416,7 +495,7 @@
             <div class="row">
               <div>
                 <div class="title">Contactos</div>
-                <div class="muted">Registros en tu Google Sheet (auto) • ordenados por fecha</div>
+                <div class="muted">Vista moderna + estados • editar/borrar • exportar</div>
               </div>
               <input id="contactsSearch" class="in" style="max-width: 340px;" placeholder="Buscar…">
             </div>
@@ -424,6 +503,13 @@
             <div style="height:10px"></div>
 
             <div class="row">
+              <select id="filterEstado" class="sel">
+                <option value="">Estado: Todos</option>
+                <option value="Nuevo">Nuevo</option>
+                <option value="Contactado">Contactado</option>
+                <option value="Cerrado">Cerrado</option>
+              </select>
+
               <select id="filterVendedor" class="sel">
                 <option value="">Vendedor: Todos</option>
               </select>
@@ -443,21 +529,40 @@
 
             <div style="height:12px"></div>
 
-            <div class="tablewrap">
-              <table>
-                <thead><tr id="contactsHead"></tr></thead>
-                <tbody id="contactsBody"></tbody>
-              </table>
+            <!-- TABLE VIEW -->
+            <div id="tableView">
+              <div class="tablewrap">
+                <table>
+                  <thead><tr id="contactsHead"></tr></thead>
+                  <tbody id="contactsBody"></tbody>
+                </table>
+              </div>
+
+              <div class="pager">
+                <div class="left">
+                  <button class="pbtn" id="prevPageBtn" type="button">← Anterior</button>
+                  <button class="pbtn" id="nextPageBtn" type="button">Siguiente →</button>
+                  <span class="info" id="pageInfo">—</span>
+                </div>
+                <div class="right">
+                  <span class="info" id="rowsInfo">—</span>
+                </div>
+              </div>
             </div>
 
-            <div class="pager">
-              <div class="left">
-                <button class="pbtn" id="prevPageBtn" type="button">← Anterior</button>
-                <button class="pbtn" id="nextPageBtn" type="button">Siguiente →</button>
-                <span class="info" id="pageInfo">—</span>
-              </div>
-              <div class="right">
-                <span class="info" id="rowsInfo">—</span>
+            <!-- CARDS VIEW -->
+            <div id="cardsView" style="display:none;">
+              <div class="cards" id="cardsGrid"></div>
+
+              <div class="pager">
+                <div class="left">
+                  <button class="pbtn" id="prevPageBtn2" type="button">← Anterior</button>
+                  <button class="pbtn" id="nextPageBtn2" type="button">Siguiente →</button>
+                  <span class="info" id="pageInfo2">—</span>
+                </div>
+                <div class="right">
+                  <span class="info" id="rowsInfo2">—</span>
+                </div>
               </div>
             </div>
           </div>
@@ -465,8 +570,9 @@
           <div class="card">
             <div class="title">Acciones</div>
             <div class="muted" style="margin-top:6px;">
-              • Ver detalle • Editar • Borrar • Exportar<br>
-              (usa tu Apps Script: listLeads / saveLead / deleteLead)
+              • Ver • Editar • Borrar<br>
+              • Marcar como Contactado (1 click)<br>
+              • Exportar CSV de filtros actuales
             </div>
 
             <div style="height:12px"></div>
@@ -480,6 +586,12 @@
             <a class="btn btn-ghost" href="login.html" style="width:100%; height:46px; text-decoration:none;">
               Volver a Login
             </a>
+
+            <div style="height:14px"></div>
+
+            <div class="muted">
+              <b>Nota:</b> Para usar estados, agrega una columna <b>Estado</b> en tu Sheet.
+            </div>
           </div>
         </div>
       </div>
@@ -500,7 +612,6 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- SOLO dashboard.js -->
   <script src="dashboard.js"></script>
 </body>
 </html>
