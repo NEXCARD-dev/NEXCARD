@@ -32,7 +32,7 @@ body{
 
 .top{
   height:54px;
-  background: rgba(255,255,255,.6);
+  background: rgba(255,255,255,6);
   border-bottom:1px solid var(--line);
   backdrop-filter: blur(10px);
 }
@@ -43,9 +43,9 @@ body{
 .brand{display:flex; align-items:center; gap:12px;}
 .logo{
   width:36px; height:36px; border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.8), transparent 40%),
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,8), transparent 40%),
               linear-gradient(135deg, var(--brand2), #8b5cf6);
-  box-shadow: 0 10px 26px rgba(37,99,235,.18);
+  box-shadow: 0 10px 26px rgba(37,99,235,18);
 }
 .brand .t{font-weight:900; letter-spacing:.5px}
 .brand .s{font-weight:800; color:var(--muted); font-size:13px; margin-top:2px}
@@ -53,122 +53,82 @@ body{
   display:inline-flex; align-items:center; gap:8px;
   padding:10px 14px;
   border:1px solid var(--line);
-  background: rgba(255,255,255,.75);
+  background: rgba(255,255,255,75);
   border-radius:999px;
   font-weight:850;
   color:#1f2a44;
+  text-decoration:none;
 }
-.dot{width:8px;height:8px;border-radius:99px;background:var(--brand2); box-shadow: 0 0 0 4px rgba(59,130,246,.15)}
+.dot{width:8px;height:8px;border-radius:99px;background:var(--brand2); box-shadow: 0 0 0 4px rgba(59,130,246,15)}
+
 .main{min-height: calc(100% - 54px); display:flex; align-items:center; justify-content:center; padding:26px}
+
 .card{
-  width:min(920px, 100%);
-  background: rgba(255,255,255,.72);
+  width:min(1200px, 100%);
+  background: rgba(255,255,255,72);
   border:1px solid var(--line);
   border-radius:24px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
 }
 .card-inner{display:grid; gap:18px; padding:22px;}
-@media(min-width:900px){ .card-inner{grid-template-columns: 1.15fr .85fr; } }
+
 .box{
-  background: var(--card);
+  background:#fff;
   border:1px solid var(--line);
   border-radius:20px;
-  padding:22px;
+  padding:18px;
 }
+
 .pill{
-  display:inline-flex; align-items:center; gap:8px;
+  display:inline-flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border-radius:999px;
   background: var(--pill);
   border:1px solid var(--line);
-  padding:8px 12px;
-  border-radius:999px;
   font-weight:900;
-  width: fit-content;
 }
-.title{font-size:40px; margin:14px 0 8px 0; letter-spacing:-.02em}
-.sub{color:var(--muted); font-weight:750; line-height:1.6; margin:0 0 16px 0}
-label{display:block; font-weight:900; color:#35435f; margin:16px 0 8px}
-input{
-  width:100%;
-  padding:14px 16px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  outline:none;
-  font-weight:800;
-  background:#f3f7ff;
-}
-input:focus{border-color: rgba(37,99,235,.45); box-shadow: 0 0 0 4px rgba(37,99,235,.12)}
-.row{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:18px}
+.title{font-weight:950; letter-spacing:-.02em}
+.sub{color:var(--muted); font-weight:850}
+.mini{color:var(--muted); font-weight:800; font-size:13px; line-height:1.4}
+
+.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+.sep{height:1px; background:var(--line); margin:14px 0}
+
 .btn{
-  border:1px solid var(--line);
-  background:#fff;
-  color:#111827;
-  font-weight:900;
-  padding:12px 18px;
-  border-radius:999px;
-  cursor:pointer;
+  appearance:none; border:1px solid var(--line);
+  background: rgba(255,255,255,75);
+  padding:10px 14px; border-radius:14px;
+  font-weight:900; cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
-.btn:hover{transform: translateY(-1px)}
+.btn:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,42,.10)}
 .btn-primary{
-  background: linear-gradient(135deg, var(--brand), var(--brand2));
-  color:#fff;
-  border-color: rgba(37,99,235,.25);
-  box-shadow: 0 10px 24px rgba(37,99,235,.18);
+  border-color: rgba(37,99,235,.22);
+  background: linear-gradient(135deg, var(--brand2), #8b5cf6);
+  color:white;
 }
-.btn-ghost{background:#fff; color:#1f2a44}
-.mini{
-  color:var(--muted);
-  font-weight:750;
-  line-height:1.6;
-  margin:0;
-}
-.toast{
-  position:fixed; left:50%; bottom:18px; transform:translateX(-50%);
-  max-width:min(740px, calc(100% - 24px));
-  padding:12px 14px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.92);
-  box-shadow: 0 14px 40px rgba(15,23,42,.18);
-  font-weight:900;
-  display:none;
-}
-.rightTitle{font-size:18px; margin:0 0 10px 0}
-.sep{height:1px;background:var(--line); margin:14px 0}
+.btn-ghost{background:#fff}
+.btn-sm{padding:8px 12px; font-size:13px}
+.btn-danger{background:#fff; border-color: rgba(239,68,68,.25); color:#b91c1c}
+.btn-danger:hover{transform: translateY(-1px)}
 
-.glass-card{
-  background: rgba(255,255,255,.55) !important;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,.35);
-  box-shadow: 0 30px 80px rgba(15,23,42,.18);
-  transform: translateY(-6px);
-  transition: all .4s ease;
-}
-.glass-card:hover{
-  transform: translateY(-10px);
-  box-shadow: 0 40px 100px rgba(15,23,42,.25);
-}
-
-
-/* Dashboard UI */
-.tabs{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+.tabs{display:flex; gap:10px; flex-wrap:wrap}
 .tab-btn{
   border:1px solid var(--line);
   background:#fff;
-  font-weight:900;
-  padding:10px 14px;
+  padding:10px 12px;
   border-radius:999px;
+  font-weight:900;
   cursor:pointer;
 }
 .tab-btn.active{
-  background: linear-gradient(135deg, var(--brand), var(--brand2));
-  color:#fff;
-  border-color: rgba(37,99,235,.25);
-  box-shadow: 0 10px 24px rgba(37,99,235,.14);
+  background: var(--pill);
+  border-color: rgba(37,99,235,.20);
 }
-.grid2{display:grid; gap:16px; grid-template-columns: 1fr; margin-top:14px}
-@media(min-width:980px){ .grid2{grid-template-columns: 1.1fr .9fr;} }
+
+.grid2{display:grid; gap:12px;}
+@media(min-width:980px){ .grid2{grid-template-columns: 1.2fr .8fr;} }
 
 .table-wrap{overflow:auto; border:1px solid var(--line); border-radius:16px; background:#fff}
 table{width:100%; border-collapse:separate; border-spacing:0; min-width: 760px}
@@ -176,10 +136,6 @@ th, td{padding:12px 12px; border-bottom:1px solid var(--line); font-weight:800; 
 th{background:#f5f8ff; position:sticky; top:0; z-index:1}
 tr:last-child td{border-bottom:none}
 .right{text-align:right}
-.center{text-align:center}
-.btn-sm{padding:8px 12px; font-size:13px}
-.btn-danger{background:#fff; border-color: rgba(239,68,68,.25); color:#b91c1c}
-.btn-danger:hover{transform: translateY(-1px)}
 
 .kpis{display:grid; gap:12px; grid-template-columns: repeat(2, 1fr); margin-top:14px}
 @media(min-width:980px){ .kpis{grid-template-columns: repeat(4, 1fr);} }
@@ -188,9 +144,10 @@ tr:last-child td{border-bottom:none}
 .kpi .l{color:var(--muted); font-weight:800; margin-top:4px}
 
 .in{width:100%; padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:#f3f7ff; font-weight:850}
-.in-sm{padding:8px 10px; border-radius:12px; font-size:13px}
 .fp-row{display:grid; gap:8px; margin-bottom:12px}
 .fp-label{font-weight:950; color:#35435f}
+
+/* Modal */
 .modal{
   position:fixed; inset:0; display:none; align-items:center; justify-content:center;
   background: rgba(15,23,42,.35);
@@ -198,6 +155,7 @@ tr:last-child td{border-bottom:none}
   -webkit-backdrop-filter: blur(8px);
   padding:18px;
 }
+.modal.open{display:flex;}
 .modal-card{
   width:min(860px, 100%);
   background: rgba(255,255,255,.85);
@@ -207,8 +165,19 @@ tr:last-child td{border-bottom:none}
   padding:18px;
 }
 .modal-head{display:flex; justify-content:space-between; align-items:center; gap:12px}
-</style>
+
+.toast{
+  position:fixed; left:50%; bottom:18px; transform: translateX(-50%);
+  background: rgba(15,23,42,.92);
+  color:white;
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:900;
+  display:none;
+}
+  </style>
 </head>
+
 <body>
   <div class="top">
     <div class="container nav">
@@ -219,35 +188,40 @@ tr:last-child td{border-bottom:none}
           <div class="s">Panel</div>
         </div>
       </div>
-      <a class="chip" href="../index.html"><span class="dot"></span> Inicio</a>
+      <a class="chip" href="./index.html"><span class="dot"></span> Inicio</a>
     </div>
   </div>
 
   <div class="main">
-    <div class="card glass-card" style="width:min(1200px, 100%);">
-      <div class="card-inner" style="grid-template-columns: 1fr;">
+    <div class="card">
+      <div class="card-inner">
         <div class="box">
           <div style="display:flex; justify-content:space-between; gap:14px; align-items:flex-start; flex-wrap:wrap;">
             <div>
               <div class="pill"><span class="dot"></span> Panel</div>
               <div class="title" style="font-size:34px; margin-top:12px;">Dashboard</div>
               <p class="sub" id="who" style="margin-bottom:0;">Cargando…</p>
-              <p class="mini" style="margin-top:6px;">Empresa: <strong id="empresaAlias"></strong> <span style="color:var(--muted); font-weight:900;">(<span id="empresaId"></span>)</span></p>
+              <p class="mini" style="margin-top:6px;">
+                Empresa: <strong id="empresaAlias"></strong>
+                <span style="color:var(--muted); font-weight:900;">(<span id="empresaId"></span>)</span>
+              </p>
             </div>
+
             <div class="row" style="margin-top:0;">
               <a class="btn btn-ghost" href="login.html">Cambiar cuenta</a>
               <button class="btn btn-primary" id="logoutBtn" type="button">Cerrar sesión</button>
             </div>
           </div>
 
-          <div class="tabs">
-            <button class="tab-btn active" data-tab="contacts">Contactos</button>
-            <button class="tab-btn" data-tab="fields">Campos del formulario</button>
-            <button class="tab-btn" data-tab="settings">Ajustes</button>
+          <div class="tabs" style="margin-top:14px;">
+            <button class="tab-btn active" data-tab="contacts" type="button">Contactos</button>
+            <button class="tab-btn" data-tab="fields" type="button">Campos del formulario</button>
+            <button class="tab-btn" data-tab="settings" type="button">Ajustes</button>
           </div>
 
           <div class="sep"></div>
 
+          <!-- CONTACTS -->
           <div class="tab" data-tab="contacts">
             <div class="kpis">
               <div class="kpi"><div class="n" id="kpiTotal">—</div><div class="l">Contactos</div></div>
@@ -256,7 +230,7 @@ tr:last-child td{border-bottom:none}
               <div class="kpi"><div class="n" id="kpiMes">—</div><div class="l">30 días</div></div>
             </div>
 
-            <div class="grid2">
+            <div class="grid2" style="margin-top:12px;">
               <div class="box" style="padding:16px;">
                 <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
                   <div style="font-weight:950; font-size:18px;">Lista</div>
@@ -269,76 +243,82 @@ tr:last-child td{border-bottom:none}
                     <tbody id="contactsBody"></tbody>
                   </table>
                 </div>
-                <p class="mini" style="margin-top:10px;">Modo demo: los contactos se guardan en tu navegador.</p>
+                <p class="mini" style="margin-top:10px;">
+                  Mostrando registros reales de Google Sheets (según empresa).
+                </p>
               </div>
 
               <div class="box" style="padding:16px;">
-                <div style="font-weight:950; font-size:18px;">Crear contacto (preview)</div>
-                <p class="mini" style="margin-top:6px;">Este formulario se arma automáticamente con tus campos.</p>
+                <div style="font-weight:950; font-size:18px;">Acciones</div>
+                <p class="mini" style="margin-top:8px;">
+                  - Edita o borra desde la tabla.<br/>
+                  - Si no ves datos, revisa token y empresa_id.
+                </p>
                 <div class="sep"></div>
-                <div id="formPreview"></div>
-                <button class="btn btn-primary" id="demoAddContactBtn" type="button">Guardar</button>
+
+                <div class="fp-row">
+                  <div class="fp-label">Empresa actual</div>
+                  <div class="in" id="empresaBadge" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
+                    <span><strong id="empresaBadgeAlias"></strong> (<span id="empresaBadgeId"></span>)</span>
+                    <button class="btn btn-sm btn-ghost" id="copyEmpresaLink" type="button">Copiar link</button>
+                  </div>
+                </div>
+
+                <p class="mini">
+                  Tip: abre el dashboard así:<br/>
+                  <code>dashboard.html?empresa_id=trampaclean&empresa=TRAMPA%20CLEAN</code>
+                </p>
               </div>
             </div>
           </div>
 
+          <!-- FIELDS -->
           <div class="tab" data-tab="fields" style="display:none;">
-            <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
-              <div>
+            <div class="grid2">
+              <div class="box">
                 <div style="font-weight:950; font-size:18px;">Campos del formulario</div>
-                <p class="mini" style="margin-top:6px;">Define qué datos captura tu tarjeta. Puedes agregar, editar o borrar campos.</p>
+                <p class="mini" style="margin-top:6px;">
+                  (Opcional) Aquí puedes conectar getCampos/setCampos para editar el formulario desde el panel.
+                </p>
               </div>
-              <button class="btn btn-primary" id="addFieldBtn" type="button">+ Agregar campo</button>
+
+              <div class="box">
+                <div style="font-weight:950; font-size:18px;">Estado</div>
+                <p class="mini" style="margin-top:6px;">
+                  Ya tienes backend listo. Próximo: UI para editar campos.
+                </p>
+              </div>
             </div>
-            <div style="height:12px;"></div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Label</th>
-                    <th>Key</th>
-                    <th>Tipo</th>
-                    <th class="center">Req</th>
-                    <th class="center">RO</th>
-                    <th>Opciones (select)</th>
-                    <th class="right">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody id="fieldsTbody"></tbody>
-              </table>
-            </div>
-            <p class="mini" style="margin-top:10px;">Recomendación: no cambies la key de campos ya existentes si ya tienes datos.</p>
           </div>
 
+          <!-- SETTINGS -->
           <div class="tab" data-tab="settings" style="display:none;">
             <div class="grid2">
               <div class="box">
-                <div style="font-weight:950; font-size:18px;">Empresa (demo)</div>
-                <p class="mini" style="margin-top:6px;">Selecciona la empresa para ver su configuración.</p>
+                <div style="font-weight:950; font-size:18px;">Empresa</div>
+                <p class="mini" style="margin-top:6px;">
+                  Tu empresa viene por URL o queda guardada en el navegador.
+                </p>
+
                 <div class="sep"></div>
 
-                <label class="fp-label">Empresa</label>
-                <select id="empresaSelect" class="in">
-                  <option value="trampaclean">trampaclean</option>
-                  <option value="demoempresa">demoempresa</option>
-                </select>
+                <label class="fp-label">empresa_id</label>
+                <input id="empresaIdEdit" class="in" placeholder="trampaclean" />
 
                 <label class="fp-label" style="margin-top:14px;">Alias (nombre visible)</label>
-                <input id="empresaAliasEdit" class="in" placeholder="Nombre de la empresa" />
+                <input id="empresaAliasEdit" class="in" placeholder="TRAMPA CLEAN" />
 
-                <p class="mini" style="margin-top:12px;">Cuando conectemos la base de datos, esta lista vendrá del admin panel.</p>
+                <div class="row" style="margin-top:14px; justify-content:flex-end;">
+                  <button class="btn btn-primary" id="saveEmpresa" type="button">Guardar</button>
+                </div>
               </div>
 
               <div class="box">
-                <div style="font-weight:950; font-size:18px;">Modelo multiempresa</div>
+                <div style="font-weight:950; font-size:18px;">Seguridad</div>
                 <p class="mini" style="margin-top:6px;">
-                  Cada empresa tiene:
-                  <br/>• <strong>fields</strong>: definición de campos del formulario
-                  <br/>• <strong>contacts</strong>: registros captados por tarjetas
+                  - <strong>listLeads/saveLead/deleteLead</strong> requieren token.<br/>
+                  - <strong>contacts_create</strong> es público (landing).
                 </p>
-                <div class="sep"></div>
-                <p class="mini">Próximo paso: conectar acciones del backend para guardar en Sheets por empresa.</p>
               </div>
             </div>
           </div>
@@ -348,6 +328,7 @@ tr:last-child td{border-bottom:none}
     </div>
   </div>
 
+  <!-- MODAL -->
   <div class="modal" id="modal">
     <div class="modal-card">
       <div class="modal-head">
@@ -364,7 +345,68 @@ tr:last-child td{border-bottom:none}
 
   <div class="toast" id="toast" aria-live="polite"></div>
 
+  <!-- ✅ SOLO estos 2 scripts. NO app.js -->
   <script src="config.js"></script>
   <script src="dashboard.js"></script>
+
+  <!-- Tabs + Settings UI (sin tocar la parte de datos) -->
+  <script>
+    (function(){
+      const tabBtns = Array.from(document.querySelectorAll(".tab-btn"));
+      const tabs = Array.from(document.querySelectorAll(".tab"));
+
+      function openTab(name){
+        tabBtns.forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+        tabs.forEach(t => t.style.display = (t.dataset.tab === name) ? "" : "none");
+      }
+
+      tabBtns.forEach(b => b.addEventListener("click", () => openTab(b.dataset.tab)));
+
+      // Empresa badge
+      const alias = new URLSearchParams(location.search).get("empresa") || localStorage.getItem("nexcard_empresa_alias") || "";
+      const empId = new URLSearchParams(location.search).get("empresa_id") || localStorage.getItem("nexcard_empresa_id") || "trampaclean";
+
+      const empresaBadgeAlias = document.getElementById("empresaBadgeAlias");
+      const empresaBadgeId = document.getElementById("empresaBadgeId");
+      const empresaIdEdit = document.getElementById("empresaIdEdit");
+      const empresaAliasEdit = document.getElementById("empresaAliasEdit");
+      const saveEmpresa = document.getElementById("saveEmpresa");
+      const copyEmpresaLink = document.getElementById("copyEmpresaLink");
+
+      empresaBadgeAlias.textContent = alias || empId;
+      empresaBadgeId.textContent = empId;
+
+      empresaIdEdit.value = empId;
+      empresaAliasEdit.value = alias || "";
+
+      saveEmpresa.addEventListener("click", () => {
+        const newId = (empresaIdEdit.value || "").trim().toLowerCase();
+        const newAlias = (empresaAliasEdit.value || "").trim();
+        if(!newId){ alert("empresa_id requerido"); return; }
+        localStorage.setItem("nexcard_empresa_id", newId);
+        localStorage.setItem("nexcard_empresa_alias", newAlias || newId);
+
+        const url = new URL(location.href);
+        url.searchParams.set("empresa_id", newId);
+        url.searchParams.set("empresa", encodeURIComponent(newAlias || newId).replace(/%25/g,"%"));
+        location.href = url.toString();
+      });
+
+      copyEmpresaLink.addEventListener("click", async () => {
+        const url = `${location.origin}${location.pathname}?empresa_id=${encodeURIComponent(empId)}&empresa=${encodeURIComponent(alias || empId)}`;
+        try{
+          await navigator.clipboard.writeText(url);
+          alert("Link copiado ✅");
+        }catch(_){
+          prompt("Copia este link:", url);
+        }
+      });
+
+      // Modal close (el abrir lo maneja dashboard.js cuando edites)
+      const modal = document.getElementById("modal");
+      document.getElementById("closeModal").addEventListener("click", ()=> modal.classList.remove("open"));
+      modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
+    })();
+  </script>
 </body>
 </html>
