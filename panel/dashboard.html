@@ -23,12 +23,9 @@
       --navy3:#0F3B6A;
 
       --accent:#21A1FF;
-      --accent2:#63D3FF;
-
       --shadow: 0 24px 70px rgba(0,0,0,.16);
       --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
 
-      --r-lg: 22px;
       --ease: cubic-bezier(.22,1,.36,1);
       --maxw: 70rem;
     }
@@ -257,8 +254,7 @@
     }
     .muted{color: var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
 
-    .in{
-      width:100%;
+    .in, .sel{
       height: 46px;
       padding: 0 14px;
       border: 1px solid rgba(6,26,45,.12);
@@ -268,7 +264,9 @@
       background: rgba(255,255,255,.90);
       transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease);
     }
-    .in:focus{
+    .in{width:100%}
+    .sel{min-width: 180px}
+    .in:focus, .sel:focus{
       outline:none;
       border-color: rgba(33,161,255,.85);
       box-shadow: 0 0 0 4px rgba(33,161,255,.18), 0 14px 40px rgba(6,26,45,.12);
@@ -306,7 +304,23 @@
       font-weight: 900;
     }
     tr:hover td{background: rgba(33,161,255,.06);}
-    td.right{text-align:right}
+
+    .pager{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 10px; margin-top: 12px; flex-wrap:wrap;
+    }
+    .pager .left, .pager .right{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+    .pager .pbtn{
+      height: 40px;
+      border-radius: 12px;
+      padding: 0 12px;
+      border: 1px solid rgba(6,26,45,.12);
+      background: rgba(255,255,255,.72);
+      font-weight: 900;
+      cursor:pointer;
+    }
+    .pager .pbtn:disabled{opacity:.55; cursor:not-allowed}
+    .pager .info{color:var(--muted); font-weight:800; font-size:12.5px}
 
     .toast{
       position:fixed;
@@ -320,11 +334,6 @@
       font-weight: 900;
       display:none;
       z-index: 99;
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important;}
-      .bg-accent{display:none;}
     }
   </style>
 </head>
@@ -368,6 +377,22 @@
               <input id="contactsSearch" class="in" style="max-width: 340px;" placeholder="Buscar…">
             </div>
 
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <select id="filterVendedor" class="sel">
+                <option value="">Vendedor: Todos</option>
+              </select>
+
+              <select id="filterInteres" class="sel">
+                <option value="">Interés/Servicio: Todos</option>
+              </select>
+
+              <button class="btn btn-ghost" id="clearFiltersBtn" type="button" style="height:46px;">
+                Limpiar filtros
+              </button>
+            </div>
+
             <div style="height:12px"></div>
 
             <div class="tablewrap">
@@ -375,6 +400,17 @@
                 <thead><tr id="contactsHead"></tr></thead>
                 <tbody id="contactsBody"></tbody>
               </table>
+            </div>
+
+            <div class="pager">
+              <div class="left">
+                <button class="pbtn" id="prevPageBtn" type="button">← Anterior</button>
+                <button class="pbtn" id="nextPageBtn" type="button">Siguiente →</button>
+                <span class="info" id="pageInfo">—</span>
+              </div>
+              <div class="right">
+                <span class="info" id="rowsInfo">—</span>
+              </div>
             </div>
           </div>
 
@@ -386,7 +422,7 @@
 
             <div style="height:12px"></div>
 
-            <button class="btn btn-ghost" id="copyEmpresaLink" type="button" style="width:100%;">
+            <button class="btn btn-ghost" id="copyEmpresaLink" type="button" style="width:100%; height:46px;">
               Copiar link del panel
             </button>
           </div>
@@ -400,19 +436,5 @@
   <!-- ✅ SOLO estos 2 scripts. NO app.js -->
   <script src="config.js"></script>
   <script src="dashboard.js"></script>
-
-  <script>
-    document.getElementById("copyEmpresaLink").addEventListener("click", async ()=>{
-      const empresaId = document.getElementById("empresaId").textContent.trim();
-      const empresaAlias = document.getElementById("empresaAlias").textContent.trim() || empresaId;
-      const url = `${location.origin}${location.pathname}?empresa_id=${encodeURIComponent(empresaId)}&empresa=${encodeURIComponent(empresaAlias)}`;
-      try{
-        await navigator.clipboard.writeText(url);
-        alert("Link copiado ✅");
-      }catch(_){
-        prompt("Copia este link:", url);
-      }
-    });
-  </script>
 </body>
 </html>
