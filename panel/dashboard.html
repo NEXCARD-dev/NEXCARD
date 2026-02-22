@@ -3,410 +3,429 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NEXCARD • Panel</title>
+  <title>NEXCARD • Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-:root{
-  --bg1:#eaf3ff;
-  --bg2:#f7fbff;
-  --card:#ffffff;
-  --text:#0f172a;
-  --muted:#5b6b8b;
-  --line:#e6edf7;
-  --shadow: 0 20px 60px rgba(15, 23, 42, .12);
-  --brand:#2563eb;
-  --brand2:#3b82f6;
-  --pill:#eef4ff;
-}
+    :root{
+      --bg0:#f7fbff;
+      --bg1:#eef4ff;
+      --card:rgba(255,255,255,.72);
+      --border:rgba(6,26,45,.12);
+      --text:#0b1b2a;
+      --muted:#5b6672;
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color:var(--text);
-  background:
-    radial-gradient(800px 450px at 15% 0%, rgba(37,99,235,.18), transparent 55%),
-    radial-gradient(900px 520px at 85% 10%, rgba(59,130,246,.16), transparent 55%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-}
+      --navy:#061A2D;
+      --navy2:#0A2A4A;
+      --navy3:#0F3B6A;
 
-.top{
-  height:54px;
-  background: rgba(255,255,255,6);
-  border-bottom:1px solid var(--line);
-  backdrop-filter: blur(10px);
-}
-.container{max-width:1080px; margin:0 auto; padding:0 18px;}
-.nav{
-  height:54px; display:flex; align-items:center; justify-content:space-between;
-}
-.brand{display:flex; align-items:center; gap:12px;}
-.logo{
-  width:36px; height:36px; border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,8), transparent 40%),
-              linear-gradient(135deg, var(--brand2), #8b5cf6);
-  box-shadow: 0 10px 26px rgba(37,99,235,18);
-}
-.brand .t{font-weight:900; letter-spacing:.5px}
-.brand .s{font-weight:800; color:var(--muted); font-size:13px; margin-top:2px}
-.chip{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:10px 14px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,75);
-  border-radius:999px;
-  font-weight:850;
-  color:#1f2a44;
-  text-decoration:none;
-}
-.dot{width:8px;height:8px;border-radius:99px;background:var(--brand2); box-shadow: 0 0 0 4px rgba(59,130,246,15)}
+      --accent:#21A1FF;
+      --accent2:#63D3FF;
 
-.main{min-height: calc(100% - 54px); display:flex; align-items:center; justify-content:center; padding:26px}
+      --shadow: 0 24px 70px rgba(0,0,0,.16);
+      --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
 
-.card{
-  width:min(1200px, 100%);
-  background: rgba(255,255,255,72);
-  border:1px solid var(--line);
-  border-radius:24px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-}
-.card-inner{display:grid; gap:18px; padding:22px;}
+      --r-lg: 22px;
+      --r-md: 14px;
+      --ease: cubic-bezier(.22,1,.36,1);
+      --maxw: 68rem;
+    }
 
-.box{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:18px;
-}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      font-family:'Open Sans',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(33,161,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 90% 30%, rgba(99,211,255,.14), transparent 55%),
+        linear-gradient(135deg,var(--bg0) 0%, var(--bg1) 100%);
+      overflow-x:hidden;
+    }
 
-.pill{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:10px 12px;
-  border-radius:999px;
-  background: var(--pill);
-  border:1px solid var(--line);
-  font-weight:900;
-}
-.title{font-weight:950; letter-spacing:-.02em}
-.sub{color:var(--muted); font-weight:850}
-.mini{color:var(--muted); font-weight:800; font-size:13px; line-height:1.4}
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(to right, rgba(6,26,45,.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6,26,45,.05) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at 30% 20%, rgba(0,0,0,.85), rgba(0,0,0,.12) 55%, transparent 72%);
+      opacity:.35;
+      z-index:0;
+    }
 
-.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-.sep{height:1px; background:var(--line); margin:14px 0}
+    .bg-accent{
+      position:fixed; inset:-20%;
+      pointer-events:none; z-index:0;
+      filter: blur(42px);
+    }
+    .bg-accent::before,.bg-accent::after{
+      content:"";
+      position:absolute;
+      width:min(620px, 72vw);
+      height:min(620px, 72vw);
+      border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, rgba(33,161,255,.52), rgba(33,161,255,.05) 70%, transparent 72%);
+      animation: floatBlob 10s var(--ease) infinite;
+    }
+    .bg-accent::before{top: 1%; left: 6%;}
+    .bg-accent::after{
+      bottom: -2%; right: 2%;
+      background: radial-gradient(circle at 30% 30%, rgba(15,59,106,.58), rgba(15,59,106,.08) 70%, transparent 72%);
+      animation-duration: 12s; animation-direction: reverse;
+    }
+    @keyframes floatBlob{
+      0%{ transform: translate3d(0,0,0) scale(1); }
+      40%{ transform: translate3d(30px, -25px, 0) scale(1.05); }
+      70%{ transform: translate3d(-18px, 18px, 0) scale(.98); }
+      100%{ transform: translate3d(0,0,0) scale(1); }
+    }
 
-.btn{
-  appearance:none; border:1px solid var(--line);
-  background: rgba(255,255,255,75);
-  padding:10px 14px; border-radius:14px;
-  font-weight:900; cursor:pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.btn:hover{transform: translateY(-1px); box-shadow: 0 10px 22px rgba(15,23,42,.10)}
-.btn-primary{
-  border-color: rgba(37,99,235,.22);
-  background: linear-gradient(135deg, var(--brand2), #8b5cf6);
-  color:white;
-}
-.btn-ghost{background:#fff}
-.btn-sm{padding:8px 12px; font-size:13px}
-.btn-danger{background:#fff; border-color: rgba(239,68,68,.25); color:#b91c1c}
-.btn-danger:hover{transform: translateY(-1px)}
+    .page{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 22px;
+      position:relative;
+      z-index:2;
+    }
 
-.tabs{display:flex; gap:10px; flex-wrap:wrap}
-.tab-btn{
-  border:1px solid var(--line);
-  background:#fff;
-  padding:10px 12px;
-  border-radius:999px;
-  font-weight:900;
-  cursor:pointer;
-}
-.tab-btn.active{
-  background: var(--pill);
-  border-color: rgba(37,99,235,.20);
-}
+    .window{
+      width:100%;
+      max-width: var(--maxw);
+      background: rgba(255,255,255,.38);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow:hidden;
+      transform: translateY(10px);
+      opacity:0;
+      animation: in .7s var(--ease) forwards;
+    }
+    @keyframes in { to{ transform: translateY(0); opacity:1; } }
 
-.grid2{display:grid; gap:12px;}
-@media(min-width:980px){ .grid2{grid-template-columns: 1.2fr .8fr;} }
+    .topbar{
+      padding: 16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      background:
+        radial-gradient(900px 320px at 15% 0%, rgba(33,161,255,.25), transparent 55%),
+        linear-gradient(135deg, var(--navy) 0%, var(--navy2) 55%, var(--navy3) 100%);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
 
-.table-wrap{overflow:auto; border:1px solid var(--line); border-radius:16px; background:#fff}
-table{width:100%; border-collapse:separate; border-spacing:0; min-width: 760px}
-th, td{padding:12px 12px; border-bottom:1px solid var(--line); font-weight:800; text-align:left}
-th{background:#f5f8ff; position:sticky; top:0; z-index:1}
-tr:last-child td{border-bottom:none}
-.right{text-align:right}
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      color:white;
+    }
+    .mark{
+      width:44px; height:44px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 14px 40px rgba(0,0,0,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .mark::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 180deg, rgba(33,161,255,0), rgba(33,161,255,.35), rgba(255,255,255,0));
+      animation: spin 5s linear infinite;
+      opacity:.8;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
 
-.kpis{display:grid; gap:12px; grid-template-columns: repeat(2, 1fr); margin-top:14px}
-@media(min-width:980px){ .kpis{grid-template-columns: repeat(4, 1fr);} }
-.kpi{background:#fff; border:1px solid var(--line); border-radius:18px; padding:14px}
-.kpi .n{font-size:22px; font-weight:950}
-.kpi .l{color:var(--muted); font-weight:800; margin-top:4px}
+    .brand h1{
+      font-family:'Montserrat',system-ui,sans-serif;
+      font-size: 18px;
+      margin:0;
+      letter-spacing:-.02em;
+    }
+    .brand p{
+      margin-top:4px;
+      color: rgba(255,255,255,.82);
+      font-weight:700;
+      font-size: 12.5px;
+    }
 
-.in{width:100%; padding:12px 14px; border-radius:14px; border:1px solid var(--line); background:#f3f7ff; font-weight:850}
-.fp-row{display:grid; gap:8px; margin-bottom:12px}
-.fp-label{font-weight:950; color:#35435f}
+    .actions{
+      display:flex; gap: 10px; align-items:center; flex-wrap:wrap;
+    }
+    .btn{
+      height: 44px;
+      border: none;
+      border-radius: 14px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      cursor:pointer;
+      padding: 0 14px;
+      display:flex; align-items:center; justify-content:center; gap: 10px;
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease), filter .18s var(--ease);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.92);
+    }
+    .btn-ghost:hover{transform: translateY(-1px); box-shadow: 0 18px 44px rgba(0,0,0,.25)}
+    .btn-danger{
+      background: rgba(255,255,255,.90);
+      border: 1px solid rgba(255,59,59,.28);
+      color:#b42318;
+    }
 
-/* Modal */
-.modal{
-  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
-  background: rgba(15,23,42,.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding:18px;
-}
-.modal.open{display:flex;}
-.modal-card{
-  width:min(860px, 100%);
-  background: rgba(255,255,255,.85);
-  border:1px solid rgba(255,255,255,.35);
-  border-radius:22px;
-  box-shadow: 0 30px 90px rgba(15,23,42,.28);
-  padding:18px;
-}
-.modal-head{display:flex; justify-content:space-between; align-items:center; gap:12px}
+    .content{
+      padding: 18px;
+      display:grid;
+      gap: 14px;
+    }
 
-.toast{
-  position:fixed; left:50%; bottom:18px; transform: translateX(-50%);
-  background: rgba(15,23,42,.92);
-  color:white;
-  border-radius:999px;
-  padding:10px 14px;
-  font-weight:900;
-  display:none;
-}
+    .grid{
+      display:grid;
+      gap: 14px;
+      grid-template-columns: 1.2fr .8fr;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+    }
+
+    .who{
+      color: rgba(255,255,255,.88);
+      font-weight:700;
+      font-size: 12.5px;
+      margin-top:6px;
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
+
+    .kpi{
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(6,26,45,.12);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .kpi b{
+      display:block;
+      font-family:'Montserrat',system-ui,sans-serif;
+      font-size: 20px;
+      letter-spacing:-.02em;
+    }
+    .kpi span{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12.5px;
+    }
+
+    .row{
+      display:flex; gap: 10px; align-items:center; flex-wrap:wrap;
+    }
+
+    .in{
+      width:100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1px solid rgba(6,26,45,.12);
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 650;
+      background: rgba(255,255,255,.90);
+      transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .in:focus{
+      outline:none;
+      border-color: rgba(33,161,255,.85);
+      box-shadow: 0 0 0 4px rgba(33,161,255,.18), 0 14px 40px rgba(6,26,45,.12);
+      transform: translateY(-1px);
+      background: #fff;
+    }
+
+    .tablewrap{
+      overflow:auto;
+      border-radius: 18px;
+      border: 1px solid rgba(6,26,45,.10);
+      background: rgba(255,255,255,.86);
+    }
+    table{
+      width:100%;
+      border-collapse: separate;
+      border-spacing:0;
+      min-width: 820px;
+      font-size: 13.5px;
+    }
+    th, td{
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(6,26,45,.10);
+      font-weight: 700;
+      text-align:left;
+      white-space:nowrap;
+    }
+    th{
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: rgba(245,248,255,.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-weight: 900;
+    }
+    tr:hover td{background: rgba(33,161,255,.06);}
+    td.right{text-align:right}
+
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(6,26,45,.12);
+      background: rgba(255,255,255,.72);
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--accent); box-shadow: 0 0 0 4px rgba(33,161,255,.15)}
+    .muted{color:var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(11,27,42,.92);
+      color:white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      display:none;
+      z-index: 99;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important;}
+      .bg-accent{display:none;}
+    }
   </style>
 </head>
 
 <body>
-  <div class="top">
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+  <div class="bg-accent"></div>
+
+  <div class="page">
+    <div class="window">
+      <div class="topbar">
         <div>
-          <div class="t">NEXCARD</div>
-          <div class="s">Panel</div>
-        </div>
-      </div>
-      <a class="chip" href="./index.html"><span class="dot"></span> Inicio</a>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="card">
-      <div class="card-inner">
-        <div class="box">
-          <div style="display:flex; justify-content:space-between; gap:14px; align-items:flex-start; flex-wrap:wrap;">
+          <div class="brand">
+            <div class="mark" aria-hidden="true"></div>
             <div>
-              <div class="pill"><span class="dot"></span> Panel</div>
-              <div class="title" style="font-size:34px; margin-top:12px;">Dashboard</div>
-              <p class="sub" id="who" style="margin-bottom:0;">Cargando…</p>
-              <p class="mini" style="margin-top:6px;">
-                Empresa: <strong id="empresaAlias"></strong>
-                <span style="color:var(--muted); font-weight:900;">(<span id="empresaId"></span>)</span>
-              </p>
+              <h1>NEXCARD • Dashboard</h1>
+              <p class="who" id="who">Cargando sesión…</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <span class="tag"><span class="dot"></span> <span id="empresaAlias">—</span> <span class="muted">(<span id="empresaId">—</span>)</span></span>
+          <a class="btn btn-ghost" href="login.html">Cambiar cuenta</a>
+          <button class="btn btn-danger" id="logoutBtn" type="button">Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="kpis">
+            <div class="kpi"><b id="kpiTotal">—</b><span>Contactos</span></div>
+            <div class="kpi"><b id="kpiHoy">—</b><span>Hoy</span></div>
+            <div class="kpi"><b id="kpiSemana">—</b><span>7 días</span></div>
+            <div class="kpi"><b id="kpiMes">—</b><span>30 días</span></div>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <div class="row" style="justify-content:space-between;">
+              <div>
+                <div style="font-family:'Montserrat',system-ui,sans-serif;font-weight:800;font-size:16px;">Contactos</div>
+                <div class="muted">Datos reales desde Google Sheets (por empresa)</div>
+              </div>
+              <input id="contactsSearch" class="in" style="max-width: 340px;" placeholder="Buscar…">
             </div>
 
-            <div class="row" style="margin-top:0;">
-              <a class="btn btn-ghost" href="login.html">Cambiar cuenta</a>
-              <button class="btn btn-primary" id="logoutBtn" type="button">Cerrar sesión</button>
+            <div style="height:12px"></div>
+
+            <div class="tablewrap">
+              <table>
+                <thead><tr id="contactsHead"></tr></thead>
+                <tbody id="contactsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="muted" style="margin-top:10px;">
+              Tip: si no ves datos, revisa que el token exista y que estés en la empresa correcta.
             </div>
           </div>
 
-          <div class="tabs" style="margin-top:14px;">
-            <button class="tab-btn active" data-tab="contacts" type="button">Contactos</button>
-            <button class="tab-btn" data-tab="fields" type="button">Campos del formulario</button>
-            <button class="tab-btn" data-tab="settings" type="button">Ajustes</button>
-          </div>
-
-          <div class="sep"></div>
-
-          <!-- CONTACTS -->
-          <div class="tab" data-tab="contacts">
-            <div class="kpis">
-              <div class="kpi"><div class="n" id="kpiTotal">—</div><div class="l">Contactos</div></div>
-              <div class="kpi"><div class="n" id="kpiHoy">—</div><div class="l">Hoy</div></div>
-              <div class="kpi"><div class="n" id="kpiSemana">—</div><div class="l">7 días</div></div>
-              <div class="kpi"><div class="n" id="kpiMes">—</div><div class="l">30 días</div></div>
+          <div class="card">
+            <div style="font-family:'Montserrat',system-ui,sans-serif;font-weight:800;font-size:16px;">Acciones</div>
+            <div class="muted" style="margin-top:6px;">
+              • Edita o borra desde la tabla<br>
+              • Próximo: panel de campos dinámicos (getCampos/setCampos)
             </div>
+            <div style="height:12px"></div>
 
-            <div class="grid2" style="margin-top:12px;">
-              <div class="box" style="padding:16px;">
-                <div style="display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap;">
-                  <div style="font-weight:950; font-size:18px;">Lista</div>
-                  <input id="contactsSearch" class="in" style="max-width:360px;" placeholder="Buscar…" />
-                </div>
-                <div style="height:12px;"></div>
-                <div class="table-wrap">
-                  <table>
-                    <thead><tr id="contactsHead"></tr></thead>
-                    <tbody id="contactsBody"></tbody>
-                  </table>
-                </div>
-                <p class="mini" style="margin-top:10px;">
-                  Mostrando registros reales de Google Sheets (según empresa).
-                </p>
-              </div>
+            <button class="btn btn-ghost" id="copyEmpresaLink" type="button" style="width:100%;">
+              Copiar link del panel (esta empresa)
+            </button>
 
-              <div class="box" style="padding:16px;">
-                <div style="font-weight:950; font-size:18px;">Acciones</div>
-                <p class="mini" style="margin-top:8px;">
-                  - Edita o borra desde la tabla.<br/>
-                  - Si no ves datos, revisa token y empresa_id.
-                </p>
-                <div class="sep"></div>
-
-                <div class="fp-row">
-                  <div class="fp-label">Empresa actual</div>
-                  <div class="in" id="empresaBadge" style="display:flex; align-items:center; gap:10px; justify-content:space-between;">
-                    <span><strong id="empresaBadgeAlias"></strong> (<span id="empresaBadgeId"></span>)</span>
-                    <button class="btn btn-sm btn-ghost" id="copyEmpresaLink" type="button">Copiar link</button>
-                  </div>
-                </div>
-
-                <p class="mini">
-                  Tip: abre el dashboard así:<br/>
-                  <code>dashboard.html?empresa_id=trampaclean&empresa=TRAMPA%20CLEAN</code>
-                </p>
-              </div>
+            <div class="muted" style="margin-top:10px;">
+              Abre así: <code>dashboard.html?empresa_id=trampaclean&empresa=TRAMPA%20CLEAN</code>
             </div>
           </div>
-
-          <!-- FIELDS -->
-          <div class="tab" data-tab="fields" style="display:none;">
-            <div class="grid2">
-              <div class="box">
-                <div style="font-weight:950; font-size:18px;">Campos del formulario</div>
-                <p class="mini" style="margin-top:6px;">
-                  (Opcional) Aquí puedes conectar getCampos/setCampos para editar el formulario desde el panel.
-                </p>
-              </div>
-
-              <div class="box">
-                <div style="font-weight:950; font-size:18px;">Estado</div>
-                <p class="mini" style="margin-top:6px;">
-                  Ya tienes backend listo. Próximo: UI para editar campos.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- SETTINGS -->
-          <div class="tab" data-tab="settings" style="display:none;">
-            <div class="grid2">
-              <div class="box">
-                <div style="font-weight:950; font-size:18px;">Empresa</div>
-                <p class="mini" style="margin-top:6px;">
-                  Tu empresa viene por URL o queda guardada en el navegador.
-                </p>
-
-                <div class="sep"></div>
-
-                <label class="fp-label">empresa_id</label>
-                <input id="empresaIdEdit" class="in" placeholder="trampaclean" />
-
-                <label class="fp-label" style="margin-top:14px;">Alias (nombre visible)</label>
-                <input id="empresaAliasEdit" class="in" placeholder="TRAMPA CLEAN" />
-
-                <div class="row" style="margin-top:14px; justify-content:flex-end;">
-                  <button class="btn btn-primary" id="saveEmpresa" type="button">Guardar</button>
-                </div>
-              </div>
-
-              <div class="box">
-                <div style="font-weight:950; font-size:18px;">Seguridad</div>
-                <p class="mini" style="margin-top:6px;">
-                  - <strong>listLeads/saveLead/deleteLead</strong> requieren token.<br/>
-                  - <strong>contacts_create</strong> es público (landing).
-                </p>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <div style="font-weight:950; font-size:18px;">Editar contacto</div>
-        <button class="btn btn-ghost btn-sm" id="closeModal" type="button">Cerrar</button>
-      </div>
-      <div class="sep"></div>
-      <form id="editForm"></form>
-      <div class="row" style="justify-content:flex-end;">
-        <button class="btn btn-primary" id="saveEdit" type="button">Guardar cambios</button>
-      </div>
-    </div>
-  </div>
+  <div class="toast" id="toast"></div>
 
-  <div class="toast" id="toast" aria-live="polite"></div>
-
-  <!-- ✅ SOLO estos 2 scripts. NO app.js -->
+  <!-- ✅ SOLO estos 2. NO app.js -->
   <script src="config.js"></script>
   <script src="dashboard.js"></script>
 
-  <!-- Tabs + Settings UI (sin tocar la parte de datos) -->
   <script>
-    (function(){
-      const tabBtns = Array.from(document.querySelectorAll(".tab-btn"));
-      const tabs = Array.from(document.querySelectorAll(".tab"));
-
-      function openTab(name){
-        tabBtns.forEach(b => b.classList.toggle("active", b.dataset.tab === name));
-        tabs.forEach(t => t.style.display = (t.dataset.tab === name) ? "" : "none");
+    // Copiar link con empresa actual (usa lo que setea dashboard.js/config.js)
+    document.getElementById("copyEmpresaLink").addEventListener("click", async ()=>{
+      const empresaId = document.getElementById("empresaId").textContent.trim();
+      const empresaAlias = document.getElementById("empresaAlias").textContent.trim() || empresaId;
+      const url = `${location.origin}${location.pathname}?empresa_id=${encodeURIComponent(empresaId)}&empresa=${encodeURIComponent(empresaAlias)}`;
+      try{
+        await navigator.clipboard.writeText(url);
+        alert("Link copiado ✅");
+      }catch(_){
+        prompt("Copia este link:", url);
       }
-
-      tabBtns.forEach(b => b.addEventListener("click", () => openTab(b.dataset.tab)));
-
-      // Empresa badge
-      const alias = new URLSearchParams(location.search).get("empresa") || localStorage.getItem("nexcard_empresa_alias") || "";
-      const empId = new URLSearchParams(location.search).get("empresa_id") || localStorage.getItem("nexcard_empresa_id") || "trampaclean";
-
-      const empresaBadgeAlias = document.getElementById("empresaBadgeAlias");
-      const empresaBadgeId = document.getElementById("empresaBadgeId");
-      const empresaIdEdit = document.getElementById("empresaIdEdit");
-      const empresaAliasEdit = document.getElementById("empresaAliasEdit");
-      const saveEmpresa = document.getElementById("saveEmpresa");
-      const copyEmpresaLink = document.getElementById("copyEmpresaLink");
-
-      empresaBadgeAlias.textContent = alias || empId;
-      empresaBadgeId.textContent = empId;
-
-      empresaIdEdit.value = empId;
-      empresaAliasEdit.value = alias || "";
-
-      saveEmpresa.addEventListener("click", () => {
-        const newId = (empresaIdEdit.value || "").trim().toLowerCase();
-        const newAlias = (empresaAliasEdit.value || "").trim();
-        if(!newId){ alert("empresa_id requerido"); return; }
-        localStorage.setItem("nexcard_empresa_id", newId);
-        localStorage.setItem("nexcard_empresa_alias", newAlias || newId);
-
-        const url = new URL(location.href);
-        url.searchParams.set("empresa_id", newId);
-        url.searchParams.set("empresa", encodeURIComponent(newAlias || newId).replace(/%25/g,"%"));
-        location.href = url.toString();
-      });
-
-      copyEmpresaLink.addEventListener("click", async () => {
-        const url = `${location.origin}${location.pathname}?empresa_id=${encodeURIComponent(empId)}&empresa=${encodeURIComponent(alias || empId)}`;
-        try{
-          await navigator.clipboard.writeText(url);
-          alert("Link copiado ✅");
-        }catch(_){
-          prompt("Copia este link:", url);
-        }
-      });
-
-      // Modal close (el abrir lo maneja dashboard.js cuando edites)
-      const modal = document.getElementById("modal");
-      document.getElementById("closeModal").addEventListener("click", ()=> modal.classList.remove("open"));
-      modal.addEventListener("click", (e)=>{ if(e.target === modal) modal.classList.remove("open"); });
-    })();
+    });
   </script>
 </body>
 </html>
