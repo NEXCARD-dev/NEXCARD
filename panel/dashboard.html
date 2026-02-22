@@ -29,9 +29,8 @@
       --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
 
       --r-lg: 22px;
-      --r-md: 14px;
       --ease: cubic-bezier(.22,1,.36,1);
-      --maxw: 68rem;
+      --maxw: 70rem;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -152,11 +151,11 @@
       margin:0;
       letter-spacing:-.02em;
     }
-    .brand p{
-      margin-top:4px;
-      color: rgba(255,255,255,.82);
+    .who{
+      color: rgba(255,255,255,.88);
       font-weight:700;
       font-size: 12.5px;
+      margin-top:6px;
     }
 
     .actions{
@@ -187,10 +186,48 @@
       color:#b42318;
     }
 
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.20);
+      background: rgba(255,255,255,.14);
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255,255,255,.92);
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--accent); box-shadow: 0 0 0 4px rgba(33,161,255,.15)}
+
     .content{
       padding: 18px;
       display:grid;
       gap: 14px;
+    }
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
+
+    .kpi{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow-soft);
+      padding: 14px;
+    }
+    .kpi b{
+      display:block;
+      font-family:'Montserrat',system-ui,sans-serif;
+      font-size: 22px;
+      letter-spacing:-.02em;
+    }
+    .kpi span{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12.5px;
     }
 
     .grid{
@@ -208,42 +245,17 @@
       padding: 16px;
     }
 
-    .who{
-      color: rgba(255,255,255,.88);
-      font-weight:700;
-      font-size: 12.5px;
-      margin-top:6px;
-    }
-
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 10px;
-    }
-    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
-
-    .kpi{
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(6,26,45,.12);
-      border-radius: 18px;
-      padding: 12px;
-    }
-    .kpi b{
-      display:block;
-      font-family:'Montserrat',system-ui,sans-serif;
-      font-size: 20px;
-      letter-spacing:-.02em;
-    }
-    .kpi span{
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 12.5px;
-    }
-
     .row{
       display:flex; gap: 10px; align-items:center; flex-wrap:wrap;
+      justify-content:space-between;
     }
+
+    .title{
+      font-family:'Montserrat',system-ui,sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .muted{color: var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
 
     .in{
       width:100%;
@@ -296,18 +308,6 @@
     tr:hover td{background: rgba(33,161,255,.06);}
     td.right{text-align:right}
 
-    .tag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(6,26,45,.12);
-      background: rgba(255,255,255,.72);
-      font-weight: 900;
-      font-size: 12px;
-    }
-    .dot{width:8px;height:8px;border-radius:99px;background:var(--accent); box-shadow: 0 0 0 4px rgba(33,161,255,.15)}
-    .muted{color:var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
-
     .toast{
       position:fixed;
       left:50%;
@@ -335,39 +335,35 @@
   <div class="page">
     <div class="window">
       <div class="topbar">
-        <div>
-          <div class="brand">
-            <div class="mark" aria-hidden="true"></div>
-            <div>
-              <h1>NEXCARD • Dashboard</h1>
-              <p class="who" id="who">Cargando sesión…</p>
-            </div>
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>
+            <h1>NEXCARD • Dashboard</h1>
+            <p class="who" id="who">Cargando sesión…</p>
           </div>
         </div>
 
         <div class="actions">
-          <span class="tag"><span class="dot"></span> <span id="empresaAlias">—</span> <span class="muted">(<span id="empresaId">—</span>)</span></span>
+          <span class="tag"><span class="dot"></span> <span id="empresaAlias">—</span> (<span id="empresaId">—</span>)</span>
           <a class="btn btn-ghost" href="login.html">Cambiar cuenta</a>
           <button class="btn btn-danger" id="logoutBtn" type="button">Cerrar sesión</button>
         </div>
       </div>
 
       <div class="content">
-        <div class="card">
-          <div class="kpis">
-            <div class="kpi"><b id="kpiTotal">—</b><span>Contactos</span></div>
-            <div class="kpi"><b id="kpiHoy">—</b><span>Hoy</span></div>
-            <div class="kpi"><b id="kpiSemana">—</b><span>7 días</span></div>
-            <div class="kpi"><b id="kpiMes">—</b><span>30 días</span></div>
-          </div>
+        <div class="kpis">
+          <div class="kpi"><b id="kpiTotal">—</b><span>Contactos</span></div>
+          <div class="kpi"><b id="kpiHoy">—</b><span>Hoy</span></div>
+          <div class="kpi"><b id="kpiSemana">—</b><span>7 días</span></div>
+          <div class="kpi"><b id="kpiMes">—</b><span>30 días</span></div>
         </div>
 
         <div class="grid">
           <div class="card">
-            <div class="row" style="justify-content:space-between;">
+            <div class="row">
               <div>
-                <div style="font-family:'Montserrat',system-ui,sans-serif;font-weight:800;font-size:16px;">Contactos</div>
-                <div class="muted">Datos reales desde Google Sheets (por empresa)</div>
+                <div class="title">Contactos</div>
+                <div class="muted">Registros sincronizados desde la base de datos de la empresa</div>
               </div>
               <input id="contactsSearch" class="in" style="max-width: 340px;" placeholder="Buscar…">
             </div>
@@ -380,27 +376,19 @@
                 <tbody id="contactsBody"></tbody>
               </table>
             </div>
-
-            <div class="muted" style="margin-top:10px;">
-              Tip: si no ves datos, revisa que el token exista y que estés en la empresa correcta.
-            </div>
           </div>
 
           <div class="card">
-            <div style="font-family:'Montserrat',system-ui,sans-serif;font-weight:800;font-size:16px;">Acciones</div>
+            <div class="title">Acciones</div>
             <div class="muted" style="margin-top:6px;">
-              • Edita o borra desde la tabla<br>
-              • Próximo: panel de campos dinámicos (getCampos/setCampos)
+              Administra registros: editar y borrar desde la tabla.
             </div>
+
             <div style="height:12px"></div>
 
             <button class="btn btn-ghost" id="copyEmpresaLink" type="button" style="width:100%;">
-              Copiar link del panel (esta empresa)
+              Copiar link del panel
             </button>
-
-            <div class="muted" style="margin-top:10px;">
-              Abre así: <code>dashboard.html?empresa_id=trampaclean&empresa=TRAMPA%20CLEAN</code>
-            </div>
           </div>
         </div>
       </div>
@@ -409,12 +397,11 @@
 
   <div class="toast" id="toast"></div>
 
-  <!-- ✅ SOLO estos 2. NO app.js -->
+  <!-- ✅ SOLO estos 2 scripts. NO app.js -->
   <script src="config.js"></script>
   <script src="dashboard.js"></script>
 
   <script>
-    // Copiar link con empresa actual (usa lo que setea dashboard.js/config.js)
     document.getElementById("copyEmpresaLink").addEventListener("click", async ()=>{
       const empresaId = document.getElementById("empresaId").textContent.trim();
       const empresaAlias = document.getElementById("empresaAlias").textContent.trim() || empresaId;
