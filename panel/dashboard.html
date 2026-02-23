@@ -11,16 +11,24 @@
 
   <style>
     :root{
-      --bg0:#f7fbff; --bg1:#eef4ff;
+      --bg0:#f7fbff;
+      --bg1:#eef4ff;
       --card:rgba(255,255,255,.72);
       --border:rgba(6,26,45,.12);
-      --text:#0b1b2a; --muted:#5b6672;
-      --navy:#061A2D; --navy2:#0A2A4A; --navy3:#0F3B6A;
+      --text:#0b1b2a;
+      --muted:#5b6672;
+
+      --navy:#061A2D;
+      --navy2:#0A2A4A;
+      --navy3:#0F3B6A;
+
       --accent:#21A1FF;
+
       --shadow: 0 24px 70px rgba(0,0,0,.16);
       --shadow-soft: 0 12px 28px rgba(6,26,45,.12);
+
       --ease: cubic-bezier(.22,1,.36,1);
-      --maxw: 74rem;
+      --maxw: 78rem;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -34,6 +42,7 @@
         linear-gradient(135deg,var(--bg0) 0%, var(--bg1) 100%);
       overflow-x:hidden;
     }
+
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -71,7 +80,7 @@
     .page{
       min-height:100vh;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:center;
       padding: 22px;
       position:relative;
@@ -104,6 +113,7 @@
         radial-gradient(900px 320px at 15% 0%, rgba(33,161,255,.25), transparent 55%),
         linear-gradient(135deg, var(--navy) 0%, var(--navy2) 55%, var(--navy3) 100%);
       border-bottom: 1px solid rgba(255,255,255,.10);
+      flex-wrap:wrap;
     }
 
     .brand{display:flex; align-items:center; gap:12px; color:white;}
@@ -113,6 +123,7 @@
       border: 1px solid rgba(255,255,255,.22);
       box-shadow: 0 14px 40px rgba(0,0,0,.22);
       position:relative; overflow:hidden;
+      flex: 0 0 auto;
     }
     .mark::after{
       content:""; position:absolute; inset:-40%;
@@ -144,10 +155,33 @@
     }
     .btn-ghost:hover{transform: translateY(-1px); box-shadow: 0 18px 44px rgba(0,0,0,.25)}
     .btn-danger{
-      background: rgba(255,255,255,.90);
+      background: rgba(255,255,255,.92);
       border: 1px solid rgba(255,59,59,.28);
       color:#b42318;
     }
+
+    .toggle{
+      display:flex;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 16px;
+      overflow:hidden;
+      height: 44px;
+    }
+    .toggle button{
+      height:44px;
+      border:0;
+      background:transparent;
+      color: rgba(255,255,255,.92);
+      font-weight:900;
+      padding:0 14px;
+      cursor:pointer;
+    }
+    .toggle button.active{
+      background: rgba(255,255,255,.90);
+      color: var(--navy2);
+    }
+
     .tag{
       display:inline-flex; align-items:center; gap:8px;
       padding: 8px 10px;
@@ -161,10 +195,8 @@
     .dot{width:8px;height:8px;border-radius:99px;background:var(--accent); box-shadow: 0 0 0 4px rgba(33,161,255,.15)}
 
     .content{padding: 18px; display:grid; gap: 14px;}
-
-    .kpis{display:grid; grid-template-columns: repeat(6, 1fr); gap: 12px;}
-    @media (max-width: 1120px){ .kpis{grid-template-columns: repeat(3, 1fr);} }
-    @media (max-width: 680px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
+    .kpis{display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px;}
+    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, 1fr);} }
 
     .kpi{
       background: var(--card);
@@ -173,11 +205,8 @@
       box-shadow: var(--shadow-soft);
       padding: 14px;
     }
-    .kpi b{display:block; font-family:'Montserrat',system-ui,sans-serif; font-size: 20px; letter-spacing:-.02em;}
-    .kpi span{color: var(--muted); font-weight: 800; font-size: 12px;}
-
-    .grid{display:grid; gap: 14px; grid-template-columns: 1.25fr .75fr;}
-    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+    .kpi b{display:block; font-family:'Montserrat',system-ui,sans-serif; font-size: 22px; letter-spacing:-.02em;}
+    .kpi span{color: var(--muted); font-weight: 700; font-size: 12.5px;}
 
     .card{
       background: var(--card);
@@ -187,9 +216,12 @@
       padding: 16px;
     }
 
-    .row{display:flex; gap: 10px; align-items:center; flex-wrap:wrap; justify-content:space-between;}
+    .row{
+      display:flex; gap: 10px; align-items:center;
+      flex-wrap:wrap; justify-content:space-between;
+    }
     .title{font-family:'Montserrat',system-ui,sans-serif; font-weight: 800; font-size: 16px;}
-    .muted{color: var(--muted); font-weight:800; font-size:12.5px; line-height:1.5}
+    .muted{color: var(--muted); font-weight:700; font-size:12.5px; line-height:1.5}
 
     .in, .sel{
       height: 46px;
@@ -201,8 +233,8 @@
       background: rgba(255,255,255,.90);
       transition: transform .18s var(--ease), border-color .18s var(--ease), box-shadow .18s var(--ease);
     }
-    .in{width:100%}
-    .sel{min-width: 200px}
+    .in{width: min(360px, 100%);}
+    .sel{min-width: 200px; max-width: 100%;}
     .in:focus, .sel:focus{
       outline:none;
       border-color: rgba(33,161,255,.85);
@@ -211,43 +243,19 @@
       background: #fff;
     }
 
-    .seg{
-      display:flex; gap:8px;
-      background: rgba(255,255,255,.58);
-      border: 1px solid rgba(6,26,45,.12);
-      border-radius: 16px;
-      padding: 6px;
-      box-shadow: var(--shadow-soft);
-    }
-    .seg button{
-      height: 36px;
-      border: none;
-      border-radius: 12px;
-      padding: 0 12px;
-      cursor:pointer;
-      font-weight: 900;
-      background: transparent;
-      color: var(--navy2);
-    }
-    .seg button.active{
-      background:
-        radial-gradient(160px 120px at 20% 10%, rgba(99,211,255,.35), transparent 55%),
-        linear-gradient(135deg, rgba(6,26,45,.92) 0%, rgba(10,42,74,.92) 55%, rgba(15,59,106,.92) 100%);
-      color: white;
-      box-shadow: 0 12px 28px rgba(6,26,45,.18);
-    }
-
+    /* Table view */
     .tablewrap{
       overflow:auto;
       border-radius: 18px;
       border: 1px solid rgba(6,26,45,.10);
       background: rgba(255,255,255,.86);
+      margin-top: 12px;
     }
     table{
       width:100%;
       border-collapse: separate;
       border-spacing:0;
-      min-width: 980px;
+      min-width: 920px;
       font-size: 13.5px;
     }
     th, td{
@@ -275,68 +283,63 @@
       font-weight: 900;
       cursor:pointer;
       margin-right: 6px;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
     }
     .mini-danger{border-color: rgba(255,59,59,.25); color:#b42318;}
-    .mini-primary{
-      border-color: rgba(33,161,255,.25);
-      color: var(--navy3);
-    }
 
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(6,26,45,.12);
-      font-weight: 900;
-      font-size: 12px;
-    }
-    .badge .b-dot{width:8px;height:8px;border-radius:99px}
-    .b-nuevo{background: rgba(33,161,255,.10);}
-    .b-nuevo .b-dot{background:#21A1FF}
-    .b-contactado{background: rgba(16,185,129,.12);}
-    .b-contactado .b-dot{background:#10b981}
-    .b-cerrado{background: rgba(245,158,11,.12);}
-    .b-cerrado .b-dot{background:#f59e0b}
-
+    /* Cards view */
     .cards{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
+      margin-top: 12px;
     }
-    @media (max-width: 1120px){ .cards{grid-template-columns: repeat(2,1fr);} }
-    @media (max-width: 720px){ .cards{grid-template-columns: 1fr;} }
+    @media (max-width: 1100px){ .cards{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 760px){ .cards{grid-template-columns: 1fr;} }
 
-    .lead{
-      background: rgba(255,255,255,.78);
-      border: 1px solid rgba(6,26,45,.12);
-      border-radius: 20px;
-      box-shadow: var(--shadow-soft);
+    .lead-card{
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(6,26,45,.10);
+      border-radius: 18px;
       padding: 14px;
+      box-shadow: 0 10px 22px rgba(6,26,45,.08);
     }
-    .lead h3{
+    .lead-top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      margin-bottom: 10px;
+    }
+    .lead-name{
       font-family:'Montserrat',system-ui,sans-serif;
+      font-weight:800;
       font-size: 15px;
-      letter-spacing:-.01em;
-      margin-bottom: 6px;
+      line-height:1.25;
     }
-    .lead .meta{
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 12.5px;
-      line-height: 1.45;
-      margin-top: 8px;
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 12px;
+      border: 1px solid rgba(6,26,45,.10);
+      background: rgba(6,26,45,.04);
+      color: rgba(6,26,45,.86);
+      white-space:nowrap;
     }
-    .lead .actions{
-      margin-top: 10px;
-      display:flex;
+    .pill.new{ background: rgba(33,161,255,.10); border-color: rgba(33,161,255,.25); color: rgba(10,42,74,.95); }
+    .pill.contacted{ background: rgba(16,185,129,.10); border-color: rgba(16,185,129,.25); color: rgba(6,95,70,.95); }
+    .pill.closed{ background: rgba(245,158,11,.12); border-color: rgba(245,158,11,.25); color: rgba(124,45,18,.95); }
+
+    .lead-meta{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
-      flex-wrap:wrap;
+      color: rgba(11,27,42,.85);
+      font-weight: 700;
+      font-size: 13px;
     }
+    @media (max-width: 420px){ .lead-meta{grid-template-columns: 1fr;} }
+    .lead-meta div span{display:block; color: var(--muted); font-weight:800; font-size: 11px; letter-spacing:.04em; text-transform:uppercase;}
+    .lead-actions{display:flex; gap: 8px; flex-wrap:wrap; margin-top: 12px;}
 
     .pager{
       display:flex; align-items:center; justify-content:space-between;
@@ -361,7 +364,7 @@
       padding: 10px 14px;
       font-weight: 900;
       display:none;
-      z-index: 999;
+      z-index: 99;
     }
 
     /* Modal */
@@ -373,11 +376,11 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index: 1200;
+      z-index: 120;
       padding: 18px;
     }
     .modal{
-      width: min(720px, 96vw);
+      width: min(760px, 96vw);
       background: rgba(255,255,255,.80);
       border: 1px solid rgba(255,255,255,.40);
       border-radius: 22px;
@@ -402,15 +405,23 @@
     }
     .modal-header b{font-family:'Montserrat',system-ui,sans-serif;}
     .modal-body{padding: 14px 16px;}
-    .form-grid{display:grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
     @media (max-width: 760px){ .form-grid{grid-template-columns: 1fr;} }
+
     .fg label{
-      display:block; font-size:12px; font-weight:900;
+      display:block;
+      font-size:12px;
+      font-weight:900;
       color: rgba(11,27,42,.78);
-      letter-spacing:.06em; text-transform:uppercase;
+      letter-spacing:.06em;
+      text-transform:uppercase;
       margin-bottom:6px;
     }
-    .fg input,.fg textarea{
+    .fg input, .fg textarea, .fg select{
       width:100%;
       border:1px solid rgba(6,26,45,.12);
       border-radius: 14px;
@@ -449,6 +460,18 @@
       animation: spin .7s linear infinite;
     }
     @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    .empty{
+      padding: 14px;
+      border: 1px dashed rgba(6,26,45,.18);
+      border-radius: 18px;
+      background: rgba(255,255,255,.55);
+      color: rgba(11,27,42,.86);
+      font-weight: 800;
+      margin-top: 12px;
+    }
+
+    .hidden{display:none !important;}
   </style>
 </head>
 
@@ -469,12 +492,11 @@
         <div class="actions">
           <span class="tag"><span class="dot"></span> Empresa: <span id="empresaId">—</span></span>
 
-          <div class="seg" role="tablist" aria-label="Vista">
-            <button id="viewTableBtn" class="active" type="button">Tabla</button>
-            <button id="viewCardsBtn" type="button">Tarjetas</button>
+          <div class="toggle" role="tablist" aria-label="Vista">
+            <button id="viewTableBtn" class="active" type="button" role="tab" aria-selected="true">Tabla</button>
+            <button id="viewCardsBtn" type="button" role="tab" aria-selected="false">Tarjetas</button>
           </div>
 
-          <button class="btn btn-ghost" id="openEmpresaBtn" type="button">Cambiar empresa</button>
           <button class="btn btn-ghost" id="refreshBtn" type="button">Refrescar</button>
           <button class="btn btn-danger" id="logoutBtn" type="button">Cerrar sesión</button>
         </div>
@@ -486,111 +508,62 @@
           <div class="kpi"><b id="kpiHoy">—</b><span>Hoy</span></div>
           <div class="kpi"><b id="kpiSemana">—</b><span>7 días</span></div>
           <div class="kpi"><b id="kpiMes">—</b><span>30 días</span></div>
-          <div class="kpi"><b id="kpiNuevos">—</b><span>Nuevos</span></div>
-          <div class="kpi"><b id="kpiContactados">—</b><span>Contactados</span></div>
         </div>
 
-        <div class="grid">
-          <div class="card">
-            <div class="row">
-              <div>
-                <div class="title">Contactos</div>
-                <div class="muted">Vista moderna + estados • editar/borrar • exportar</div>
-              </div>
-              <input id="contactsSearch" class="in" style="max-width: 340px;" placeholder="Buscar…">
+        <div class="card">
+          <div class="row">
+            <div>
+              <div class="title">Contactos</div>
+              <div class="muted">Vista moderna • estados • editar/borrar • exportar</div>
             </div>
 
-            <div style="height:10px"></div>
+            <input id="contactsSearch" class="in" placeholder="Buscar… (nombre, correo, teléfono, etc.)">
+          </div>
 
-            <div class="row">
-              <select id="filterEstado" class="sel">
-                <option value="">Estado: Todos</option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Contactado">Contactado</option>
-                <option value="Cerrado">Cerrado</option>
-              </select>
+          <div style="height:12px"></div>
 
-              <select id="filterVendedor" class="sel">
-                <option value="">Vendedor: Todos</option>
-              </select>
+          <div class="row">
+            <select id="filterEstado" class="sel">
+              <option value="">Estado: Todos</option>
+            </select>
 
-              <select id="filterInteres" class="sel">
-                <option value="">Interés/Servicio: Todos</option>
-              </select>
+            <select id="filterVendedor" class="sel">
+              <option value="">Vendedor: Todos</option>
+            </select>
 
-              <button class="btn btn-ghost" id="clearFiltersBtn" type="button" style="height:46px;">
-                Limpiar filtros
-              </button>
+            <select id="filterInteres" class="sel">
+              <option value="">Interés/Servicio: Todos</option>
+            </select>
 
-              <button class="btn btn-ghost" id="exportCsvBtn" type="button" style="height:46px;">
-                Exportar CSV
-              </button>
-            </div>
+            <button class="btn btn-ghost" id="clearFiltersBtn" type="button" style="height:46px;">Limpiar</button>
+            <button class="btn btn-ghost" id="exportCsvBtn" type="button" style="height:46px;">Exportar CSV</button>
+          </div>
 
-            <div style="height:12px"></div>
-
-            <!-- TABLE VIEW -->
-            <div id="tableView">
-              <div class="tablewrap">
-                <table>
-                  <thead><tr id="contactsHead"></tr></thead>
-                  <tbody id="contactsBody"></tbody>
-                </table>
-              </div>
-
-              <div class="pager">
-                <div class="left">
-                  <button class="pbtn" id="prevPageBtn" type="button">← Anterior</button>
-                  <button class="pbtn" id="nextPageBtn" type="button">Siguiente →</button>
-                  <span class="info" id="pageInfo">—</span>
-                </div>
-                <div class="right">
-                  <span class="info" id="rowsInfo">—</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- CARDS VIEW -->
-            <div id="cardsView" style="display:none;">
-              <div class="cards" id="cardsGrid"></div>
-
-              <div class="pager">
-                <div class="left">
-                  <button class="pbtn" id="prevPageBtn2" type="button">← Anterior</button>
-                  <button class="pbtn" id="nextPageBtn2" type="button">Siguiente →</button>
-                  <span class="info" id="pageInfo2">—</span>
-                </div>
-                <div class="right">
-                  <span class="info" id="rowsInfo2">—</span>
-                </div>
-              </div>
+          <!-- TABLA -->
+          <div id="tableView">
+            <div class="tablewrap">
+              <table>
+                <thead><tr id="contactsHead"></tr></thead>
+                <tbody id="contactsBody"></tbody>
+              </table>
             </div>
           </div>
 
-          <div class="card">
-            <div class="title">Acciones</div>
-            <div class="muted" style="margin-top:6px;">
-              • Ver • Editar • Borrar<br>
-              • Marcar como Contactado (1 click)<br>
-              • Exportar CSV de filtros actuales
+          <!-- TARJETAS -->
+          <div id="cardsView" class="hidden">
+            <div id="cardsContainer" class="cards"></div>
+          </div>
+
+          <div id="emptyBox" class="empty hidden"></div>
+
+          <div class="pager">
+            <div class="left">
+              <button class="pbtn" id="prevPageBtn" type="button">← Anterior</button>
+              <button class="pbtn" id="nextPageBtn" type="button">Siguiente →</button>
+              <span class="info" id="pageInfo">—</span>
             </div>
-
-            <div style="height:12px"></div>
-
-            <button class="btn btn-ghost" id="copyDashboardLink" type="button" style="width:100%; height:46px;">
-              Copiar link del dashboard
-            </button>
-
-            <div style="height:10px"></div>
-
-            <a class="btn btn-ghost" href="login.html" style="width:100%; height:46px; text-decoration:none;">
-              Volver a Login
-            </a>
-
-            <div style="height:14px"></div>
-
-            <div class="muted">
-              <b>Nota:</b> Para usar estados, agrega una columna <b>Estado</b> en tu Sheet.
+            <div class="right">
+              <span class="info" id="rowsInfo">—</span>
             </div>
           </div>
         </div>
@@ -598,9 +571,9 @@
     </div>
   </div>
 
-  <!-- Modals -->
+  <!-- MODAL -->
   <div class="modal-backdrop" id="modalBackdrop">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Modal">
+    <div class="modal" role="dialog" aria-modal="true">
       <div class="modal-header">
         <b id="modalTitle">—</b>
         <button class="btn btn-ghost btn-small" id="modalCloseBtn" type="button">Cerrar</button>
