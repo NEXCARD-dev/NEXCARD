@@ -234,7 +234,7 @@
 
         <div class="err" id="errBox"></div>
         <div class="note">
-          Si es tu primera vez en este navegador, el dashboard te pedirá el <b>empresa_id</b> una sola vez.
+          El acceso es por correo y contraseña. Si este navegador no tiene <b>empresa_id</b> guardado, el dashboard te permitirá configurarlo.
         </div>
       </form>
     </div>
@@ -244,7 +244,6 @@
     // ====== CONFIG ======
     const API_BASE = "https://script.google.com/macros/s/AKfycbx7ghGSC47jyKY5ArI2s1JpO3UILEHVzmfaHxYxG3sLYfN3QDyFYWnXFStRLHvdJGtXRQ/exec";
     const TOKEN_KEY = "nexcard_token";
-    const EMPRESA_KEY = "nexcard_empresa_id";
 
     // ====== JSONP ======
     function jsonp(url){
@@ -275,13 +274,8 @@
       clearErr();
     });
 
-    // Si ya hay token, mandamos al dashboard
-    (function autoRedirectIfToken(){
-      const t = localStorage.getItem(TOKEN_KEY);
-      if(t && t.trim()){
-        location.href = "dashboard.html";
-      }
-    })();
+    // NOTA: No auto-redirect aunque haya token.
+    // El usuario siempre ve este login.
 
     document.getElementById("loginForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
@@ -303,17 +297,7 @@
           throw new Error((data && data.message) ? data.message : "Login falló");
         }
 
-        // Guardar token
         localStorage.setItem(TOKEN_KEY, data.token);
-
-        // NO tocamos empresa_id aquí porque el backend no lo devuelve.
-        // Si ya existe guardado de antes, se conserva.
-        const existingEmp = (localStorage.getItem(EMPRESA_KEY) || "").trim();
-        if(!existingEmp){
-          // lo dejamos vacío para que el dashboard lo pida una sola vez
-          localStorage.removeItem(EMPRESA_KEY);
-        }
-
         location.href = "dashboard.html";
 
       }catch(err){
