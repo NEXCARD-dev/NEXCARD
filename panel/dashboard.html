@@ -13,7 +13,6 @@
     :root{
       --bg0:#f7fbff; --bg1:#eef4ff;
       --card:rgba(255,255,255,.72);
-      --card2:rgba(255,255,255,.92);
       --border:rgba(6,26,45,.12);
       --text:#0b1b2a; --muted:#5b6672;
       --navy:#061A2D; --navy2:#0A2A4A; --navy3:#0F3B6A;
@@ -351,6 +350,7 @@
       border-radius: 12px;
       padding: 10px;
       font-weight: 850;
+      word-break: break-word;
     }
 
     /* Toast */
@@ -370,13 +370,14 @@
       max-width: min(720px, calc(100% - 24px));
     }
 
-    /* Setup (empresa_id) */
+    /* Setup */
     .setup{
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(6,26,45,.10);
       border-radius: 18px;
       padding: 14px;
       display:none;
+      margin-bottom: 12px;
     }
     .setup.show{ display:block; }
     .setup h3{
@@ -419,7 +420,8 @@
 
         <div class="top-right">
           <div class="chip" id="whoChip">Cargando…</div>
-          <div class="chip" id="empresaChip">Empresa: <small id="empresaId">—</small></div>
+          <div class="chip">Empresa: <small id="empresaId">—</small></div>
+          <button class="btn btn-light" id="setupBtn" type="button">Configurar empresa</button>
           <button class="btn btn-light" id="refreshBtn" type="button">Actualizar</button>
           <button class="btn btn-primary" id="logoutBtn" type="button">Cerrar sesión</button>
         </div>
@@ -427,13 +429,12 @@
 
       <div class="content">
         <div class="card">
-
           <div class="section">
             <div class="setup" id="setupBox">
-              <h3>Configurar empresa (una sola vez)</h3>
+              <h3>Configurar empresa (solo en este navegador)</h3>
               <p>
-                Este navegador aún no tiene <b>empresa_id</b> guardado. Escríbelo una vez (ej: <b>trampaclean</b>)
-                y el panel quedará listo.
+                Para cargar tus registros, escribe el <b>empresa_id</b> asignado (ej: <b>trampaclean</b>) y guarda.
+                Luego ya no tendrás que escribirlo otra vez aquí.
               </p>
               <div class="row">
                 <input class="in" id="empresaInput" placeholder="empresa_id (ej: trampaclean)" />
@@ -441,7 +442,7 @@
               </div>
             </div>
 
-            <div class="kpis" id="kpisWrap">
+            <div class="kpis">
               <div class="kpi"><div class="n" id="kpiTotal">—</div><div class="l">Registros</div></div>
               <div class="kpi"><div class="n" id="kpiHoy">—</div><div class="l">Hoy</div></div>
               <div class="kpi"><div class="n" id="kpiSemana">—</div><div class="l">7 días</div></div>
@@ -514,7 +515,7 @@
     const PAGE_SIZE = 25;
 
     // ====== STATE ======
-    let token = localStorage.getItem(TOKEN_KEY) || "";
+    let token = (localStorage.getItem(TOKEN_KEY) || "").trim();
     let empresa_id = (localStorage.getItem(EMPRESA_KEY) || "").trim().toLowerCase();
 
     let headers = [];
@@ -532,6 +533,7 @@
     const whoChip = document.getElementById("whoChip");
     const empresaIdEl = document.getElementById("empresaId");
 
+    const setupBtn = document.getElementById("setupBtn");
     const refreshBtn = document.getElementById("refreshBtn");
     const logoutBtn = document.getElementById("logoutBtn");
 
@@ -829,6 +831,11 @@
     }
 
     // ====== EVENTS ======
+    setupBtn.addEventListener("click", ()=>{
+      setupBox.classList.toggle("show");
+      if(setupBox.classList.contains("show")) empresaInput.focus();
+    });
+
     refreshBtn.addEventListener("click", async ()=>{
       refreshBtn.disabled = true;
       try{ await loadAll(true); }
@@ -837,8 +844,9 @@
 
     logoutBtn.addEventListener("click", ()=>{
       localStorage.removeItem(TOKEN_KEY);
-      // NO borramos EMPRESA_KEY obligatoriamente, pero lo normal es borrarlo:
-      // así si cambias de cuenta, lo pide de nuevo.
+      // Puedes decidir si borrar o no el empresa_id al cerrar sesión:
+      // Si quieres que el navegador recuerde empresa siempre, comenta esta línea:
+      // localStorage.removeItem(EMPRESA_KEY);
       localStorage.removeItem(EMPRESA_KEY);
       location.href = "login.html";
     });
@@ -851,9 +859,9 @@
       }
       empresa_id = v;
       localStorage.setItem(EMPRESA_KEY, empresa_id);
-      setupBox.classList.remove("show");
       empresaIdEl.textContent = empresa_id;
-      toast("Empresa configurada.");
+      setupBox.classList.remove("show");
+      toast("Empresa guardada.");
       await loadLeadsAndRender(true);
     });
 
@@ -896,10 +904,19 @@
 
     // ====== LOAD ======
     async function loadLeadsAndRender(showToast){
+      empresaIdEl.textContent = empresa_id || "—";
+
       if(!empresa_id){
-        setupBox.classList.add("show");
+        // NO obligamos a escribirlo: solo avisamos.
         emptyBox.style.display = "block";
-        emptyBox.textContent = "Configura empresa_id para cargar registros.";
+        emptyBox.textContent = "No hay empresa configurada en este navegador. Presiona “Configurar empresa”.";
+        tbody.innerHTML = "";
+        theadRow.innerHTML = "";
+        kpiTotal.textContent = "—";
+        kpiHoy.textContent = "—";
+        kpiSemana.textContent = "—";
+        kpiMes.textContent = "—";
+        if(showToast) toast("Falta empresa_id.");
         return;
       }
 
@@ -923,11 +940,6 @@
     async function loadAll(showToast){
       const me = await apiMe();
       whoChip.textContent = `${me.email} • ${String(me.role||"").toUpperCase()}`;
-
-      empresaIdEl.textContent = empresa_id || "—";
-      if(!empresa_id) setupBox.classList.add("show");
-      else setupBox.classList.remove("show");
-
       await loadLeadsAndRender(showToast);
     }
 
