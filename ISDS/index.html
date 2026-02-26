@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>ISDS Supply</title>
+
+<style>
+
+:root{
+
+--turquoise:#1FA6A6;
+--turquoise2:#178B8B;
+
+--bg:#ffffff;
+--text:#0a2a2a;
+--muted:#5c7d7d;
+
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
+
+min-height:100vh;
+
+background:
+
+radial-gradient(900px 500px at 20% 10%,rgba(31,166,166,.08),transparent),
+
+linear-gradient(180deg,#ffffff,#ffffff);
+
+display:flex;
+justify-content:center;
+
+}
+
+.wrap{
+
+width:min(520px,92vw);
+padding:24px 0 40px;
+
+}
+
+.card{
+
+background:white;
+
+border-radius:26px;
+
+box-shadow:0 30px 80px rgba(0,0,0,.08);
+
+overflow:hidden;
+
+}
+
+/* HEADER */
+
+.top{
+
+background:linear-gradient(180deg,var(--turquoise2),var(--turquoise));
+
+padding:26px 18px 20px;
+
+text-align:center;
+
+}
+
+.logoBox{
+
+width:240px;
+height:100px;
+
+margin:auto;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+}
+
+.logoBox img{
+
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+
+}
+
+/* CONTENT */
+
+.content{
+
+padding:26px;
+text-align:center;
+
+}
+
+.content h2{
+
+font-size:23px;
+margin-bottom:12px;
+color:var(--text);
+
+}
+
+.content p{
+
+font-size:15px;
+color:var(--muted);
+
+line-height:1.6;
+
+}
+
+/* CTA */
+
+.ctaWrap{padding:0 24px 24px;}
+
+.cta{
+
+display:flex;
+
+justify-content:center;
+align-items:center;
+
+padding:16px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,var(--turquoise),#3fd0d0);
+
+color:white;
+
+text-decoration:none;
+
+font-weight:800;
+
+text-transform:uppercase;
+
+letter-spacing:.05em;
+
+box-shadow:0 18px 50px rgba(31,166,166,.35);
+
+transition:.2s;
+
+}
+
+.cta:hover{
+
+transform:translateY(-2px);
+
+}
+
+.note{
+
+text-align:center;
+
+font-size:12px;
+
+color:var(--muted);
+
+margin-top:10px;
+
+}
+
+/* LINKS */
+
+.links{
+
+display:grid;
+
+gap:12px;
+
+padding:16px;
+
+}
+
+.link{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:16px;
+
+border-radius:18px;
+
+background:#f6fbfb;
+
+text-decoration:none;
+
+color:var(--text);
+
+box-shadow:0 12px 30px rgba(0,0,0,.05);
+
+transition:.2s;
+
+}
+
+.link:hover{
+
+transform:translateY(-3px);
+
+}
+
+.icon{
+
+width:44px;
+height:44px;
+
+border-radius:12px;
+
+overflow:hidden;
+
+flex:0 0 44px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:white;
+
+}
+
+.icon img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+}
+
+.text b{
+
+display:block;
+font-size:15px;
+
+}
+
+.text span{
+
+font-size:13px;
+color:var(--muted);
+
+}
+
+.arrow{
+
+margin-left:auto;
+
+opacity:.5;
+
+font-size:18px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrap">
+
+<section class="card">
+
+<div class="top">
+
+<div class="logoBox">
+
+<!-- coloca aqui logo ISDS -->
+<img src="ISDSLOGO.png">
+
+</div>
+
+</div>
+
+<div class="content">
+
+<h2>
+
+Los insumos que tu negocio necesita.
+
+</h2>
+
+<p>
+
+Insumos desechables para catering, repostería y panaderías.<br>
+
+Entregas rápidas • Importación • Atención personalizada.
+
+</p>
+
+</div>
+
+<div class="ctaWrap">
+
+<a class="cta"
+
+href="brochure.pdf"
+
+target="_blank">
+
+VER CATÁLOGO
+
+</a>
+
+<div class="note">
+
+Descubre todos nuestros productos.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="links">
+
+<!-- 1 WHATSAPP -->
+
+<a class="link"
+
+href="https://wa.me/50768068766?text=Hola%20ISDS%20Supply"
+
+target="_blank">
+
+<div class="icon">
+
+<img src="whatsapp.png">
+
+</div>
+
+<div class="text">
+
+<b>Contáctanos</b>
+
+<span>WhatsApp directo</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+<!-- 2 WEB -->
+
+<a class="link"
+
+href="https://isdssupply.com"
+
+target="_blank">
+
+<div class="icon">
+
+<img src="web.png">
+
+</div>
+
+<div class="text">
+
+<b>Página web</b>
+
+<span>isdssupply.com</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+<!-- 3 INSTAGRAM -->
+
+<a class="link"
+
+href="https://instagram.com/isdsSupply"
+
+target="_blank">
+
+<div class="icon">
+
+<img src="instagram.png">
+
+</div>
+
+<div class="text">
+
+<b>Síguenos</b>
+
+<span>@isdsSupply</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+
+<!-- 4 EMAIL -->
+
+<a class="link"
+
+href="mailto:info@isdssupply.com?subject=Consulta%20ISDS%20Supply">
+
+<div class="icon">
+
+<img src="email.png">
+
+</div>
+
+<div class="text">
+
+<b>Correo electrónico</b>
+
+<span>info@isdssupply.com</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+<!-- 5 TELEFONO -->
+
+<a class="link"
+
+href="tel:+50768068766">
+
+<div class="icon">
+
+<img src="telefono.png">
+
+</div>
+
+<div class="text">
+
+<b>Lourdes Sánchez</b>
+
+<span>+507 6806-8766</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+<!-- 6 PDF -->
+
+<a class="link"
+
+href="brochure.pdf"
+
+target="_blank">
+
+<div class="icon">
+
+<img src="pdf.png">
+
+</div>
+
+<div class="text">
+
+<b>Catálogo PDF</b>
+
+<span>Ver productos ISDS Supply</span>
+
+</div>
+
+<div class="arrow">›</div>
+
+</a>
+
+
+</section>
+
+</div>
+
+</body>
+</html>
