@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trampa Clean - Formulario</title>
+
+<style>
+:root{
+  --blue:#0E2644;
+  --blue2:#103051;
+  --orange:#FF4A00;
+  --bg:#F3F8FF;
+  --text:#0B1B33;
+  --muted:#55637c;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  min-height:100vh;
+  background:
+    radial-gradient(800px 500px at 20% 10%,rgba(14,38,68,.08),transparent),
+    radial-gradient(700px 500px at 90% 30%,rgba(255,74,0,.08),transparent),
+    linear-gradient(180deg,#fff,var(--bg));
+  display:flex;
+  justify-content:center;
+}
+
+.wrap{
+  width:min(520px,92vw);
+  padding:24px 0 40px;
+}
+
+.card{
+  background:rgba(255,255,255,.65);
+  backdrop-filter:blur(22px);
+  border-radius:26px;
+  box-shadow:0 30px 80px rgba(0,0,0,.12);
+  overflow:hidden;
+}
+
+.top{
+  background:linear-gradient(180deg,var(--blue2),var(--blue));
+  padding:26px 18px 20px;
+  text-align:center;
+  color:white;
+}
+
+.logoBox{
+  width:220px;
+  height:90px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.logoBox img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+.content{
+  padding:22px 24px 8px;
+  text-align:center;
+}
+
+.content h2{
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.content p{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.form{
+  padding:14px 24px 22px;
+}
+
+.group{ margin-top:12px; text-align:left; }
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:rgba(11,27,51,.9);
+  margin-bottom:6px;
+}
+
+input{
+  width:100%;
+  height:52px;
+  padding:0 14px;
+  border:1px solid rgba(6,26,45,.12);
+  border-radius:14px;
+  font-size:15px;
+  color:var(--text);
+  background:rgba(255,255,255,.85);
+  transition:.2s;
+  box-shadow:0 2px 0 rgba(6,26,45,.03);
+}
+
+input::placeholder{ color: rgba(91,99,124,.75); }
+
+input:hover{
+  border-color: rgba(33,161,255,.45);
+  box-shadow: 0 10px 28px rgba(6,26,45,.08);
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.95);
+}
+
+input:focus{
+  outline:none;
+  border-color: rgba(33,161,255,.85);
+  box-shadow: 0 0 0 4px rgba(33,161,255,.18), 0 14px 40px rgba(6,26,45,.12);
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+.btn{
+  margin-top:16px;
+  width:100%;
+  height:54px;
+  border:none;
+  border-radius:16px;
+  font-weight:900;
+  font-size:14px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  cursor:pointer;
+  color:white;
+  background:linear-gradient(135deg,var(--orange),#ff7a40);
+  box-shadow:0 18px 50px rgba(255,74,0,.30);
+  transition:.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.btn:hover{ transform: translateY(-2px); }
+.btn:active{ transform: translateY(0) scale(.99); }
+.btn:disabled{ opacity:.7; cursor:not-allowed; }
+
+.spinner{
+  width:18px;height:18px;
+  border:2px solid rgba(255,255,255,.85);
+  border-top-color:transparent;
+  border-radius:999px;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+.msg{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.error{
+  margin-top:12px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,59,59,.08);
+  border:1px solid rgba(255,59,59,.18);
+  color:#b42318;
+  font-size:13px;
+}
+
+.success{
+  margin-top:12px;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(34,197,94,.10);
+  border:1px solid rgba(34,197,94,.22);
+  color:#0f5132;
+  font-size:13px;
+}
+
+.footer{
+  padding:14px 24px 18px;
+  border-top: 1px solid rgba(6,26,45,.08);
+  background: rgba(255,255,255,.55);
+  text-align:center;
+  font-size:12px;
+  color: rgba(91,102,114,.9);
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<section class="card">
+
+  <div class="top">
+    <div class="logoBox">
+      <!-- Pon tu logo en la misma carpeta -->
+      <img src="TCLOGO.png" alt="Trampa Clean Services">
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>Regístrate para atención y descuento</h2>
+    <p>Déjanos tus datos y te contactamos con una propuesta rápida para tu negocio.</p>
+  </div>
+
+  <form class="form" id="leadForm">
+    <div id="alertBox"></div>
+
+    <div class="group">
+      <label for="nombre">Nombre *</label>
+      <input id="nombre" name="nombre" type="text" placeholder="Tu nombre completo" required>
+    </div>
+
+    <div class="group">
+      <label for="cargo">Cargo *</label>
+      <input id="cargo" name="cargo" type="text" placeholder="Ej: Administrador / Chef / Dueño" required>
+    </div>
+
+    <div class="group">
+      <label for="empresa">Empresa *</label>
+      <input id="empresa" name="empresa" type="text" placeholder="Nombre del negocio" required>
+    </div>
+
+    <div class="group">
+      <label for="correo">Correo *</label>
+      <input id="correo" name="correo" type="email" placeholder="tu@email.com" required>
+    </div>
+
+    <div class="group">
+      <label for="telefono">Teléfono *</label>
+      <input id="telefono" name="telefono" type="tel" placeholder="+507 XXXX-XXXX" required>
+    </div>
+
+    <button class="btn" id="submitBtn" type="submit">
+      Enviar
+    </button>
+
+    <div class="msg">Tus datos son confidenciales y solo se usarán para contactarte.</div>
+  </form>
+
+  <div class="footer">TRAMPA CLEAN SERVICES · Soluciones profesionales de limpieza</div>
+
+</section>
+
+</div>
+
+<script>
+/* ========= CONFIG =========
+   1) Pega aquí tu URL del Apps Script (termina en /exec)
+   2) Asegúrate que tu script responda JSONP cuando reciba &callback=...
+*/
+const API_BASE = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT_EXEC";
+
+/* Puedes usar params en la URL del QR si quieres:
+   ?empresa_id=trampaclean&vendedor=expo
+*/
+function getParam(key){
+  const u = new URLSearchParams(location.search);
+  return (u.get(key) || "").trim();
+}
+
+/* JSONP helper para GitHub Pages */
+function jsonp(url){
+  return new Promise((resolve, reject) => {
+    const cb = "cb_" + Math.random().toString(36).slice(2);
+    const s = document.createElement("script");
+
+    window[cb] = (data) => {
+      try{ delete window[cb]; }catch(e){}
+      s.remove();
+      resolve(data);
+    };
+
+    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+    s.onerror = () => {
+      try{ delete window[cb]; }catch(e){}
+      s.remove();
+      reject(new Error("No se pudo conectar."));
+    };
+
+    document.body.appendChild(s);
+  });
+}
+
+const form = document.getElementById("leadForm");
+const submitBtn = document.getElementById("submitBtn");
+const alertBox = document.getElementById("alertBox");
+
+function showError(msg){
+  alertBox.innerHTML = `<div class="error">${msg}</div>`;
+}
+function showSuccess(msg){
+  alertBox.innerHTML = `<div class="success">${msg}</div>`;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  alertBox.innerHTML = "";
+
+  const nombre = document.getElementById("nombre").value.trim();
+  const cargo = document.getElementById("cargo").value.trim();
+  const empresa = document.getElementById("empresa").value.trim();
+  const correo = document.getElementById("correo").value.trim();
+  const telefono = document.getElementById("telefono").value.trim();
+
+  if(!nombre || !cargo || !empresa || !correo || !telefono){
+    showError("Completa todos los campos.");
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(correo)){
+    showError("Ingresa un correo válido.");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = `<div class="spinner"></div> Enviando...`;
+
+  try{
+    const qs = new URLSearchParams();
+    qs.set("action", "expo_lead_create"); // <-- tu acción en Apps Script
+    qs.set("empresa_id", getParam("empresa_id") || "trampaclean");
+    qs.set("vendedor", getParam("vendedor") || "expo");
+    qs.set("nombre", nombre);
+    qs.set("cargo", cargo);
+    qs.set("empresa", empresa);
+    qs.set("correo", correo);
+    qs.set("telefono", telefono);
+    qs.set("fecha", new Date().toISOString());
+
+    const url = `${API_BASE}?${qs.toString()}`;
+    const data = await jsonp(url);
+
+    if(!data || data.ok !== true){
+      throw new Error((data && data.message) ? data.message : "No se pudo guardar. Intenta de nuevo.");
+    }
+
+    showSuccess("¡Listo! Recibimos tus datos. Te contactaremos pronto.");
+    form.reset();
+
+  }catch(err){
+    showError(String(err && err.message ? err.message : "Error al enviar."));
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "Enviar";
+  }
+});
+</script>
+
+</body>
+</html>
